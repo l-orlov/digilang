@@ -66,7 +66,7 @@ body {
 .nav_links a {
   color: black;
   text-decoration: none;
-  font-size: 14px;
+  font-size: 18px;
 }
 .burger_menu {
   display: none;
@@ -118,10 +118,12 @@ body {
 }
 .nav_links.show {
   display: flex !important;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: center;
-  background: #F5F1E6;
+  background: #E8EBF9;
   position: absolute;
+  border-top: 1px solid black;
+  border-bottom: 1px solid black;
   top: 75px;
   left: 0;
   width: 100%;
