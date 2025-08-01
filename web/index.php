@@ -9,8 +9,14 @@
 <body>
 
 <?
-include 'includes/header.php';
-include 'includes/home.php';
+$page = isset($_REQUEST['page']) ? htmlspecialchars($_REQUEST['page']) : '';
+if ($page == 'vid') {
+    include 'includes/vid.php';
+} else {
+    include 'includes/header.php';
+    include 'includes/landing.php';
+    include 'includes/home.php';
+}
 ?>
 
 </body>
