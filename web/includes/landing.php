@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   const isMobile = window.innerWidth <= 768;
 
-  source.setAttribute("src", isMobile ? "videos/vid_digilang_mobile.mp4" : "videos/vid_digilang.mp4");
+  source.setAttribute("src", isMobile ? "videos/vid_digilang_mob.mp4" : "videos/vid_digilang.mp4");
   source.setAttribute("type", "video/mp4");
 
   video.appendChild(source);
