@@ -1,6 +1,7 @@
 <div class="landing_video_block">
     <div class="landing_video_gradient"></div>
     <video autoplay muted loop playsinline class="landing_video_bg">
+        <source src="videos/vid_digilang_mobile.mp4" type="video/mp4" media="(max-width: 768px)">
         <source src="videos/vid_digilang.mp4" type="video/mp4">
         Ваш браузер не поддерживает тег video.
     </video>
