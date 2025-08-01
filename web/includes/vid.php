@@ -1,5 +1,8 @@
 <div class="vid_video_block">
     <video autoplay muted loop playsinline class="vid_video_bg">
+        <!-- Видео для мобильных -->
+        <source src="videos/vid_digilang_mobile.mp4" type="video/mp4" media="(max-width: 768px)">
+        <!-- Видео по умолчанию (десктоп) -->
         <source src="videos/vid_digilang.mp4" type="video/mp4">
     </video>
 

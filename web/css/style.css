@@ -358,9 +358,8 @@ body {
   width: 100%;
   height: 100%;
   transform: translate(-50%, -50%);
-  /* transform: translate(-60%, -50%); */
   object-fit: cover;
-  object-position: 70% center;
+  object-position: center;
   z-index: 0;
 }
 .vid_video_overlay {
@@ -374,10 +373,14 @@ body {
 }
 .vid_video_logo {
   position: absolute;
-  top: 40%;
-  left: 5%;
+  top: auto;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 .vid_video_logo img {
   max-width: 100px;
