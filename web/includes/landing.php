@@ -1,11 +1,6 @@
 <div class="landing_video_block">
     <div class="landing_video_gradient"></div>
-    <video autoplay muted loop playsinline class="landing_video_bg_mobile">
-        <source src="videos/vid_digilang_mobile.mp4" type="video/mp4">
-    </video>
-    <video autoplay muted loop playsinline class="landing_video_bg_desktop">
-        <source src="videos/vid_digilang.mp4" type="video/mp4">
-    </video>
+    <video id="landing_video" autoplay muted loop playsinline class="landing_video_bg"></video>
 
     <div class="landing_video_overlay">
         <div class="landing_video_logo">
@@ -18,3 +13,17 @@
         </div>
     </div>
 </div>
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const video = document.getElementById("landing_video");
+  const source = document.createElement("source");
+
+  const isMobile = window.innerWidth <= 768;
+
+  source.setAttribute("src", isMobile ? "videos/vid_digilang_mobile.mp4" : "videos/vid_digilang.mp4");
+  source.setAttribute("type", "video/mp4");
+
+  video.appendChild(source);
+  video.load();
+});
+</script>

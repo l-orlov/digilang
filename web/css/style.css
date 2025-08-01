@@ -132,7 +132,7 @@ body {
   overflow: hidden;
   padding: 20px;
 }
-.landing_video_bg_desktop {
+.landing_video_bg {
   position: absolute;
   top: 0;
   left: 0;
@@ -140,9 +140,6 @@ body {
   height: 100%;
   object-fit: cover;
   z-index: 0;
-}
-.landing_video_bg_mobile {
-  display: none;
 }
 .landing_video_overlay {
   position: relative;
@@ -211,7 +208,7 @@ body {
   overflow: hidden;
   padding: 0;
 }
-.landing_video_bg_mobile {
+.landing_video_bg {
   display: block;
   position: absolute;
   top: 0;
@@ -221,9 +218,6 @@ body {
   object-fit: cover;
   object-position: center;
   z-index: 0;
-}
-.landing_video_bg_desktop {
-  display: none;
 }
 .landing_video_overlay {
   position: relative;
