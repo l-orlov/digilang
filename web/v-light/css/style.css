@@ -153,16 +153,16 @@ body {
   background:
     radial-gradient(78% 68% at 50% 45%,
       rgba(255,255,255,0) 50%,
-      hsla(225,55%,96%,.12) 100%),
+      hsla(225,55%,96%,.05) 100%),
 
-    linear-gradient(90deg,  hsla(225,55%,96%,.12) 0, rgba(255,255,255,0) 30%),
-    linear-gradient(270deg, hsla(225,55%,96%,.12) 0, rgba(255,255,255,0) 30%),
+    linear-gradient(90deg,  hsla(225,55%,96%,.08) 0, rgba(255,255,255,0) 30%),
+    linear-gradient(270deg, hsla(225,55%,96%,.08) 0, rgba(255,255,255,0) 30%),
 
-    linear-gradient(0deg,   hsla(225,55%,96%,.12) 0, rgba(255,255,255,0) 24%),
-    linear-gradient(180deg, hsla(225,55%,96%,.12) 0, rgba(255,255,255,0) 26%),
+    linear-gradient(0deg,   hsla(225,55%,96%,.08) 0, rgba(255,255,255,0) 24%),
+    linear-gradient(180deg, hsla(225,55%,96%,.08) 0, rgba(255,255,255,0) 26%),
 
     /* Едва заметная общая «вуаль», чтобы связать всё поле */
-    linear-gradient(180deg, hsla(225,55%,97%,.1), hsla(225,55%,97%,.1));
+    linear-gradient(180deg, hsla(225,55%,97%,.05), hsla(225,55%,97%,.05));
 }
 .landing_video_overlay {
   position: relative;
