@@ -141,20 +141,28 @@ body {
   height: 100%;
   object-fit: cover;
   z-index: 0;
+
+  /* Лёгкая коррекция, чтобы не было мыла */
+  filter: brightness(1.01) contrast(1.01) saturate(0.98);
 }
-/* новый слой для осветления */
 .video-lighten {
   position: absolute;
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.32),
-    rgba(220, 235, 255, 0.32)
-  );
-  mix-blend-mode: screen;
-  opacity: 0.55; /* регулируй: 0.35–0.6 */
+  background:
+    radial-gradient(78% 68% at 50% 45%,
+      rgba(255,255,255,0) 50%,
+      hsla(225,55%,96%,.12) 100%),
+
+    linear-gradient(90deg,  hsla(225,55%,96%,.12) 0, rgba(255,255,255,0) 30%),
+    linear-gradient(270deg, hsla(225,55%,96%,.12) 0, rgba(255,255,255,0) 30%),
+
+    linear-gradient(0deg,   hsla(225,55%,96%,.12) 0, rgba(255,255,255,0) 24%),
+    linear-gradient(180deg, hsla(225,55%,96%,.12) 0, rgba(255,255,255,0) 26%),
+
+    /* Едва заметная общая «вуаль», чтобы связать всё поле */
+    linear-gradient(180deg, hsla(225,55%,97%,.1), hsla(225,55%,97%,.1));
 }
 .landing_video_overlay {
   position: relative;
