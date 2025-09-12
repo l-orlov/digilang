@@ -19,9 +19,9 @@
                 </div>
             </button>
         </div>
-        <div class="header_lang" onclick="toggleLangMenu()">
+        <div class="header_lang" onclick="toggleLangMenuHeader()">
             <img src="img/landing_lang.png" />
-            <span id="current-lang">Es</span>
+            <span id="current-lang-header">Es</span>
                 <ul id="header_lang_menu" class="header_lang_menu hidden">
                 <li onclick="setLang('main', 'es')">Español</li>
                 <li onclick="setLang('main', 'en')">English</li>
@@ -29,9 +29,7 @@
             </ul>
         </div>
     </div>
-
 </div>
-<script src="/js/i18n.js?v=1.0.2"></script>
 <script>
 function toggleMenuBurger(event) {
   event.stopPropagation();
@@ -74,21 +72,5 @@ function removeMenuListeners() {
   document.querySelectorAll('.nav_links a').forEach(link => {
     link.removeEventListener('click', closeMenuByLink);
   });
-}
-
-
-function toggleLangMenu() {
-  const menu = document.getElementById('header_lang_menu');
-  menu.classList.toggle('hidden');
-}
-document.addEventListener('DOMContentLoaded', () => {
-  initLang('main');
-});
-document.addEventListener('click', function (e) {
-  const langBox = document.querySelector('.header_lang');
-  const menu = document.getElementById('header_lang_menu');
-  if (!langBox.contains(e.target)) {
-    menu.classList.add('hidden');
-  }
-});
+} 
 </script>

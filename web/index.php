@@ -13,7 +13,6 @@
 // if ($page == 'vid') {
 //     include 'includes/vid.php';
 // } else {
-    include 'includes/header.php';
     include 'includes/landing.php';
 // }
 ?>

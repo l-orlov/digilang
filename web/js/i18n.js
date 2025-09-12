@@ -3,6 +3,17 @@ async function setLang(page, lang) {
   if (currentLangEl) {
     currentLangEl.textContent = lang.toUpperCase();
   }
+  // Header
+  const currentLangHeader = document.getElementById('current-lang-header');
+  if (currentLangHeader) {
+    currentLangHeader.textContent = lang.toUpperCase();
+  }
+
+  // Footer
+  const currentLangFooter = document.getElementById('current-lang-footer');
+  if (currentLangFooter) {
+    currentLangFooter.textContent = lang.toUpperCase();
+  }
 
   // Сохраняем выбранный язык в localStorage
   localStorage.setItem('lang', lang);

@@ -1,3 +1,24 @@
+<!-- HEADER -->
+<? include 'includes/landing_header.php'; ?>
+<script>
+function toggleLangMenuHeader() {
+  const menu = document.getElementById('header_lang_menu');
+  menu.classList.toggle('hidden');
+}
+document.addEventListener('DOMContentLoaded', () => {
+  initLang('main');
+});
+document.addEventListener('click', function (e) {
+  const langBox = document.querySelector('.header_lang');
+  const menu = document.getElementById('header_lang_menu');
+  if (!langBox.contains(e.target)) {
+    menu.classList.add('hidden');
+  }
+});
+</script>
+<!-- HEADER -->
+
+<!-- LANDING with video background -->
 <div class="landing_video_block">
     <div class="landing_video_gradient"></div>
     <video id="landing_video" autoplay muted loop playsinline class="landing_video_bg"></video>
@@ -27,3 +48,32 @@ document.addEventListener("DOMContentLoaded", function () {
   video.load();
 });
 </script>
+<!-- LANDING with video background -->
+
+<!-- FOOTER -->
+<? include 'includes/landing_footer.php'; ?>
+<script>
+function toggleLangMenuFooter() {
+  const menu = document.getElementById('footer_lang_menu');
+  menu.classList.toggle('hidden');
+}
+document.addEventListener('DOMContentLoaded', () => {
+  initLang('main');
+});
+document.addEventListener('click', function (e) {
+  const langBox = document.querySelector('.footer_lang');
+  const menu = document.getElementById('footer_lang_menu');
+  if (!langBox.contains(e.target)) {
+    menu.classList.add('hidden');
+  }
+});
+
+const lang = localStorage.getItem('lang') || 'es';
+  const currentLangEl = document.getElementById('current-lang');
+  if (currentLangEl) {
+    currentLangEl.textContent = lang.toUpperCase();
+  }
+</script>
+<!-- FOOTER -->
+
+<script src="/js/i18n.js?v=1.0.2"></script>
