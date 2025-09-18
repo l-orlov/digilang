@@ -217,7 +217,7 @@ body {
   line-height: 1.15;
   letter-spacing: .2px;
 }
-.landing_video_overlay .button_text {
+.button_text {
   margin: 22px 0 0;
   padding: 14px 28px;
   background: #FFC124;
@@ -225,6 +225,7 @@ body {
   font-weight: 700;
   border-radius: 8px;
   border: none;
+  font-size: 22px;
 }
 .landing_video_list {
   list-style: none;
@@ -246,7 +247,7 @@ body {
   position:relative;
   margin: 14px 0;
   line-height:1.5;
-  font-size: 18px;
+  font-size: 22px;
 }
 .landing_video_list li::before{
   content:"";
@@ -302,7 +303,12 @@ body {
 }
 .button_text{
   margin: 18px 0 0;
-}}
+  font-size: 20px;
+}
+.landing_video_list li {
+  font-size: 20px;
+}
+}
 /* LANDING VIDEO */
 
 /* FOOTER */
@@ -416,7 +422,6 @@ body {
   }
 }
 /* FOOTER */
-
 
 /* LANDING ABOUT */
 .landing_about {
@@ -607,4 +612,91 @@ body {
 .about__dot {
   display: none;
 }}
+/* LANDING ABOUT */
 
+/* SERVICES TIMELINE */
+.services_timeline {
+  max-width: 1300px;
+  margin: 0 auto;
+  background: #0B101F;
+  color: #e6edff;
+}
+.timeline{
+  --gap: 80px;
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 56px 16px 64px;
+}
+.timeline_list{
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.timeline_list li{
+  position: relative;
+  margin-top: var(--gap);
+  text-align: center;
+  font-size: clamp(20px, 2.4vw, 40px);
+  line-height: 1.25;
+  color: #e6edff;
+  padding: 0 16px;
+}
+.timeline_list li:first-child{
+  margin-top: 0;
+}
+.timeline_list li:not(:first-child)::before{
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: calc(var(--gap) / -2);
+  transform: translateX(-50%);
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #BDCFFF;
+  z-index: 2;
+}
+.timeline_list li:not(:first-child)::after{
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: calc(var(--gap) / -2 - 28px);
+  transform: translateX(-50%);
+  width: 2px;
+  height: 28px;
+  background: #BDCFFF;
+  opacity: .75;
+  z-index: 1;
+}
+.timeline_cta{
+  background: #15203D;
+  text-align:center;
+  padding: 40px 16px 60px;
+}
+.timeline_cta_title{
+  margin:0 0 22px;
+  font-size: clamp(25px, 2.4vw, 32px);
+  font-weight:600;
+  color:#e6edff;
+}
+.timeline_cta_btn{
+  display:inline-block;
+  border:0;
+  background:#FFC124;
+  color:#0e192a;
+  font-weight:800;
+  font-size:22px;
+  padding:14px 28px;
+  border-radius:10px;
+  cursor:pointer;
+}
+/* RESPONSIVE */
+@media (max-width: 680px){
+.timeline{ --gap: 64px; padding: 40px 12px 48px; }
+.timeline_list li{ font-size: 22px; }
+.timeline_list li:not(:first-child)::after{ height: 22px; top: calc(var(--gap) / -2 - 22px); }
+}
+/* SERVICES TIMELINE */

@@ -174,6 +174,29 @@ document.addEventListener("DOMContentLoaded", function () {
 <!-- LANDING ABOUT -->
 
 
+<!-- SERVICES TIMELINE -->
+<div class="services_timeline">
+  <div class="timeline">
+    <ul class="timeline_list">
+      <li data-i18n="tl_item1">Создание ботов в WhatsApp и Telegram</li>
+      <li data-i18n="tl_item2">UX/UI дизайн</li>
+      <li data-i18n="tl_item3">WEB разработка</li>
+      <li data-i18n="tl_item4">SEO и оптимизация запросов</li>
+      <li data-i18n="tl_item5">DevOps, настройка и администрирование серверов</li>
+      <li data-i18n="tl_item6">Комплексная цифровизация и автоматизация бизнеса</li>
+    </ul>
+  </div>
+
+  <div class="timeline_cta">
+    <h3 class="timeline_cta_title" data-i18n="tl_cta_title">
+      Начните создавать сайты вашей мечты вместе с DigiLang прямо сейчас!
+    </h3>
+    <button class="timeline_cta_btn" data-i18n="tl_cta_btn">Заказать сайт</button>
+  </div>
+</div>
+<!-- SERVICES TIMELINE -->
+
+
 <!-- FOOTER -->
 <? include 'includes/landing_footer.php'; ?>
 <script>
