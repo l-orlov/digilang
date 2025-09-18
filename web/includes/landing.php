@@ -20,18 +20,17 @@ document.addEventListener('click', function (e) {
 
 <!-- LANDING with video background -->
 <div class="landing_video_block">
-    <div class="landing_video_gradient"></div>
     <video id="landing_video" autoplay muted loop playsinline class="landing_video_bg"></video>
-
     <div class="landing_video_overlay">
-        <div class="landing_video_logo">
-            <img src="img/logo.png" alt="DigiLang Logo">
-            <p>Креативная лаборатория</p>
-        </div>
-        <div class="landing_video_text">
-            <h1>У вас еще нет сайта?<br>Тогда нужно<br>обратиться к нам.</h1>
-            <button class="btn button_text">Связаться</button>
-        </div>
+      <div class="landing_video_text">
+        <h1 data-i18n="hero_title">У вас нет сайта?</h1>
+        <ul class="landing_video_list">
+          <li data-i18n="hero_bullet1">В современном мире клиенты выбирают тех, кого видят онлайн.</li>
+          <li data-i18n="hero_bullet2">У кого нет сайта — у того нет будущего.</li>
+          <li data-i18n="hero_bullet3">Мы создадим сайт, оцифруем и автоматизируем ваш бизнес!</li>
+        </ul>
+        <button class="btn button_text" data-i18n="hero_cta">Получить консультацию</button>
+      </div>
     </div>
 </div>
 <script>
@@ -54,7 +53,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <div class="landing_about">
   <div class="landing_about_header">
     <span class="about__line about__line--left"></span>
-    <h2 class="landing_about_title" data-i18n="about_title">о нас</h2>
+    <h2 class="landing_about_title" data-i18n="about_title">O нас</h2>
     <span class="about__line about__line--right"></span>
     <span class="about__dot"></span>
   </div>
@@ -139,70 +138,38 @@ document.addEventListener("DOMContentLoaded", function () {
         </div>
       </div>
     </div>
-
-    <!-- <div class="landing_about_cards">
-      <div class="landing_about_card">
-        <div class="landing_about_card_icon">
-          <img src="img/potential.png">
-        </div>
-        <h3 class="landing_about_card_title" data-i18n="about_card1_title">Потенциал</h3>
-        <button class="landing_about_card_chev" type="button" aria-label="Подробнее">
-          <img src="img/chev_down.png" alt="">
-        </button>
-      </div>
-
-      <div class="landing_about_card">
-        <div class="landing_about_card_icon">
-          <img src="img/style.png">
-        </div>
-        <h3 class="landing_about_card_title" data-i18n="about_card2_title">Стиль</h3>
-        <button class="landing_about_card_chev" type="button" aria-label="Подробнее">
-          <img src="img/chev_down.png" alt="">
-        </button>
-      </div>
-
-      <div class="landing_about_card">
-        <div class="landing_about_card_icon">
-          <img src="img/need.png">
-        </div>
-        <h3 class="landing_about_card_title" data-i18n="about_card3_title">Необходимость</h3>
-        <button class="landing_about_card_chev" type="button" aria-label="Подробнее">
-          <img src="img/chev_down.png" alt="">
-        </button>
-      </div>
-    </div> -->
   </div>
 </div>
 <script>
-  (function(){
-    const cards = document.querySelectorAll('.landing_about_card');
+(function(){
+  const cards = document.querySelectorAll('.landing_about_card');
 
-    function closeAll() {
-      cards.forEach(c => {
-        c.classList.remove('is-open');
-        const btn = c.querySelector('.landing_about_card_chev');
-        if (btn) btn.setAttribute('aria-expanded', 'false');
-      });
-    }
-
-    cards.forEach(card => {
-      card.addEventListener('click', () => {
-        const isOpen = card.classList.contains('is-open');
-        closeAll();
-        if (!isOpen) {
-          card.classList.add('is-open');
-          const btn = card.querySelector('.landing_about_card_chev');
-          if (btn) btn.setAttribute('aria-expanded', 'true');
-        }
-      });
+  function closeAll() {
+    cards.forEach(c => {
+      c.classList.remove('is-open');
+      const btn = c.querySelector('.landing_about_card_chev');
+      if (btn) btn.setAttribute('aria-expanded', 'false');
     });
+  }
 
-    // Закрытие по Esc и по клику вне
-    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAll(); });
-    document.addEventListener('click', e => {
-      if (!e.target.closest('.landing_about_card')) closeAll();
+  cards.forEach(card => {
+    card.addEventListener('click', () => {
+      const isOpen = card.classList.contains('is-open');
+      closeAll();
+      if (!isOpen) {
+        card.classList.add('is-open');
+        const btn = card.querySelector('.landing_about_card_chev');
+        if (btn) btn.setAttribute('aria-expanded', 'true');
+      }
     });
-  })();
+  });
+
+  // Закрытие по Esc и по клику вне
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAll(); });
+  document.addEventListener('click', e => {
+    if (!e.target.closest('.landing_about_card')) closeAll();
+  });
+})();
 </script>
 <!-- LANDING ABOUT -->
 
