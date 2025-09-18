@@ -23,9 +23,9 @@
             <img src="img/landing_lang.png" />
             <span id="current-lang-header">Es</span>
                 <ul id="header_lang_menu" class="header_lang_menu hidden">
-                <li onclick="setLang('main', 'es')">Español</li>
-                <li onclick="setLang('main', 'en')">English</li>
-                <li onclick="setLang('main', 'ru')">Русский</li>
+                <li onclick="setLang('landing', 'es')">Español</li>
+                <li onclick="setLang('landing', 'en')">English</li>
+                <li onclick="setLang('landing', 'ru')">Русский</li>
             </ul>
         </div>
     </div>
