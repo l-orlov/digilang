@@ -25,6 +25,15 @@
   "tl_item5": "DevOps, configuración y administración de servidores",
   "tl_item6": "Digitalización integral y automatización del negocio",
   "tl_cta_title": "¡Empieza a crear el sitio web de tus sueños con DigiLang ahora mismo!",
-  "tl_cta_btn": "Encargar sitio web"
+  "tl_cta_btn": "Encargar sitio web",
+  "clients_title": "Nuestros clientes",
+  "clients_sub": "Estamos orgullosos de lo que hacemos y siempre buscamos caminos para crecer.",
+  "clients_cta": "Obtener una consulta",
+  "clients_card_btn": "saber más",
+  "clients_card1_title": "Proyecto 1",
+  "clients_card2_title": "Proyecto 2",
+  "clients_card3_title": "Proyecto 3",
+  "clients_card4_title": "Proyecto 4",
+  "clients_card5_title": "Proyecto 5"
 
 }

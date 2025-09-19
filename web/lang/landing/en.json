@@ -25,6 +25,15 @@
   "tl_item5": "DevOps, server setup and administration",
   "tl_item6": "End-to-end digitization and business automation",
   "tl_cta_title": "Start building the website of your dreams with DigiLang right now!",
-  "tl_cta_btn": "Order a website"
+  "tl_cta_btn": "Order a website",
+  "clients_title": "Our clients",
+  "clients_sub": "We are proud of what we do and always look for ways to grow.",
+  "clients_cta": "Get a consultation",
+  "clients_card_btn": "learn more",
+  "clients_card1_title": "Project 1",
+  "clients_card2_title": "Project 2",
+  "clients_card3_title": "Project 3",
+  "clients_card4_title": "Project 4",
+  "clients_card5_title": "Project 5"
 
 }

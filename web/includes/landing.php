@@ -196,6 +196,172 @@ document.addEventListener("DOMContentLoaded", function () {
 </div>
 <!-- SERVICES TIMELINE -->
 
+<!-- CLIENTS -->
+<div class="landing_clients">
+  <div class="landing_clients_header">
+    <span class="clients_line clients_line--left"></span>
+    <h2 class="clients_title" data-i18n="clients_title">наши клиенты</h2>
+    <span class="clients_line clients_line--right"></span>
+  </div>
+  <p class="clients_sub" data-i18n="clients_sub">
+    Мы гордимся тем, что делаем, и всегда ищем пути к развитию.
+  </p>
+
+  <div class="carousel">
+    <button class="carousel_btn prev" aria-label="Назад">&#9664;</button>
+    <div class="carousel_viewport">
+      <ul class="carousel_track">
+        <li class="card">
+          <img src="img/1.png" alt="">
+          <div class="card_overlay" aria-hidden="true">
+            <div class="card_overlay_content">
+              <h4 data-i18n="clients_card1_title">Проект 1</h4>
+              <a href="#" class="card_overlay_btn" data-i18n="clients_card_btn">узнать больше</a>
+            </div>
+          </div>
+        </li>
+        <li class="card">
+          <img src="img/2.png" alt="">
+          <div class="card_overlay" aria-hidden="true">
+            <div class="card_overlay_content">
+              <h4 data-i18n="clients_card2_title">Проект 2</h4>
+              <a href="#" class="card_overlay_btn" data-i18n="clients_card_btn">узнать больше</a>
+            </div>
+          </div>
+        </li>
+        <li class="card">
+          <img src="img/3.png" alt="">
+          <div class="card_overlay" aria-hidden="true">
+            <div class="card_overlay_content">
+              <h4 data-i18n="clients_card3_title">Проект 3</h4>
+              <a href="#" class="card_overlay_btn" data-i18n="clients_card_btn">узнать больше</a>
+            </div>
+          </div>
+        </li>
+        <li class="card">
+          <img src="img/4.png" alt="">
+          <div class="card_overlay" aria-hidden="true">
+            <div class="card_overlay_content">
+              <h4 data-i18n="clients_card4_title">Проект 4</h4>
+              <a href="#" class="card_overlay_btn" data-i18n="clients_card_btn">узнать больше</a>
+            </div>
+          </div>
+        </li>
+        <li class="card">
+          <img src="img/5.png" alt="">
+          <div class="card_overlay" aria-hidden="true">
+            <div class="card_overlay_content">
+              <h4 data-i18n="clients_card5_title">Проект 5</h4>
+              <a href="#" class="card_overlay_btn" data-i18n="clients_card_btn">узнать больше</a>
+            </div>
+          </div>
+        </li>
+      </ul>
+    </div>
+    <button class="carousel_btn next" aria-label="Вперёд">&#9654;</button>
+  </div>
+
+  <div class="clients_cta">
+    <button class="clients_cta_btn" data-i18n="clients_cta">Получить консультацию</button>
+  </div>
+</div>
+<script>
+(function(){
+  const track = document.querySelector('.carousel_track');
+  const prev  = document.querySelector('.carousel_btn.prev');
+  const next  = document.querySelector('.carousel_btn.next');
+
+  let isAnimating = false;
+  let shift = 0;
+
+  function calcShift(){
+    const slide = track.querySelector('.card');
+    const styles = getComputedStyle(track);
+    const gap = parseFloat(styles.columnGap || styles.gap || 0);
+    shift = slide.getBoundingClientRect().width + gap;
+  }
+
+  function goNext(){
+    if (isAnimating) return;
+    isAnimating = true;
+    track.style.transition = 'transform .35s ease';
+    track.style.transform  = `translateX(${-shift}px)`;
+    track.addEventListener('transitionend', function onEnd(){
+      track.removeEventListener('transitionend', onEnd);
+      track.append(track.firstElementChild);      // первый -> в конец
+      track.style.transition = 'none';
+      track.style.transform  = 'translateX(0)';
+      // force reflow
+      void track.offsetWidth;
+      isAnimating = false;
+    }, {once:true});
+  }
+
+  function goPrev(){
+    if (isAnimating) return;
+    isAnimating = true;
+    // мгновенно подставляем последний в начало и сдвигаем трек
+    track.style.transition = 'none';
+    track.prepend(track.lastElementChild);        // последний -> в начало
+    track.style.transform  = `translateX(${-shift}px)`;
+    void track.offsetWidth;
+    // анимация возвращения к нулю
+    track.style.transition = 'transform .35s ease';
+    track.style.transform  = 'translateX(0)';
+    track.addEventListener('transitionend', () => { isAnimating = false; }, {once:true});
+  }
+
+  calcShift();
+  window.addEventListener('resize', calcShift);
+  next.addEventListener('click', goNext);
+  prev.addEventListener('click', goPrev);
+})();
+
+(function(){
+  const cards = document.querySelectorAll('.card');
+
+  function closeAll(){
+    cards.forEach(c => c.classList.remove('is-open'));
+  }
+
+  cards.forEach(card => {
+    // КЛИК ПО КАРТОЧКЕ: toggle
+    card.addEventListener('click', (e) => {
+      if (e.target.closest('a')) return;      // ссылки не трогаем
+      const wasOpen = card.classList.contains('is-open');
+      if (wasOpen) {
+        card.classList.remove('is-open');     // повторный клик — закрыть
+      } else {
+        closeAll();                            // открыть только одну
+        card.classList.add('is-open');
+      }
+    });
+
+    // КЛИК ПО ОВЕРЛЕЮ/КОНТЕНТУ ОВЕРЛЕЯ — тоже закрывает
+    const ov = card.querySelector('.card_overlay');
+    ov?.addEventListener('click', (e) => {
+      if (!e.target.closest('.card_overlay_btn') && !e.target.closest('a')) {
+        card.classList.remove('is-open');
+        e.stopPropagation();                  // чтобы не сработал верхний обработчик
+      }
+    });
+  });
+
+  // Esc — закрыть
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') closeAll();
+  });
+
+  // Клик ВНЕ карточек — закрыть
+  document.addEventListener('click', (e) => {
+    if (!e.target.closest('.card')) closeAll();
+  });
+  document.addEventListener('touchstart', (e) => {
+    if (!e.target.closest('.card')) closeAll();
+  }, { passive: true });
+})();
+</script>
+<!-- CLIENTS -->
 
 <!-- FOOTER -->
 <? include 'includes/landing_footer.php'; ?>
