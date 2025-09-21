@@ -49,6 +49,138 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 <!-- LANDING with video background -->
 
+<!-- STYLES -->
+<div class="landing_styles">
+  <div class="landing_styles_header">
+    <span class="landing_styles_line landing_styles_line--left"></span>
+    <h2 class="landing_styles_title" data-i18n="styles_title">меню стилей</h2>
+    <span class="landing_styles_line landing_styles_line--right"></span>
+    <span class="landing_styles_dot"></span>
+  </div>
+  <p class="landing_styles_tagline" data-i18n="styles_tagline">
+    Динамика, премиум или креатив — ваш бизнес в нужной форме.
+  </p>
+
+  <div class="styles_carousel">
+    <button class="styles_carousel_btn prev" aria-label="Назад">&#9664;</button>
+    <div class="styles_viewport">
+      <ul class="styles_track">
+        <li class="style_card" data-style="1">
+          <img src="img/1.png">
+        </li>
+        <li class="style_card" data-style="2">
+          <img src="img/2.png">
+        </li>
+        <li class="style_card" data-style="3">
+          <img src="img/3.png">
+        </li>
+        <li class="style_card" data-style="4">
+          <img src="img/4.png">
+        </li>
+        <li class="style_card" data-style="5">
+          <img src="img/5.png">
+        </li>
+      </ul>
+    </div>
+    <button class="styles_carousel_btn next" aria-label="Вперёд">&#9654;</button>
+  </div>
+
+  <p class="landing_styles_note" data-i18n="styles_note">
+    Выберите стиль, который подходит именно вам. Выбранный стиль мы легко адаптируем под ваши задачи.
+  </p>
+</div>
+<script>
+(function () {
+  const track = document.querySelector('.styles_track');
+  const prev  = document.querySelector('.styles_carousel_btn.prev');
+  const next  = document.querySelector('.styles_carousel_btn.next');
+
+  // один общий бэдж
+  const badge = document.createElement('span');
+  badge.className = 'style_card_badge';
+
+  // локализация подписи (по желанию)
+  function badgeLabel(n){
+    const lang = (document.documentElement.lang || '').toLowerCase();
+    if (lang.startsWith('es')) return `Estilo Nº${n}`;
+    if (lang.startsWith('en')) return `Style #${n}`;
+    return `Стиль №${n}`;
+  }
+
+  // какой DOM-индекс центральной карточки сейчас видим?
+  function centerIndex(){
+    const w = window.innerWidth;
+    if (w >= 1100) return 2; // 0..4, центр = 3-я (nth-child(3))
+    if (w >= 720)  return 1; // 0..2, центр = 2-я
+    return 0;                // мобайл: одна карточка
+  }
+
+  // переместить бэдж в центр и обновить номер
+  function moveBadgeToCenter(){
+    const idx = centerIndex();
+    const centerEl = track.children[idx];
+    if (!centerEl) return;
+
+    const num = centerEl.dataset.style || (idx + 1);
+    badge.textContent = badgeLabel(num);
+
+    // положить бэдж внутрь центральной карточки
+    centerEl.appendChild(badge);
+  }
+
+  let isAnimating = false;
+  let shift = 0;
+
+  function calcShift() {
+    const first = track.querySelector('.style_card');
+    const gap = parseFloat(getComputedStyle(track).gap || 0);
+    shift = first.getBoundingClientRect().width + gap;
+    moveBadgeToCenter(); // при ресайзе пересчитать центр и переставить бэдж
+  }
+
+  function animateToZero(startX, done) {
+    track.style.transition = 'none';
+    track.style.transform  = `translate3d(${startX}px,0,0)`;
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        track.style.transition = 'transform .35s ease';
+        track.style.transform  = 'translate3d(0,0,0)';
+        track.addEventListener('transitionend', () => {
+          track.style.transition = 'none';
+          isAnimating = false;
+          done && done();
+        }, { once: true });
+      });
+    });
+  }
+
+  function goNext() {
+    if (isAnimating) return;
+    isAnimating = true;
+
+    // сначала переставляем — потом двигаем
+    track.append(track.firstElementChild);
+    moveBadgeToCenter();          // бэдж сразу на новый центр
+    animateToZero(shift);
+  }
+
+  function goPrev() {
+    if (isAnimating) return;
+    isAnimating = true;
+
+    track.prepend(track.lastElementChild);
+    moveBadgeToCenter();          // бэдж сразу на новый центр
+    animateToZero(-shift);
+  }
+
+  calcShift();
+  window.addEventListener('resize', calcShift);
+  next.addEventListener('click', goNext);
+  prev.addEventListener('click', goPrev);
+})();
+</script>
+<!-- STYLES -->
+
 <!-- LANDING ABOUT -->
 <div class="landing_about">
   <div class="landing_about_header">
@@ -57,7 +189,6 @@ document.addEventListener("DOMContentLoaded", function () {
     <span class="about__line about__line--right"></span>
     <span class="about__dot"></span>
   </div>
-
   <div class="landing_about_grid">
     <div class="landing_about_text">
       <p data-i18n="about_p1">
@@ -68,7 +199,6 @@ document.addEventListener("DOMContentLoaded", function () {
         Наша команда оцифрует ваш бизнес и будет с вами на всех этапах работы. Просто, быстро и эффективно!
       </p>
     </div>
-
     <div class="landing_about_cards">
       <div class="landing_about_card" data-card="1">
         <div class="card_face">
@@ -80,7 +210,6 @@ document.addEventListener("DOMContentLoaded", function () {
             <img src="img/chev_down.png" alt="">
           </button>
         </div>
-
         <div class="landing_about_card_panel" id="about_card1_panel" role="region" aria-labelledby="about_card1_title">
           <div class="landing_about_card_panel_chev">
             <img src="img/chev_down_black.png">
@@ -91,8 +220,6 @@ document.addEventListener("DOMContentLoaded", function () {
           </p>
         </div>
       </div>
-
-      <!-- Card 2 -->
       <div class="landing_about_card" data-card="2">
         <div class="card_face">
           <div class="landing_about_card_icon">
@@ -103,7 +230,6 @@ document.addEventListener("DOMContentLoaded", function () {
             <img src="img/chev_down.png" alt="">
           </button>
         </div>
-
         <div class="landing_about_card_panel" id="about_card2_panel" role="region" aria-labelledby="about_card2_title">
           <div class="landing_about_card_panel_chev">
             <img src="img/chev_down_black.png">
@@ -114,8 +240,6 @@ document.addEventListener("DOMContentLoaded", function () {
           </p>
         </div>
       </div>
-
-      <!-- Card 3 -->
       <div class="landing_about_card" data-card="3">
         <div class="card_face">
           <div class="landing_about_card_icon">
@@ -126,7 +250,6 @@ document.addEventListener("DOMContentLoaded", function () {
             <img src="img/chev_down.png" alt="">
           </button>
         </div>
-
         <div class="landing_about_card_panel" id="about_card3_panel" role="region" aria-labelledby="about_card3_title">
           <div class="landing_about_card_panel_chev">
             <img src="img/chev_down_black.png">
@@ -143,7 +266,6 @@ document.addEventListener("DOMContentLoaded", function () {
 <script>
 (function(){
   const cards = document.querySelectorAll('.landing_about_card');
-
   function closeAll() {
     cards.forEach(c => {
       c.classList.remove('is-open');
@@ -151,7 +273,6 @@ document.addEventListener("DOMContentLoaded", function () {
       if (btn) btn.setAttribute('aria-expanded', 'false');
     });
   }
-
   cards.forEach(card => {
     card.addEventListener('click', () => {
       const isOpen = card.classList.contains('is-open');
@@ -163,8 +284,6 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   });
-
-  // Закрытие по Esc и по клику вне
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeAll(); });
   document.addEventListener('click', e => {
     if (!e.target.closest('.landing_about_card')) closeAll();
@@ -172,29 +291,6 @@ document.addEventListener("DOMContentLoaded", function () {
 })();
 </script>
 <!-- LANDING ABOUT -->
-
-
-<!-- SERVICES TIMELINE -->
-<div class="services_timeline">
-  <div class="timeline">
-    <ul class="timeline_list">
-      <li data-i18n="tl_item1">Создание ботов в WhatsApp и Telegram</li>
-      <li data-i18n="tl_item2">UX/UI дизайн</li>
-      <li data-i18n="tl_item3">WEB разработка</li>
-      <li data-i18n="tl_item4">SEO и оптимизация запросов</li>
-      <li data-i18n="tl_item5">DevOps, настройка и администрирование серверов</li>
-      <li data-i18n="tl_item6">Комплексная цифровизация и автоматизация бизнеса</li>
-    </ul>
-  </div>
-
-  <div class="timeline_cta">
-    <h3 class="timeline_cta_title" data-i18n="tl_cta_title">
-      Начните создавать сайты вашей мечты вместе с DigiLang прямо сейчас!
-    </h3>
-    <button class="timeline_cta_btn" data-i18n="tl_cta_btn">Заказать сайт</button>
-  </div>
-</div>
-<!-- SERVICES TIMELINE -->
 
 <!-- CLIENTS -->
 <div class="landing_clients">
@@ -206,7 +302,6 @@ document.addEventListener("DOMContentLoaded", function () {
   <p class="clients_sub" data-i18n="clients_sub">
     Мы гордимся тем, что делаем, и всегда ищем пути к развитию.
   </p>
-
   <div class="carousel">
     <button class="carousel_btn prev" aria-label="Назад">&#9664;</button>
     <div class="carousel_viewport">
@@ -260,7 +355,6 @@ document.addEventListener("DOMContentLoaded", function () {
     </div>
     <button class="carousel_btn next" aria-label="Вперёд">&#9654;</button>
   </div>
-
   <div class="clients_cta">
     <button class="clients_cta_btn" data-i18n="clients_cta">Получить консультацию</button>
   </div>
@@ -270,17 +364,14 @@ document.addEventListener("DOMContentLoaded", function () {
   const track = document.querySelector('.carousel_track');
   const prev  = document.querySelector('.carousel_btn.prev');
   const next  = document.querySelector('.carousel_btn.next');
-
   let isAnimating = false;
   let shift = 0;
-
   function calcShift(){
     const slide = track.querySelector('.card');
     const styles = getComputedStyle(track);
     const gap = parseFloat(styles.columnGap || styles.gap || 0);
     shift = slide.getBoundingClientRect().width + gap;
   }
-
   function goNext(){
     if (isAnimating) return;
     isAnimating = true;
@@ -291,26 +382,21 @@ document.addEventListener("DOMContentLoaded", function () {
       track.append(track.firstElementChild);      // первый -> в конец
       track.style.transition = 'none';
       track.style.transform  = 'translateX(0)';
-      // force reflow
       void track.offsetWidth;
       isAnimating = false;
     }, {once:true});
   }
-
   function goPrev(){
     if (isAnimating) return;
     isAnimating = true;
-    // мгновенно подставляем последний в начало и сдвигаем трек
     track.style.transition = 'none';
     track.prepend(track.lastElementChild);        // последний -> в начало
     track.style.transform  = `translateX(${-shift}px)`;
     void track.offsetWidth;
-    // анимация возвращения к нулю
     track.style.transition = 'transform .35s ease';
     track.style.transform  = 'translateX(0)';
     track.addEventListener('transitionend', () => { isAnimating = false; }, {once:true});
   }
-
   calcShift();
   window.addEventListener('resize', calcShift);
   next.addEventListener('click', goNext);
@@ -319,13 +405,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
 (function(){
   const cards = document.querySelectorAll('.card');
-
   function closeAll(){
     cards.forEach(c => c.classList.remove('is-open'));
   }
-
   cards.forEach(card => {
-    // КЛИК ПО КАРТОЧКЕ: toggle
     card.addEventListener('click', (e) => {
       if (e.target.closest('a')) return;      // ссылки не трогаем
       const wasOpen = card.classList.contains('is-open');
@@ -336,8 +419,6 @@ document.addEventListener("DOMContentLoaded", function () {
         card.classList.add('is-open');
       }
     });
-
-    // КЛИК ПО ОВЕРЛЕЮ/КОНТЕНТУ ОВЕРЛЕЯ — тоже закрывает
     const ov = card.querySelector('.card_overlay');
     ov?.addEventListener('click', (e) => {
       if (!e.target.closest('.card_overlay_btn') && !e.target.closest('a')) {
@@ -346,13 +427,9 @@ document.addEventListener("DOMContentLoaded", function () {
       }
     });
   });
-
-  // Esc — закрыть
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') closeAll();
   });
-
-  // Клик ВНЕ карточек — закрыть
   document.addEventListener('click', (e) => {
     if (!e.target.closest('.card')) closeAll();
   });
@@ -362,6 +439,27 @@ document.addEventListener("DOMContentLoaded", function () {
 })();
 </script>
 <!-- CLIENTS -->
+
+<!-- SERVICES TIMELINE -->
+<div class="services_timeline">
+  <div class="timeline">
+    <ul class="timeline_list">
+      <li data-i18n="tl_item1">Создание ботов в WhatsApp и Telegram</li>
+      <li data-i18n="tl_item2">UX/UI дизайн</li>
+      <li data-i18n="tl_item3">WEB разработка</li>
+      <li data-i18n="tl_item4">SEO и оптимизация запросов</li>
+      <li data-i18n="tl_item5">DevOps, настройка и администрирование серверов</li>
+      <li data-i18n="tl_item6">Комплексная цифровизация и автоматизация бизнеса</li>
+    </ul>
+  </div>
+  <div class="timeline_cta">
+    <h3 class="timeline_cta_title" data-i18n="tl_cta_title">
+      Начните создавать сайты вашей мечты вместе с DigiLang прямо сейчас!
+    </h3>
+    <button class="timeline_cta_btn" data-i18n="tl_cta_btn">Заказать сайт</button>
+  </div>
+</div>
+<!-- SERVICES TIMELINE -->
 
 <!-- FOOTER -->
 <? include 'includes/landing_footer.php'; ?>

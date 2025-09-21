@@ -34,6 +34,12 @@
   "clients_card2_title": "Проект 2",
   "clients_card3_title": "Проект 3",
   "clients_card4_title": "Проект 4",
-  "clients_card5_title": "Проект 5"
+  "clients_card5_title": "Проект 5",
+  "styles_title":   "Меню стилей",
+  "styles_tagline": "Динамика, премиум или креатив — ваш бизнес в нужной форме.",
+  "styles_note":    "Выберите стиль, который подходит именно вам. Выбранный стиль мы легко адаптируем под ваши задачи.",
+  "styles_prev":    "Назад",
+  "styles_next":    "Вперёд",
+  "style_badge":    "Стиль №{{n}}"
 
 }

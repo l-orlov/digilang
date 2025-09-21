@@ -34,6 +34,12 @@
   "clients_card2_title": "Project 2",
   "clients_card3_title": "Project 3",
   "clients_card4_title": "Project 4",
-  "clients_card5_title": "Project 5"
+  "clients_card5_title": "Project 5",
+  "styles_title":   "Style menu",
+  "styles_tagline": "Dynamic, premium or creative—your business in the right form.",
+  "styles_note":    "Choose the style that suits you best. We’ll adapt the selected style to your needs.",
+  "styles_prev":    "Previous",
+  "styles_next":    "Next",
+  "style_badge":    "Style #{{n}}"
 
 }
