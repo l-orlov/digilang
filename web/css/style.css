@@ -825,6 +825,7 @@ body {
   transition:background .15s ease, color .15s ease, transform .15s ease;
 }
 .clients_cta {
+  padding: 0 16px;
   text-align:center;
   margin-top:24px;
 }
@@ -859,9 +860,6 @@ body {
   .card:hover .card_overlay_content{ transform: translateY(0); }
 }
 /* CLIENTS */
-
-
-
 
 /* STYLES */
 .landing_styles {
@@ -916,6 +914,7 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
+  padding: 0 12px;
 }
 .styles_viewport {
   flex: 1;
@@ -927,7 +926,6 @@ body {
   gap: var(--gap);
   transition: transform .35s ease;
   will-change: transform;
-  padding: 10px 0;
 }
 .styles_carousel_btn{
   flex:0 0 auto;
@@ -955,12 +953,10 @@ body {
     transform  .35s ease,
     clip-path  .35s ease;
 }
-.style_card > img {
+.style_card img {
   width: 100%;
   height: 100%;
   display: block;
-  aspect-ratio: 3 / 4;
-  object-fit: cover;
   border-radius: 18px;
 }
 .style_card_badge{
@@ -1057,6 +1053,5 @@ body {
   transform: none;
   outline: none;
   box-shadow: 0 12px 28px rgba(0,0,0,.28);
-}
-}
+}}
 /* STYLES */

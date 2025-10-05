@@ -66,19 +66,76 @@ document.addEventListener("DOMContentLoaded", function () {
     <div class="styles_viewport">
       <ul class="styles_track">
         <li class="style_card" data-style="1">
-          <img src="img/1.png">
+          <img src="img/styles/s1.png">
         </li>
         <li class="style_card" data-style="2">
-          <img src="img/2.png">
+          <img src="img/styles/s2.png">
         </li>
         <li class="style_card" data-style="3">
-          <img src="img/3.png">
+          <img src="img/styles/s3.png">
         </li>
         <li class="style_card" data-style="4">
-          <img src="img/4.png">
+          <img src="img/styles/s4.png">
         </li>
         <li class="style_card" data-style="5">
-          <img src="img/5.png">
+          <img src="img/styles/s5.png">
+        </li>
+        <li class="style_card" data-style="6">
+          <img src="img/styles/s6.png">
+        </li>
+        <li class="style_card" data-style="7">
+          <img src="img/styles/s7.png">
+        </li>
+        <li class="style_card" data-style="8">
+          <img src="img/styles/s8.png">
+        </li>
+        <li class="style_card" data-style="9">
+          <img src="img/styles/s9.png">
+        </li>
+        <li class="style_card" data-style="10">
+          <img src="img/styles/s10.png">
+        </li>
+        <li class="style_card" data-style="11">
+          <img src="img/styles/s11.png">
+        </li>
+        <li class="style_card" data-style="12">
+          <img src="img/styles/s12.png">
+        </li>
+        <li class="style_card" data-style="13">
+          <img src="img/styles/s13.png">
+        </li>
+        <li class="style_card" data-style="14">
+          <img src="img/styles/s14.png">
+        </li>
+        <li class="style_card" data-style="15">
+          <img src="img/styles/s15.png">
+        </li>
+        <li class="style_card" data-style="16">
+          <img src="img/styles/s16.png">
+        </li>
+        <li class="style_card" data-style="17">
+          <img src="img/styles/s17.png">
+        </li>
+        <li class="style_card" data-style="18">
+          <img src="img/styles/s18.png">
+        </li>
+        <li class="style_card" data-style="19">
+          <img src="img/styles/s19.png">
+        </li>
+        <li class="style_card" data-style="20">
+          <img src="img/styles/s20.png">
+        </li>
+        <li class="style_card" data-style="21">
+          <img src="img/styles/s21.png">
+        </li>
+        <li class="style_card" data-style="22">
+          <img src="img/styles/s22.png">
+        </li>
+        <li class="style_card" data-style="23">
+          <img src="img/styles/s23.png">
+        </li>
+        <li class="style_card" data-style="24">
+          <img src="img/styles/s24.png">
         </li>
       </ul>
     </div>
