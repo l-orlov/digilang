@@ -364,47 +364,38 @@ document.addEventListener("DOMContentLoaded", function () {
     <div class="carousel_viewport">
       <ul class="carousel_track">
         <li class="card">
-          <img src="img/1.png" alt="">
+          <img src="img/cesar.png">
           <div class="card_overlay" aria-hidden="true">
             <div class="card_overlay_content">
-              <h4 data-i18n="clients_card1_title">Проект 1</h4>
-              <a href="#" class="card_overlay_btn" data-i18n="clients_card_btn">узнать больше</a>
+              <h4>Cesar Vidal Scasso</h4>
+              <a href="https://cesarvidalscasso.com/" target="_blank" rel="noopener" class="card_overlay_btn" data-i18n="clients_card_btn">узнать больше</a>
             </div>
           </div>
         </li>
         <li class="card">
-          <img src="img/2.png" alt="">
+          <img src="img/cuttica.png">
           <div class="card_overlay" aria-hidden="true">
             <div class="card_overlay_content">
-              <h4 data-i18n="clients_card2_title">Проект 2</h4>
-              <a href="#" class="card_overlay_btn" data-i18n="clients_card_btn">узнать больше</a>
+              <h4>Eugenio Cuttica Foundation</h4>
+              <a href="https://cutticafoundation.org/" target="_blank" rel="noopener" class="card_overlay_btn" data-i18n="clients_card_btn">узнать больше</a>
             </div>
           </div>
         </li>
         <li class="card">
-          <img src="img/3.png" alt="">
+          <img src="img/ecopolys.png">
           <div class="card_overlay" aria-hidden="true">
             <div class="card_overlay_content">
-              <h4 data-i18n="clients_card3_title">Проект 3</h4>
-              <a href="#" class="card_overlay_btn" data-i18n="clients_card_btn">узнать больше</a>
+              <h4>ECOPOLYS</h4>
+              <a href="https://ecopolys.eu/" target="_blank" rel="noopener" class="card_overlay_btn" data-i18n="clients_card_btn">узнать больше</a>
             </div>
           </div>
         </li>
         <li class="card">
-          <img src="img/4.png" alt="">
+          <img src="img/krona.png">
           <div class="card_overlay" aria-hidden="true">
             <div class="card_overlay_content">
-              <h4 data-i18n="clients_card4_title">Проект 4</h4>
-              <a href="#" class="card_overlay_btn" data-i18n="clients_card_btn">узнать больше</a>
-            </div>
-          </div>
-        </li>
-        <li class="card">
-          <img src="img/5.png" alt="">
-          <div class="card_overlay" aria-hidden="true">
-            <div class="card_overlay_content">
-              <h4 data-i18n="clients_card5_title">Проект 5</h4>
-              <a href="#" class="card_overlay_btn" data-i18n="clients_card_btn">узнать больше</a>
+              <h4>KRONA</h4>
+              <a href="https://krona.life/" target="_blank" rel="noopener" class="card_overlay_btn" data-i18n="clients_card_btn">узнать больше</a>
             </div>
           </div>
         </li>
