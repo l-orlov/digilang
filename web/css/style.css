@@ -3,7 +3,10 @@
   padding: 0;
   box-sizing: border-box;
 }
-
+html { 
+  scroll-padding-top: 90px;
+  scroll-behavior: smooth;
+}
 body {
   font-family: 'Barlow Condensed', sans-serif;
   font-size: 18px;
@@ -273,7 +276,6 @@ body {
   inset: auto;
   width: 100%;
   height: auto;
-  aspect-ratio: 16 / 9;
   object-fit: cover;
   order: 1;
   z-index: 0;
@@ -558,7 +560,7 @@ body {
 }
 .landing_about_card_panel_title {
   margin: 0;
-  font-size: 28px;
+  font-size: 22px;
   font-weight: 800;
   color: #0f2533;
 }
@@ -592,7 +594,7 @@ body {
   font-size: 24px;
 }
 .landing_about_card_panel {
-  gap: 5px;
+  gap: 0;
   text-align: center;
   padding: 15px 10px;
   border-radius: 16px;
@@ -622,7 +624,7 @@ body {
   color: #e6edff;
 }
 .timeline{
-  --gap: 50px;
+  --gap: 40px;
   max-width: 1100px;
   margin: 0 auto;
   padding: 56px 16px 64px;
@@ -663,10 +665,10 @@ body {
   content: "";
   position: absolute;
   left: 50%;
-  top: calc(var(--gap) / -2 - 28px);
+  top: calc(var(--gap) / -2 - 20px);
   transform: translateX(-50%);
   width: 2px;
-  height: 28px;
+  height: 27px;
   background: #BDCFFF;
   opacity: .75;
   z-index: 1;
@@ -768,21 +770,19 @@ ul.carousel_track {
   background:#102246;
   position: relative;
   border-radius:16px;
-  border: 4px solid #7490D6;
+  border: 2px solid #7490D6;
 }
 .card img{
   width: 100%;
   object-fit: cover;
   display: block;
 }
-::marker {
-  display: none;
-}
 .card_overlay{
   position:absolute;
   inset:0;
   display:grid;
   place-items:center;
+  border-radius:16px;
   background: rgba(12, 18, 34, .45);
   -webkit-backdrop-filter: blur(10px);
   backdrop-filter: blur(10px);
@@ -968,15 +968,18 @@ ul.carousel_track {
   border-radius: 18px;
 }
 .style_card_badge{
-  position:absolute;
+  position: absolute;
+  flex-direction: row;
+  text-align: center;
+  width: 120px;
   left:50%;
   bottom: 0;
   transform:translateX(-50%);
-  padding:6px 14px;
+  padding: 6px 10px;
   background:#fff;
   color:#0e1a30;
   font-weight:700;
-  font-size:14px;
+  font-size: 18px;
   border:2px solid #c7d7ff;
   border-radius:8px;
   box-shadow:0 6px 14px rgba(0,0,0,.25);
@@ -991,7 +994,6 @@ ul.carousel_track {
 .styles_track > .style_card:nth-child(3) {
   z-index: 2;
   box-shadow: 0 16px 36px rgba(0, 0, 0, .35);
-  outline: 4px solid #f8b61b;
   clip-path: none;
 }
 .styles_track > .style_card:not(:nth-child(3)) {
@@ -1030,7 +1032,6 @@ ul.carousel_track {
 .styles_track > .style_card:nth-child(2) {
   z-index: 2;
   box-shadow: 0 16px 36px rgba(0,0,0,.35);
-  outline: 4px solid #f8b61b;
   clip-path: none;
 }
 .styles_track > .style_card:not(:nth-child(2)) {

@@ -6,10 +6,10 @@
     <div class="header_top_right">
         <div class="header_nav">
             <nav class="nav_links">
-                <a href="#" data-i18n="about">о нас</a>
-                <a href="#" data-i18n="portfolio">портфолио</a>
-                <a href="#" data-i18n="styles_menu">меню стилей</a>
-                <a href="#" data-i18n="contacts">контакты</a>
+                <a href="#about" data-i18n="about">о нас</a>
+                <a href="#clients" data-i18n="portfolio">портфолио</a>
+                <a href="#styles" data-i18n="styles_menu">меню стилей</a>
+                <a href="#contacts" data-i18n="contacts">контакты</a>
             </nav>
             <button class="burger_menu" onclick="toggleMenuBurger(event)">
                 <div class="burger_lines">
@@ -72,5 +72,5 @@ function removeMenuListeners() {
   document.querySelectorAll('.nav_links a').forEach(link => {
     link.removeEventListener('click', closeMenuByLink);
   });
-} 
+}
 </script>

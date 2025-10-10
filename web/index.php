@@ -9,12 +9,7 @@
 <body>
 
 <?
-// $page = isset($_REQUEST['page']) ? htmlspecialchars($_REQUEST['page']) : '';
-// if ($page == 'vid') {
-//     include 'includes/vid.php';
-// } else {
-    include 'includes/landing.php';
-// }
+include 'includes/landing.php';
 ?>
 
 </body>

@@ -1,4 +1,4 @@
-<div class="footer" data-i18n-scope="footer">
+<div id="contacts" class="footer" data-i18n-scope="footer">
   <div class="footer_inner">
     <div class="footer_left">
       <a class="footer_link" href="https://wa.me/XXXXXXXXXXX" target="_blank" rel="noopener" aria-label="WhatsApp">
@@ -18,7 +18,7 @@
       </div>
     </div>
 
-    <div class="footer_right">
+    <!-- <div class="footer_right">
         <div class="footer_lang" onclick="toggleLangMenuFooter()">
             <img src="img/landing_lang.png" />
             <span id="current-lang-footer"><?= strtoupper($lang) ?></span>
@@ -28,6 +28,6 @@
                 <li onclick="setLang('landing', 'ru')">Русский</li>
             </ul>
         </div>
-    </div>
+    </div> -->
   </div>
 </div>

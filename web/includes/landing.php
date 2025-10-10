@@ -50,7 +50,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <!-- LANDING with video background -->
 
 <!-- STYLES -->
-<div class="landing_styles">
+<div id='styles' class="landing_styles">
   <div class="landing_styles_header">
     <span class="landing_styles_line landing_styles_line--left"></span>
     <h2 class="landing_styles_title" data-i18n="styles_title">меню стилей</h2>
@@ -151,50 +151,36 @@ document.addEventListener("DOMContentLoaded", function () {
   const track = document.querySelector('.styles_track');
   const prev  = document.querySelector('.styles_carousel_btn.prev');
   const next  = document.querySelector('.styles_carousel_btn.next');
-
-  // один общий бэдж
   const badge = document.createElement('span');
   badge.className = 'style_card_badge';
-
-  // локализация подписи (по желанию)
   function badgeLabel(n){
     const lang = (document.documentElement.lang || '').toLowerCase();
     if (lang.startsWith('es')) return `Estilo Nº${n}`;
     if (lang.startsWith('en')) return `Style #${n}`;
     return `Стиль №${n}`;
   }
-
-  // какой DOM-индекс центральной карточки сейчас видим?
   function centerIndex(){
     const w = window.innerWidth;
     if (w >= 1100) return 2; // 0..4, центр = 3-я (nth-child(3))
     if (w >= 720)  return 1; // 0..2, центр = 2-я
     return 0;                // мобайл: одна карточка
   }
-
-  // переместить бэдж в центр и обновить номер
   function moveBadgeToCenter(){
     const idx = centerIndex();
     const centerEl = track.children[idx];
     if (!centerEl) return;
-
     const num = centerEl.dataset.style || (idx + 1);
     badge.textContent = badgeLabel(num);
-
-    // положить бэдж внутрь центральной карточки
     centerEl.appendChild(badge);
   }
-
   let isAnimating = false;
   let shift = 0;
-
   function calcShift() {
     const first = track.querySelector('.style_card');
     const gap = parseFloat(getComputedStyle(track).gap || 0);
     shift = first.getBoundingClientRect().width + gap;
     moveBadgeToCenter(); // при ресайзе пересчитать центр и переставить бэдж
   }
-
   function animateToZero(startX, done) {
     track.style.transition = 'none';
     track.style.transform  = `translate3d(${startX}px,0,0)`;
@@ -210,17 +196,13 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
   }
-
   function goNext() {
     if (isAnimating) return;
     isAnimating = true;
-
-    // сначала переставляем — потом двигаем
     track.append(track.firstElementChild);
     moveBadgeToCenter();          // бэдж сразу на новый центр
     animateToZero(shift);
   }
-
   function goPrev() {
     if (isAnimating) return;
     isAnimating = true;
@@ -239,7 +221,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <!-- STYLES -->
 
 <!-- LANDING ABOUT -->
-<div class="landing_about">
+<div id='about' class="landing_about">
   <div class="landing_about_header">
     <span class="about__line about__line--left"></span>
     <h2 class="landing_about_title" data-i18n="about_title">O нас</h2>
@@ -291,7 +273,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <div class="landing_about_card_panel_chev">
             <img src="img/chev_down_black.png">
           </div>
-          <h3 class="landing_about_card_panel_title" data-i18n="about_card1_title">Потенциал</h3>
+          <h3 class="landing_about_card_panel_title" data-i18n="about_card2_title"></h3>
           <p data-i18n="about_card2_desc">
             Создаём цифровые пространства, которые отражают стиль и энергию вашего бренда.
           </p>
@@ -311,7 +293,7 @@ document.addEventListener("DOMContentLoaded", function () {
           <div class="landing_about_card_panel_chev">
             <img src="img/chev_down_black.png">
           </div>
-          <h3 class="landing_about_card_panel_title" data-i18n="about_card1_title">Потенциал</h3>
+          <h3 class="landing_about_card_panel_title" data-i18n="about_card3_title"></h3>
           <p data-i18n="about_card3_desc">
             Сайты и системы, созданные нами, приносят прибыль и работают в интересах вашего бизнеса.
           </p>
@@ -350,7 +332,7 @@ document.addEventListener("DOMContentLoaded", function () {
 <!-- LANDING ABOUT -->
 
 <!-- CLIENTS -->
-<div class="landing_clients">
+<div id='clients' class="landing_clients">
   <div class="landing_clients_header">
     <span class="clients_line clients_line--left"></span>
     <h2 class="clients_title" data-i18n="clients_title">наши клиенты</h2>
@@ -535,4 +517,4 @@ const lang = localStorage.getItem('lang') || 'es';
 </script>
 <!-- FOOTER -->
 
-<script src="/js/i18n.js?v=1.0.2"></script>
+<script src="/js/i18n.js?v=1.0.3"></script>
