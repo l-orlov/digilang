@@ -1014,6 +1014,13 @@ ul.carousel_track {
   box-shadow: 0 12px 28px rgba(0,0,0,.28);
   clip-path: none !important;
   outline: none;
+  border: none;
+  overflow: hidden;
+}
+.styles_track > .style_card img {
+  height: auto;
+  border-radius: 18px;
+  display: block;
 }
 .styles_carousel {
   perspective: none !important;
