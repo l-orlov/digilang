@@ -756,7 +756,7 @@ body {
   --gap: 20px;
   display: flex;
   gap: var(--gap);
-  transition: transform .35s ease;
+  transition: transform .5s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform;
 }
 ul.carousel_track {
@@ -923,6 +923,8 @@ ul.carousel_track {
   align-items: center;
   gap: 12px;
   padding: 0 12px;
+  perspective: 1200px;
+  perspective-origin: center center;
 }
 .styles_viewport {
   flex: 1;
@@ -932,7 +934,7 @@ ul.carousel_track {
   --gap: 22px;
   display: flex;
   gap: var(--gap);
-  transition: transform .35s ease;
+  transition: transform .5s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform;
 }
 .styles_carousel_btn{
@@ -956,10 +958,12 @@ ul.carousel_track {
   border-radius: 18px;
   background: #101f3d;
   box-shadow: 0 12px 28px rgba(0, 0, 0, .28);
+  transform-style: preserve-3d;
   transition:
-    box-shadow .35s ease,
-    transform  .35s ease,
-    clip-path  .35s ease;
+    box-shadow .6s cubic-bezier(0.4, 0, 0.2, 1),
+    transform  .6s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity    .6s cubic-bezier(0.4, 0, 0.2, 1),
+    visibility .6s cubic-bezier(0.4, 0, 0.2, 1);
 }
 .style_card img {
   width: 100%;
@@ -986,81 +990,30 @@ ul.carousel_track {
   pointer-events:none;
   z-index:3;
 }
-.style_card::before,
-.style_card::after {
-  clip-path: inherit;
-}
+/* Desktop: 5 карточек с 3D эффектом */
 @media (min-width: 1100px) {
-.styles_track > .style_card:nth-child(3) {
-  z-index: 2;
-  box-shadow: 0 16px 36px rgba(0, 0, 0, .35);
-  clip-path: none;
-}
-.styles_track > .style_card:not(:nth-child(3)) {
-  --topL: 0px; --topR: 0px;
-  --botL: 0px; --botR: 0px;
-  clip-path: polygon(
-    0   var(--topL),
-    100% var(--topR),
-    100% calc(100% - var(--botR)),
-    0   calc(100% - var(--botL))
-  );
-}
-.styles_track > .style_card:nth-child(2) {
-  --topL: 30px; --topR: 10px;
-  --botL: 30px; --botR: 10px;
-}
-.styles_track > .style_card:nth-child(1) {
-  transform: scale(.965);
-  --topL: 60px; --topR: 30px;
-  --botL: 60px; --botR: 30px;
-}
-.styles_track > .style_card:nth-child(4) {
-  --topL: 10px; --topR: 30px;
-  --botL: 10px; --botR: 30px;
-}
-.styles_track > .style_card:nth-child(5) {
-  transform: scale(.965);
-  --topL: 30px; --topR: 60px;
-  --botL: 30px; --botR: 60px;
+.styles_track > .style_card {
+  flex: 0 0 calc((100% - 4 * var(--gap)) / 5);
 }
 }
+
+/* Tablet: 3 карточки с 3D эффектом */
 @media (max-width: 1099.98px) and (min-width: 720px) {
 .styles_track > .style_card {
   flex: 0 0 calc((100% - 2 * var(--gap)) / 3);
 }
-.styles_track > .style_card:nth-child(2) {
-  z-index: 2;
-  box-shadow: 0 16px 36px rgba(0,0,0,.35);
-  clip-path: none;
 }
-.styles_track > .style_card:not(:nth-child(2)) {
-  --topL: 0px; --topR: 0px;
-  --botL: 0px; --botR: 0px;
-  clip-path: polygon(
-    0   var(--topL),
-    100% var(--topR),
-    100% calc(100% - var(--botR)),
-    0   calc(100% - var(--botL))
-  );
-}
-.styles_track > .style_card:nth-child(1) {
-  transform: scale(.985);
-  --topL: 40px; --topR: 15px;
-  --botL: 40px; --botR: 15px;
-}
-.styles_track > .style_card:nth-child(3) {
-  transform: scale(.985);
-  --topL: 15px; --topR: 40px;
-  --botL: 15px; --botR: 40px;
-}
-}
+
+/* Mobile: 1 карточка без 3D */
 @media (max-width: 719.98px) {
 .styles_track > .style_card {
   flex: 0 0 100%;
-  clip-path: none;
-  transform: none;
-  outline: none;
+  transform: none !important;
+  opacity: 1 !important;
   box-shadow: 0 12px 28px rgba(0,0,0,.28);
+  clip-path: none !important;
+}
+.styles_carousel {
+  perspective: none;
 }}
 /* STYLES */

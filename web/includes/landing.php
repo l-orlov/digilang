@@ -153,18 +153,91 @@ document.addEventListener("DOMContentLoaded", function () {
   const next  = document.querySelector('.styles_carousel_btn.next');
   const badge = document.createElement('span');
   badge.className = 'style_card_badge';
+  
   function badgeLabel(n){
     const lang = (document.documentElement.lang || '').toLowerCase();
     if (lang.startsWith('es')) return `Estilo Nº${n}`;
     if (lang.startsWith('en')) return `Style #${n}`;
     return `Стиль №${n}`;
   }
+  
   function centerIndex(){
     const w = window.innerWidth;
     if (w >= 1100) return 2; // 0..4, центр = 3-я (nth-child(3))
     if (w >= 720)  return 1; // 0..2, центр = 2-я
     return 0;                // мобайл: одна карточка
   }
+  
+  // 3D трансформация карточек (заметная перспектива)
+  function update3D() {
+    const w = window.innerWidth;
+    // На мобильных отключаем 3D
+    if (w < 720) {
+      Array.from(track.children).forEach(card => {
+        card.style.transform = 'none';
+        card.style.opacity = '1';
+        card.style.zIndex = '';
+        card.style.boxShadow = '';
+      });
+      return;
+    }
+    
+    const center = centerIndex();
+    
+    // Настройки заметной 3D перспективы
+    const angleStep = w >= 1100 ? 18 : 20; // угол поворота (немного уменьшен)
+    const scaleStep = 0.03; // небольшое уменьшение
+    const opacityStep = 0.08; // легкое затемнение
+    
+    Array.from(track.children).forEach((card, index) => {
+      const offset = index - center;
+      const absOffset = Math.abs(offset);
+      
+      // Определяем сколько карточек показывать
+      const visibleRange = w >= 1100 ? 2 : (w >= 720 ? 1 : 0); // desktop: ±2, tablet: ±1, mobile: 0
+      
+      // Скрываем карточки за пределами видимого диапазона
+      if (absOffset > visibleRange) {
+        card.style.opacity = '0';
+        card.style.visibility = 'hidden';
+        card.style.pointerEvents = 'none';
+        return; // пропускаем дальнейшую обработку
+      }
+      
+      // Показываем видимые карточки
+      card.style.visibility = 'visible';
+      card.style.pointerEvents = 'auto';
+      
+      // Вычисляем трансформации
+      const rotateY = offset * angleStep; // карточки поворачиваются К ЦЕНТРУ
+      const scale = Math.max(0.92, 1 - absOffset * scaleStep);
+      const opacity = Math.max(0.85, 1 - absOffset * opacityStep);
+      const translateZ = offset === 0 ? 40 : -absOffset * 30; // центральная ближе
+      
+      // Компенсация визуального сжатия: боковые карточки двигаются к центру
+      // Чем дальше от центра, тем больше компенсация
+      const translateX = offset !== 0 ? -offset * (absOffset * 8) : 0;
+      
+      // Применяем с компенсацией отступов
+      card.style.transform = `
+        perspective(1200px)
+        translateX(${translateX}px)
+        translateZ(${translateZ}px) 
+        rotateY(${rotateY}deg) 
+        scale(${scale})
+      `;
+      card.style.opacity = opacity;
+      card.style.zIndex = offset === 0 ? 10 : Math.max(1, 5 - absOffset);
+      
+      // Усиленная тень для центральной карточки
+      if (offset === 0) {
+        card.style.boxShadow = '0 20px 50px rgba(0, 0, 0, .5)';
+      } else {
+        card.style.boxShadow = `0 ${12 - absOffset * 2}px ${28 - absOffset * 4}px rgba(0, 0, 0, .3)`;
+      }
+    });
+  }
+  
   function moveBadgeToCenter(){
     const idx = centerIndex();
     const centerEl = track.children[idx];
@@ -172,22 +245,28 @@ document.addEventListener("DOMContentLoaded", function () {
     const num = centerEl.dataset.style || (idx + 1);
     badge.textContent = badgeLabel(num);
     centerEl.appendChild(badge);
+    update3D(); // обновляем 3D после перемещения badge
   }
+  
   let isAnimating = false;
   let shift = 0;
+  
   function calcShift() {
     const first = track.querySelector('.style_card');
     const gap = parseFloat(getComputedStyle(track).gap || 0);
     shift = first.getBoundingClientRect().width + gap;
-    moveBadgeToCenter(); // при ресайзе пересчитать центр и переставить бэдж
+    moveBadgeToCenter();
   }
+  
   function animateToZero(startX, done) {
     track.style.transition = 'none';
     track.style.transform  = `translate3d(${startX}px,0,0)`;
+    
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
-        track.style.transition = 'transform .35s ease';
+        track.style.transition = 'transform .5s cubic-bezier(0.4, 0, 0.2, 1)';
         track.style.transform  = 'translate3d(0,0,0)';
+        
         track.addEventListener('transitionend', () => {
           track.style.transition = 'none';
           isAnimating = false;
@@ -196,24 +275,44 @@ document.addEventListener("DOMContentLoaded", function () {
       });
     });
   }
+  
   function goNext() {
     if (isAnimating) return;
     isAnimating = true;
+    
+    // Перемещаем элемент
     track.append(track.firstElementChild);
-    moveBadgeToCenter();          // бэдж сразу на новый центр
+    
+    // Обновляем badge и 3D одновременно
+    moveBadgeToCenter();
+    
+    // Запускаем анимацию
     animateToZero(shift);
   }
+  
   function goPrev() {
     if (isAnimating) return;
     isAnimating = true;
-
+    
+    // Перемещаем элемент
     track.prepend(track.lastElementChild);
-    moveBadgeToCenter();          // бэдж сразу на новый центр
+    
+    // Обновляем badge и 3D одновременно
+    moveBadgeToCenter();
+    
+    // Запускаем анимацию
     animateToZero(-shift);
   }
 
+  // Инициализация
   calcShift();
-  window.addEventListener('resize', calcShift);
+  update3D();
+  
+  // События
+  window.addEventListener('resize', () => {
+    calcShift();
+    update3D();
+  });
   next.addEventListener('click', goNext);
   prev.addEventListener('click', goPrev);
 })();
@@ -405,7 +504,7 @@ document.addEventListener("DOMContentLoaded", function () {
   function goNext(){
     if (isAnimating) return;
     isAnimating = true;
-    track.style.transition = 'transform .35s ease';
+    track.style.transition = 'transform .5s cubic-bezier(0.4, 0, 0.2, 1)';
     track.style.transform  = `translateX(${-shift}px)`;
     track.addEventListener('transitionend', function onEnd(){
       track.removeEventListener('transitionend', onEnd);
@@ -423,7 +522,7 @@ document.addEventListener("DOMContentLoaded", function () {
     track.prepend(track.lastElementChild);        // последний -> в начало
     track.style.transform  = `translateX(${-shift}px)`;
     void track.offsetWidth;
-    track.style.transition = 'transform .35s ease';
+    track.style.transition = 'transform .5s cubic-bezier(0.4, 0, 0.2, 1)';
     track.style.transform  = 'translateX(0)';
     track.addEventListener('transitionend', () => { isAnimating = false; }, {once:true});
   }
