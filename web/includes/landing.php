@@ -171,18 +171,32 @@ document.addEventListener("DOMContentLoaded", function () {
   // 3D трансформация карточек (заметная перспектива)
   function update3D() {
     const w = window.innerWidth;
-    // На мобильных отключаем 3D
+    const center = centerIndex();
+    
+    // На мобильных отключаем 3D полностью
     if (w < 720) {
-      Array.from(track.children).forEach(card => {
+      Array.from(track.children).forEach((card, index) => {
+        const offset = index - center;
+        const absOffset = Math.abs(offset);
+        
+        // На мобилке показываем только центральную карточку
+        if (absOffset > 0) {
+          card.style.opacity = '0';
+          card.style.visibility = 'hidden';
+          card.style.pointerEvents = 'none';
+        } else {
+          card.style.visibility = 'visible';
+          card.style.pointerEvents = 'auto';
+          card.style.opacity = '1';
+        }
+        
+        // Сбрасываем все 3D эффекты
         card.style.transform = 'none';
-        card.style.opacity = '1';
         card.style.zIndex = '';
         card.style.boxShadow = '';
       });
       return;
     }
-    
-    const center = centerIndex();
     
     // Настройки заметной 3D перспективы
     const angleStep = w >= 1100 ? 18 : 20; // угол поворота (немного уменьшен)

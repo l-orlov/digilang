@@ -1013,8 +1013,14 @@ ul.carousel_track {
   opacity: 1 !important;
   box-shadow: 0 12px 28px rgba(0,0,0,.28);
   clip-path: none !important;
+  outline: none;
 }
 .styles_carousel {
-  perspective: none;
-}}
+  perspective: none !important;
+  padding: 0 12px;
+}
+.styles_viewport {
+  padding: 0;
+}
+}
 /* STYLES */
