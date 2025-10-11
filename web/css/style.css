@@ -922,13 +922,14 @@ ul.carousel_track {
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 0 12px;
+  padding: 40px 12px;
   perspective: 1200px;
   perspective-origin: center center;
 }
 .styles_viewport {
   flex: 1;
   overflow: hidden;
+  padding: 20px 0;
 }
 .styles_track {
   --gap: 22px;
