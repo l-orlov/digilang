@@ -453,17 +453,8 @@ body {
   background: #BDCFFF;
 }
 .about__line.about__line--left {
-  max-width: 50px;
+  max-width: 72px;
   background: #BDCFFF;
-}
-.about__dot {
-  position: absolute;
-  left: 50%;
-  width: 8px;
-  height: 8px;
-  background: #9bbcff;
-  border-radius: 50%;
-  transform: translateX(-50%);
 }
 .landing_about_grid {
   padding: 0 16px 0;
@@ -610,9 +601,6 @@ body {
 }
 .landing_about_card_panel p {
   font-size: 24px;
-}
-.about__dot {
-  display: none;
 }}
 /* LANDING ABOUT */
 
@@ -679,7 +667,7 @@ body {
   padding: 40px 16px 60px;
 }
 .timeline_cta_title{
-  margin:0 0 22px;
+  margin: 0 0 35px;
   font-size: clamp(25px, 2.4vw, 32px);
   font-weight:600;
   color:#e6edff;
@@ -898,22 +886,19 @@ ul.carousel_track {
   max-width: 72px;
   background: #BDCFFF;
 }
-.landing_styles_dot {
-  position: absolute;
-  left: 60%;
-  width: 8px;
-  height: 8px;
-  background: #BDCFFF;
-  border-radius: 50%;
-  transform: translateX(-50%);
-}
 .landing_styles_tagline,
 .landing_styles_note {
   text-align: center;
   color: #F1F5FF;
   font-size: 16px;
 }
-.landing_styles_tagline { margin: 8px 12px 20px; }
+.landing_styles_tagline { 
+  margin: 8px 12px 20px; 
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.4;
+}
 .landing_styles_note    { margin: 20px 12px 0; }
 .styles_carousel {
   position: relative;
