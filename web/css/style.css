@@ -942,7 +942,7 @@ ul.carousel_track {
   position: relative;
   overflow: hidden;
   border-radius: 18px;
-  background: #101f3d;
+  background: transparent;
   box-shadow: 0 12px 28px rgba(0, 0, 0, .28);
   transform-style: preserve-3d;
   transition:
