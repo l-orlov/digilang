@@ -40,6 +40,9 @@
   "styles_note":    "Elige el estilo que mejor se adapte a ti. Adaptaremos el estilo elegido a tus necesidades.",
   "styles_prev":    "Anterior",
   "styles_next":    "Siguiente",
-  "style_badge":    "Estilo Nº{{n}}"
-
+  "style_badge":    "Estilo Nº{{n}}",
+  "btn_send":       "Enviar",
+  "plh_text":       "Texto",
+  "plh_mail":       "algunmail@ejemplo.com",
+  "plh_message":    "Mensaje"
 }

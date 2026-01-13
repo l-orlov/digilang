@@ -1,3 +1,19 @@
+<script>
+function toggleLangMenuHeader() {
+  const menu = document.getElementById('header_lang_menu');
+  menu.classList.toggle('hidden');
+}
+document.addEventListener('DOMContentLoaded', () => {
+  initLang('landing');
+});
+document.addEventListener('click', function (e) {
+  const langBox = document.querySelector('.header_lang');
+  const menu = document.getElementById('header_lang_menu');
+  if (!langBox.contains(e.target)) {
+    menu.classList.add('hidden');
+  }
+});
+</script>
 <div class="header">
     <div class="header_logo">
         <img src="img/logo.png">

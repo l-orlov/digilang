@@ -40,6 +40,9 @@
   "styles_note":    "Выберите стиль, который подходит именно вам. Выбранный стиль мы легко адаптируем под ваши задачи.",
   "styles_prev":    "Назад",
   "styles_next":    "Вперёд",
-  "style_badge":    "Стиль №{{n}}"
-
+  "style_badge":    "Стиль №{{n}}",
+  "btn_send":       "Отправить",
+  "plh_text":       "Текст",
+  "plh_mail":       "somemail@example.com",
+  "plh_message":    "Сообщение"
 }

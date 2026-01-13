@@ -1,21 +1,5 @@
 <!-- HEADER -->
 <? include 'includes/landing_header.php'; ?>
-<script>
-function toggleLangMenuHeader() {
-  const menu = document.getElementById('header_lang_menu');
-  menu.classList.toggle('hidden');
-}
-document.addEventListener('DOMContentLoaded', () => {
-  initLang('landing');
-});
-document.addEventListener('click', function (e) {
-  const langBox = document.querySelector('.header_lang');
-  const menu = document.getElementById('header_lang_menu');
-  if (!langBox.contains(e.target)) {
-    menu.classList.add('hidden');
-  }
-});
-</script>
 <!-- HEADER -->
 
 <!-- LANDING with video background -->
@@ -29,7 +13,9 @@ document.addEventListener('click', function (e) {
           <li data-i18n="hero_bullet2">У кого нет сайта — у того нет будущего.</li>
           <li data-i18n="hero_bullet3">Мы создадим сайт, оцифруем и автоматизируем ваш бизнес!</li>
         </ul>
-        <button class="btn button_text" data-i18n="hero_cta">Получить консультацию</button>
+        <a href="/form.php">
+          <button class="btn button_text" data-i18n="hero_cta" style="cursor: pointer;" >Получить консультацию</button>
+        </a>
       </div>
     </div>
 </div>
@@ -499,7 +485,9 @@ document.addEventListener("DOMContentLoaded", function () {
     <button class="carousel_btn next" aria-label="Вперёд">&#9654;</button>
   </div>
   <div class="clients_cta">
-    <button class="clients_cta_btn" data-i18n="clients_cta">Получить консультацию</button>
+    <a href="/form.php">
+      <button class="clients_cta_btn" data-i18n="clients_cta">Получить консультацию</button>
+    </a>
   </div>
 </div>
 <script>
@@ -599,7 +587,9 @@ document.addEventListener("DOMContentLoaded", function () {
     <h3 class="timeline_cta_title" data-i18n="tl_cta_title">
       Начните создавать сайты вашей мечты вместе с DigiLang прямо сейчас!
     </h3>
-    <button class="timeline_cta_btn" data-i18n="tl_cta_btn">Заказать сайт</button>
+    <a href="/form.php">
+      <button class="timeline_cta_btn" data-i18n="tl_cta_btn">Заказать сайт</button>
+    </a>
   </div>
 </div>
 <!-- SERVICES TIMELINE -->
