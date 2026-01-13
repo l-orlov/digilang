@@ -42,7 +42,7 @@
   "styles_next":    "Siguiente",
   "style_badge":    "Estilo Nº{{n}}",
   "btn_send":       "Enviar",
-  "plh_text":       "Texto",
-  "plh_mail":       "algunmail@ejemplo.com",
+  "plh_name":       "Nombre",
+  "plh_mail":       "tumail@ejemplo.com",
   "plh_message":    "Mensaje"
 }

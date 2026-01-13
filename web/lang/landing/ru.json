@@ -42,7 +42,7 @@
   "styles_next":    "Вперёд",
   "style_badge":    "Стиль №{{n}}",
   "btn_send":       "Отправить",
-  "plh_text":       "Текст",
-  "plh_mail":       "somemail@example.com",
+  "plh_name":       "Имя",
+  "plh_mail":       "mail@example.com",
   "plh_message":    "Сообщение"
 }

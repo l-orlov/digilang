@@ -1030,7 +1030,7 @@ ul.carousel_track {
 }
 
 .form_info h1 {
-  font-size: 10vh;
+  font-size: 9vh;
 }
 
 .form_info h2 {
@@ -1091,7 +1091,11 @@ ul.carousel_track {
   }
 
   .form_info h1 {
-    font-size: 8vh;
+    font-size: 6vh;
+  }
+
+  .form_info h2 {
+    font-size: 3vh;
   }
 }
 
