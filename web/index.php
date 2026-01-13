@@ -8,9 +8,7 @@
 </head>
 <body>
 
-<?
-include 'includes/landing.php';
-?>
+<?include 'landing.php';?>
 
 </body>
 </html>
