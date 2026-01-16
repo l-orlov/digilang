@@ -8,7 +8,15 @@
 </head>
 <body>
 
-<?include 'landing.php';?>
+<?
+$page = isset($_REQUEST['page']) ? htmlspecialchars($_REQUEST['page']) : '';
+
+SWITCH ( $page ) {
+    case 'form':	    include "includes/form.php";        break;
+    case 'landing': 
+    default:			include "includes/landing.php";
+}
+?>
 
 </body>
 </html>

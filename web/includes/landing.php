@@ -11,7 +11,7 @@
           <li data-i18n="hero_bullet2">У кого нет сайта — у того нет будущего.</li>
           <li data-i18n="hero_bullet3">Мы создадим сайт, оцифруем и автоматизируем ваш бизнес!</li>
         </ul>
-        <a href="/form.php">
+        <a href="?page=form">
           <button class="btn button_text" data-i18n="hero_cta" style="cursor: pointer;" >Получить консультацию</button>
         </a>
       </div>
@@ -257,7 +257,7 @@
     <button class="carousel_btn next" aria-label="Вперёд">&#9654;</button>
   </div>
   <div class="clients_cta">
-    <a href="/form.php">
+    <a href="?page=form">
       <button class="clients_cta_btn" data-i18n="clients_cta">Получить консультацию</button>
     </a>
   </div>
@@ -280,7 +280,7 @@
     <h3 class="timeline_cta_title" data-i18n="tl_cta_title">
       Начните создавать сайты вашей мечты вместе с DigiLang прямо сейчас!
     </h3>
-    <a href="/form.php">
+    <a href="?page=form">
       <button class="timeline_cta_btn" data-i18n="tl_cta_btn">Заказать сайт</button>
     </a>
   </div>
