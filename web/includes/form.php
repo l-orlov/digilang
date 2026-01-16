@@ -14,14 +14,22 @@
    <div class="form_group">
         <div class="form_info">
             <h1 data-i18n="contacts">Contacts</h1>
-            <a href="https://wa.me/541144724911"><h2>WhatsApp</h2></a>
-            <h2>somemail@gmail.com</h2>
         </div>
         <form id="form_form">
-            <input type="text" id="form_name" data-i18n-placeholder="plh_name">
+            <input type="text" id="form_name" data-i18n-placeholder="name">
             <input type="mail" id="form_mail" data-i18n-placeholder="plh_mail">
-            <textarea name="message" id="form_message" data-i18n-placeholder="plh_message""></textarea>
-            <button class="btn button_text" data-i18n="btn_send" style="cursor: pointer;" onclick=send(event)>Send</button>
+            
+            <textarea 
+                name="message" 
+                id="form_message" 
+                data-i18n-placeholder="message""
+                rows="13"
+            ></textarea>
+            
+            <button class="btn button_text" style="cursor: pointer;" onclick=send(event)>
+                <p data-i18n="btn_send">Send</p> 
+                <img src="/img/whatsapp_icon.png" alt="whatsapp" style="height: 22px; width: 22px;"> 
+            </button>
         </form>
    </div>
 </div>

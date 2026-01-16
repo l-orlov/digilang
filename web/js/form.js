@@ -1,4 +1,4 @@
-function send(e) {
+async function send(e) {
     e.preventDefault()
     let url = "https://wa.me/541144724911?text="
 
@@ -6,14 +6,19 @@ function send(e) {
     const mail = form_mail.value
     const message = form_message.value
 
-    if (message)
-        url += message + '\n\n'
-    if (name && mail)
-        url += `${name} ${mail}`
-    else if (name)
-        url += name
-    else if (mail)
-        url += mail
+    const dict = await getLangDict(getLang()) 
+
+    if (name) {
+        url += `${dict["name"]}: ` + name + '\n'
+    }
+
+    if (mail) {
+        url += `${dict["mail"]}: ` + mail + '\n'
+    }
+
+    if (message) {
+        url += `\n${message}`
+    }
 
     window.location.href = encodeURI(url)
 }

@@ -3,7 +3,7 @@
   "about": "About us",
   "portfolio": "Portfolio",
   "styles_menu": "Styles menu",
-  "contacts": "Contacts",
+  "contacts": "Contact us",
   "hero_title": "Don’t have a website yet?",
   "hero_bullet1": "In today’s world, customers choose those they can see online.",
   "hero_bullet2": "No website means no future.",
@@ -42,7 +42,9 @@
   "styles_next":    "Next",
   "style_badge":    "Style #{{n}}",
   "btn_send":       "Send",
-  "plh_name":       "Name",
+
   "plh_mail":       "yourmail@example.com",
-  "plh_message":    "Message"
+  "name":           "Name",
+  "mail":           "Email",
+  "message":        "Message"
 }
