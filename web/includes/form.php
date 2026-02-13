@@ -3,21 +3,22 @@
 <div class="form_container">
    <div class="form_group">
         <div class="form_info">
-            <h1 data-i18n="contacts">Contacts</h1>
+            <h1 data-i18n="contacts"><?= t('contacts') ?></h1>
         </div>
         <form id="form_form">
-            <input type="text" id="form_name" data-i18n-placeholder="name">
-            <input type="mail" id="form_mail" data-i18n-placeholder="plh_mail">
+            <input type="text" id="form_name" data-i18n-placeholder="name" placeholder="<?= t('name') ?>">
+            <input type="mail" id="form_mail" data-i18n-placeholder="plh_mail" placeholder="<?= t('plh_mail') ?>">
 
             <textarea
                 name="message"
                 id="form_message"
                 data-i18n-placeholder="message"
+                placeholder="<?= t('message') ?>"
                 rows="13"
             ></textarea>
 
             <button class="btn button_text" style="cursor: pointer;" onclick=send(event)>
-                <p data-i18n="btn_send">Send</p>
+                <p data-i18n="btn_send"><?= t('btn_send') ?></p>
                 <img src="/img/whatsapp_icon.png" alt="WhatsApp" style="height: 22px; width: 22px;">
             </button>
         </form>
@@ -26,5 +27,5 @@
 
 <? include 'includes/footer.php'; ?>
 
-<script src="/js/form.js"></script>
-<script src="/js/i18n.js?v=1.0.3"></script>
+<script src="js/form.js"></script>
+<script src="js/i18n.js?v=1.0.3"></script>

@@ -1,6 +1,11 @@
 const supportedLangs = ['es', 'en', 'ru'];
 const defaultLang = 'en';
 
+function getCookie(name) {
+  const m = document.cookie.match(new RegExp('(?:^|; )' + name.replace(/([.*+?^${}()|[\]\\])/g, '\\$1') + '=([^;]*)'));
+  return m ? decodeURIComponent(m[1].trim()) : null;
+}
+
 async function setLang(lang) {
   const safeLang = supportedLangs.includes(lang) ? lang : defaultLang;
 
@@ -14,7 +19,8 @@ async function setLang(lang) {
     currentLangHeader.textContent = safeLang.toUpperCase();
   }
 
-  localStorage.setItem('lang', safeLang);
+  // Set cookie via server so it persists (JS document.cookie can fail on some HTTPS/proxies)
+  fetch('./includes/setlang.php?setlang=' + encodeURIComponent(safeLang), { method: 'GET', credentials: 'same-origin' });
 
   try {
     const dict = await getLangDict(safeLang);
@@ -41,19 +47,17 @@ async function setLang(lang) {
     });
 
     document.documentElement.lang = safeLang;
-    document.documentElement.classList.add('i18n-ready');
   } catch (err) {
     console.error(`Language load error for ${safeLang}:`, err);
-    document.documentElement.classList.add('i18n-ready');
   }
 }
 
 function getLang() {
-  const storedLang = localStorage.getItem('lang');
+  const cookieLang = getCookie('lang');
   const browserLang = (navigator.language || '').split('-')[0].toLowerCase();
 
-  if (storedLang && supportedLangs.includes(storedLang)) {
-    return storedLang;
+  if (cookieLang && supportedLangs.includes(cookieLang)) {
+    return cookieLang;
   }
   if (browserLang && supportedLangs.includes(browserLang)) {
     return browserLang;
@@ -73,5 +77,12 @@ async function getLangDict(lang) {
 }
 
 async function initLang() {
+  // Trust server-rendered language: no fetch, no overwrite, no flash
+  const serverLang = (document.documentElement.getAttribute('lang') || '').toLowerCase();
+  if (supportedLangs.includes(serverLang)) {
+    const currentLangHeader = document.getElementById('current-lang-header');
+    if (currentLangHeader) currentLangHeader.textContent = serverLang.toUpperCase();
+    return;
+  }
   await setLang(getLang());
 }

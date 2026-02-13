@@ -14,7 +14,7 @@
     <div class="footer_center">
       <div class="footer_logo">
         <img src="img/logo.png" alt="Digilang">
-        <span data-i18n="creative_lab">Creative Lab</span>
+        <span data-i18n="creative_lab"><?= t('creative_lab') ?></span>
       </div>
     </div>
   </div>

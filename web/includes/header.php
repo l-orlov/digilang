@@ -2,16 +2,16 @@
     <a href="/" style="color: #fff;">
       <div class="header_logo">
         <img src="img/logo.png" alt="Digilang">
-        <span data-i18n="creative_lab">Creative Lab</span>
+        <span data-i18n="creative_lab"><?= t('creative_lab') ?></span>
       </div>
     </a>
     <div class="header_top_right">
         <div class="header_nav">
             <nav class="nav_links">
-                <a href="/#about" data-i18n="about">About us</a>
-                <a href="/#clients" data-i18n="portfolio">Portfolio</a>
-                <a href="/#styles" data-i18n="styles_menu">Styles menu</a>
-                <a href="/#contacts" data-i18n="contacts">Contact us</a>
+                <a href="/#about" data-i18n="about"><?= t('about') ?></a>
+                <a href="/#clients" data-i18n="portfolio"><?= t('portfolio') ?></a>
+                <a href="/#styles" data-i18n="styles_menu"><?= t('styles_menu') ?></a>
+                <a href="/#contacts" data-i18n="contacts"><?= t('contacts') ?></a>
             </nav>
             <button class="burger_menu" onclick="toggleMenuBurger(event)">
                 <div class="burger_lines">
@@ -23,11 +23,11 @@
         </div>
         <div class="header_lang" onclick="toggleLangMenuHeader()">
             <img src="img/landing_lang.png" alt="Select language">
-            <span id="current-lang-header">En</span>
+            <span id="current-lang-header"><?= strtoupper($pageLang) ?></span>
                 <ul id="header_lang_menu" class="header_lang_menu hidden">
-                <li onclick="setLang('es')">Español</li>
-                <li onclick="setLang('en')">English</li>
-                <li onclick="setLang('ru')">Русский</li>
+                <li onclick="event.stopPropagation(); setLang('es');">Español</li>
+                <li onclick="event.stopPropagation(); setLang('en');">English</li>
+                <li onclick="event.stopPropagation(); setLang('ru');">Русский</li>
             </ul>
         </div>
     </div>
