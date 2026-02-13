@@ -3,7 +3,7 @@
   "about": "Sobre nosotros",
   "portfolio": "Portafolio",
   "styles_menu": "Menú de estilos",
-  "contacts": "Contactos",
+  "contacts": "Contáctanos",
   "hero_title": "¿Aún no tienes sitio web?",
   "hero_bullet1": "En el mundo actual los clientes eligen a quienes ven en línea.",
   "hero_bullet2": "Quien no tiene web, no tiene futuro.",
@@ -40,6 +40,11 @@
   "styles_note":    "Elige el estilo que mejor se adapte a ti. Adaptaremos el estilo elegido a tus necesidades.",
   "styles_prev":    "Anterior",
   "styles_next":    "Siguiente",
-  "style_badge":    "Estilo Nº{{n}}"
+  "style_badge":    "Estilo Nº{{n}}",
+  "btn_send":       "Enviar",
 
+  "plh_mail":       "ejemplo@example.com",
+  "name":           "Nombre",
+  "mail":           "Email",
+  "message":        "Mensaje"
 }

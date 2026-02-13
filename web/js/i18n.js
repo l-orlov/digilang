@@ -1,32 +1,24 @@
-async function setLang(page, lang) {
+const supportedLangs = ['es', 'en', 'ru'];
+const defaultLang = 'es'
+
+async function setLang(lang) {
   const currentLangEl = document.getElementById('current-lang');
+
   if (currentLangEl) {
     currentLangEl.textContent = lang.toUpperCase();
   }
+
   // Header
   const currentLangHeader = document.getElementById('current-lang-header');
   if (currentLangHeader) {
     currentLangHeader.textContent = lang.toUpperCase();
   }
 
-  // Footer
-  const currentLangFooter = document.getElementById('current-lang-footer');
-  if (currentLangFooter) {
-    currentLangFooter.textContent = lang.toUpperCase();
-  }
-
   // Сохраняем выбранный язык в localStorage
   localStorage.setItem('lang', lang);
 
   try {
-    const url = `/lang/${page}/${lang}.json`;
-    const res = await fetch(url);
-
-    if (!res.ok) {
-      throw new Error(`Failed to load ${url}, status ${res.status}`);
-    }
-
-    const dict = await res.json();
+    const dict = await getLangDict(lang)
 
     // Обычные тексты
     document.querySelectorAll('[data-i18n]').forEach(el => {
@@ -57,13 +49,28 @@ async function setLang(page, lang) {
   }
 }
 
-const supportedLangs = ['es', 'en', 'ru'];
-
-function initLang(page = 'landing', defaultLang = 'es') {
+function getLang() {
   const storedLang = localStorage.getItem('lang');
   const browserLang = (navigator.language || '').split('-')[0];
 
-  const lang = storedLang ?? (supportedLangs.includes(browserLang) ? browserLang : defaultLang);
+  if (storedLang)
+    return storedLang;
 
-  setLang(page, lang);
+  return browserLang ? browserLang 
+                     : defaultLang
+}
+
+async function getLangDict(lang) {
+  const url = `/lang/${lang}.json`;
+  const res = await fetch(url);
+
+  if (!res.ok) {
+    throw new Error(`Failed to load ${url}, status ${res.status}`);
+  }
+
+  return await res.json();
+}
+
+function initLang() {
+  setLang(getLang());
 }
