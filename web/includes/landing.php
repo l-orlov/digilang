@@ -36,76 +36,76 @@
     <div class="styles_viewport">
       <ul class="styles_track">
         <li class="style_card" data-style="1">
-          <img src="img/styles/s1.png">
+          <img src="img/styles/s1.png" alt="Website style example 1">
         </li>
         <li class="style_card" data-style="2">
-          <img src="img/styles/s2.png">
+          <img src="img/styles/s2.png" alt="Website style example 2">
         </li>
         <li class="style_card" data-style="3">
-          <img src="img/styles/s3.png">
+          <img src="img/styles/s3.png" alt="Website style example 3">
         </li>
         <li class="style_card" data-style="4">
-          <img src="img/styles/s4.png">
+          <img src="img/styles/s4.png" alt="Website style example 4">
         </li>
         <li class="style_card" data-style="5">
-          <img src="img/styles/s5.png">
+          <img src="img/styles/s5.png" alt="Website style example 5">
         </li>
         <li class="style_card" data-style="6">
-          <img src="img/styles/s6.png">
+          <img src="img/styles/s6.png" alt="Website style example 6">
         </li>
         <li class="style_card" data-style="7">
-          <img src="img/styles/s7.png">
+          <img src="img/styles/s7.png" alt="Website style example 7">
         </li>
         <li class="style_card" data-style="8">
-          <img src="img/styles/s8.png">
+          <img src="img/styles/s8.png" alt="Website style example 8">
         </li>
         <li class="style_card" data-style="9">
-          <img src="img/styles/s9.png">
+          <img src="img/styles/s9.png" alt="Website style example 9">
         </li>
         <li class="style_card" data-style="10">
-          <img src="img/styles/s10.png">
+          <img src="img/styles/s10.png" alt="Website style example 10">
         </li>
         <li class="style_card" data-style="11">
-          <img src="img/styles/s11.png">
+          <img src="img/styles/s11.png" alt="Website style example 11">
         </li>
         <li class="style_card" data-style="12">
-          <img src="img/styles/s12.png">
+          <img src="img/styles/s12.png" alt="Website style example 12">
         </li>
         <li class="style_card" data-style="13">
-          <img src="img/styles/s13.png">
+          <img src="img/styles/s13.png" alt="Website style example 13">
         </li>
         <li class="style_card" data-style="14">
-          <img src="img/styles/s14.png">
+          <img src="img/styles/s14.png" alt="Website style example 14">
         </li>
         <li class="style_card" data-style="15">
-          <img src="img/styles/s15.png">
+          <img src="img/styles/s15.png" alt="Website style example 15">
         </li>
         <li class="style_card" data-style="16">
-          <img src="img/styles/s16.png">
+          <img src="img/styles/s16.png" alt="Website style example 16">
         </li>
         <li class="style_card" data-style="17">
-          <img src="img/styles/s17.png">
+          <img src="img/styles/s17.png" alt="Website style example 17">
         </li>
         <li class="style_card" data-style="18">
-          <img src="img/styles/s18.png">
+          <img src="img/styles/s18.png" alt="Website style example 18">
         </li>
         <li class="style_card" data-style="19">
-          <img src="img/styles/s19.png">
+          <img src="img/styles/s19.png" alt="Website style example 19">
         </li>
         <li class="style_card" data-style="20">
-          <img src="img/styles/s20.png">
+          <img src="img/styles/s20.png" alt="Website style example 20">
         </li>
         <li class="style_card" data-style="21">
-          <img src="img/styles/s21.png">
+          <img src="img/styles/s21.png" alt="Website style example 21">
         </li>
         <li class="style_card" data-style="22">
-          <img src="img/styles/s22.png">
+          <img src="img/styles/s22.png" alt="Website style example 22">
         </li>
         <li class="style_card" data-style="23">
-          <img src="img/styles/s23.png">
+          <img src="img/styles/s23.png" alt="Website style example 23">
         </li>
         <li class="style_card" data-style="24">
-          <img src="img/styles/s24.png">
+          <img src="img/styles/s24.png" alt="Website style example 24">
         </li>
       </ul>
     </div>
@@ -139,16 +139,16 @@
       <div class="landing_about_card" data-card="1">
         <div class="card_face">
           <div class="landing_about_card_icon">
-            <img src="img/potential.png" alt="">
+            <img src="img/potential.png" alt="Potential">
           </div>
           <h3 class="landing_about_card_title" id="about_card1_title" data-i18n="about_card1_title">Potential</h3>
           <button class="landing_about_card_chev" type="button" aria-expanded="false" aria-controls="about_card1_panel">
-            <img src="img/chev_down.png" alt="">
+            <img src="img/chev_down.png" alt="Expand">
           </button>
         </div>
         <div class="landing_about_card_panel" id="about_card1_panel" role="region" aria-labelledby="about_card1_title">
           <div class="landing_about_card_panel_chev">
-            <img src="img/chev_down_black.png">
+            <img src="img/chev_down_black.png" alt="">
           </div>
           <h3 class="landing_about_card_panel_title" data-i18n="about_card1_title">Potential</h3>
           <p data-i18n="about_card1_desc">
@@ -159,16 +159,16 @@
       <div class="landing_about_card" data-card="2">
         <div class="card_face">
           <div class="landing_about_card_icon">
-            <img src="img/style.png" alt="">
+            <img src="img/style.png" alt="Style">
           </div>
           <h3 class="landing_about_card_title" id="about_card2_title" data-i18n="about_card2_title">Style</h3>
           <button class="landing_about_card_chev" type="button" aria-expanded="false" aria-controls="about_card2_panel">
-            <img src="img/chev_down.png" alt="">
+            <img src="img/chev_down.png" alt="Expand">
           </button>
         </div>
         <div class="landing_about_card_panel" id="about_card2_panel" role="region" aria-labelledby="about_card2_title">
           <div class="landing_about_card_panel_chev">
-            <img src="img/chev_down_black.png">
+            <img src="img/chev_down_black.png" alt="">
           </div>
           <h3 class="landing_about_card_panel_title" data-i18n="about_card2_title"></h3>
           <p data-i18n="about_card2_desc">
@@ -179,16 +179,16 @@
       <div class="landing_about_card" data-card="3">
         <div class="card_face">
           <div class="landing_about_card_icon">
-            <img src="img/need.png" alt="">
+            <img src="img/need.png" alt="Necessity">
           </div>
           <h3 class="landing_about_card_title" id="about_card3_title" data-i18n="about_card3_title">Necessity</h3>
           <button class="landing_about_card_chev" type="button" aria-expanded="false" aria-controls="about_card3_panel">
-            <img src="img/chev_down.png" alt="">
+            <img src="img/chev_down.png" alt="Expand">
           </button>
         </div>
         <div class="landing_about_card_panel" id="about_card3_panel" role="region" aria-labelledby="about_card3_title">
           <div class="landing_about_card_panel_chev">
-            <img src="img/chev_down_black.png">
+            <img src="img/chev_down_black.png" alt="">
           </div>
           <h3 class="landing_about_card_panel_title" data-i18n="about_card3_title"></h3>
           <p data-i18n="about_card3_desc">
@@ -216,7 +216,7 @@
     <div class="carousel_viewport">
       <ul class="carousel_track">
         <li class="card">
-          <img src="img/cesar.png">
+          <img src="img/cesar.png" alt="Cesar Vidal Scasso">
           <div class="card_overlay" aria-hidden="true">
             <div class="card_overlay_content">
               <h4>Cesar Vidal Scasso</h4>
@@ -225,7 +225,7 @@
           </div>
         </li>
         <li class="card">
-          <img src="img/cuttica.png">
+          <img src="img/cuttica.png" alt="Eugenio Cuttica Foundation">
           <div class="card_overlay" aria-hidden="true">
             <div class="card_overlay_content">
               <h4>Eugenio Cuttica Foundation</h4>
@@ -234,7 +234,7 @@
           </div>
         </li>
         <li class="card">
-          <img src="img/ecopolys.png">
+          <img src="img/ecopolys.png" alt="ECOPOLYS">
           <div class="card_overlay" aria-hidden="true">
             <div class="card_overlay_content">
               <h4>ECOPOLYS</h4>
@@ -243,7 +243,7 @@
           </div>
         </li>
         <li class="card">
-          <img src="img/krona.png">
+          <img src="img/krona.png" alt="KRONA">
           <div class="card_overlay" aria-hidden="true">
             <div class="card_overlay_content">
               <h4>KRONA</h4>

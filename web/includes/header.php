@@ -1,7 +1,7 @@
 <div class="header">
     <a href="/" style="color: #fff;">
       <div class="header_logo">
-        <img src="img/logo.png">
+        <img src="img/logo.png" alt="Digilang">
         <span data-i18n="creative_lab">Creative Lab</span>
       </div>
     </a>
@@ -22,7 +22,7 @@
             </button>
         </div>
         <div class="header_lang" onclick="toggleLangMenuHeader()">
-            <img src="img/landing_lang.png" />
+            <img src="img/landing_lang.png" alt="Select language">
             <span id="current-lang-header">En</span>
                 <ul id="header_lang_menu" class="header_lang_menu hidden">
                 <li onclick="setLang('es')">Español</li>
