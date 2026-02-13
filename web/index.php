@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Digilang</title>
     <link rel="stylesheet" href="css/style.css?t=<?=time()?>">
+    <style>body{visibility:hidden}html.i18n-ready body{visibility:visible}</style>
 </head>
 <body>
 

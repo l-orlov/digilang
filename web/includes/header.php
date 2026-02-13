@@ -2,16 +2,16 @@
     <a href="/" style="color: #fff;">
       <div class="header_logo">
         <img src="img/logo.png">
-        <span data-i18n="creative_lab">Креативная лаборатория</span>
+        <span data-i18n="creative_lab">Creative Lab</span>
       </div>
     </a>
     <div class="header_top_right">
         <div class="header_nav">
             <nav class="nav_links">
-                <a href="/#about" data-i18n="about">о нас</a>
-                <a href="/#clients" data-i18n="portfolio">портфолио</a>
-                <a href="/#styles" data-i18n="styles_menu">меню стилей</a>
-                <a href="/#contacts" data-i18n="contacts">контакты</a>
+                <a href="/#about" data-i18n="about">About us</a>
+                <a href="/#clients" data-i18n="portfolio">Portfolio</a>
+                <a href="/#styles" data-i18n="styles_menu">Styles menu</a>
+                <a href="/#contacts" data-i18n="contacts">Contact us</a>
             </nav>
             <button class="burger_menu" onclick="toggleMenuBurger(event)">
                 <div class="burger_lines">
@@ -23,7 +23,7 @@
         </div>
         <div class="header_lang" onclick="toggleLangMenuHeader()">
             <img src="img/landing_lang.png" />
-            <span id="current-lang-header">Es</span>
+            <span id="current-lang-header">En</span>
                 <ul id="header_lang_menu" class="header_lang_menu hidden">
                 <li onclick="setLang('es')">Español</li>
                 <li onclick="setLang('en')">English</li>
@@ -38,8 +38,8 @@ function toggleLangMenuHeader() {
   menu.classList.toggle('hidden');
 }
 
-document.addEventListener('DOMContentLoaded', () => {
-  initLang();
+document.addEventListener('DOMContentLoaded', async () => {
+  await initLang();
 });
 
 document.addEventListener('click', function (e) {

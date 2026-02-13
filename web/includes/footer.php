@@ -14,7 +14,7 @@
     <div class="footer_center">
       <div class="footer_logo">
         <img src="img/logo.png">
-        <span data-i18n="creative_lab">Креативная лаборатория</span>
+        <span data-i18n="creative_lab">Creative Lab</span>
       </div>
     </div>
   </div>

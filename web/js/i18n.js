@@ -1,26 +1,24 @@
 const supportedLangs = ['es', 'en', 'ru'];
-const defaultLang = 'es'
+const defaultLang = 'en';
 
 async function setLang(lang) {
-  const currentLangEl = document.getElementById('current-lang');
+  const safeLang = supportedLangs.includes(lang) ? lang : defaultLang;
 
+  const currentLangEl = document.getElementById('current-lang');
   if (currentLangEl) {
-    currentLangEl.textContent = lang.toUpperCase();
+    currentLangEl.textContent = safeLang.toUpperCase();
   }
 
-  // Header
   const currentLangHeader = document.getElementById('current-lang-header');
   if (currentLangHeader) {
-    currentLangHeader.textContent = lang.toUpperCase();
+    currentLangHeader.textContent = safeLang.toUpperCase();
   }
 
-  // Сохраняем выбранный язык в localStorage
-  localStorage.setItem('lang', lang);
+  localStorage.setItem('lang', safeLang);
 
   try {
-    const dict = await getLangDict(lang)
+    const dict = await getLangDict(safeLang);
 
-    // Обычные тексты
     document.querySelectorAll('[data-i18n]').forEach(el => {
       const key = el.getAttribute('data-i18n');
       if (dict[key]) {
@@ -28,7 +26,6 @@ async function setLang(lang) {
       }
     });
 
-    // Плейсхолдеры
     document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
       const key = el.getAttribute('data-i18n-placeholder');
       if (dict[key]) {
@@ -36,7 +33,6 @@ async function setLang(lang) {
       }
     });
 
-    // HTML-тексты
     document.querySelectorAll('[data-i18n-html]').forEach(el => {
       const key = el.getAttribute('data-i18n-html');
       if (dict[key]) {
@@ -44,20 +40,25 @@ async function setLang(lang) {
       }
     });
 
+    document.documentElement.lang = safeLang;
+    document.documentElement.classList.add('i18n-ready');
   } catch (err) {
-    console.error(`Language load error for ${lang}:`, err);
+    console.error(`Language load error for ${safeLang}:`, err);
+    document.documentElement.classList.add('i18n-ready');
   }
 }
 
 function getLang() {
   const storedLang = localStorage.getItem('lang');
-  const browserLang = (navigator.language || '').split('-')[0];
+  const browserLang = (navigator.language || '').split('-')[0].toLowerCase();
 
-  if (storedLang)
+  if (storedLang && supportedLangs.includes(storedLang)) {
     return storedLang;
-
-  return browserLang ? browserLang 
-                     : defaultLang
+  }
+  if (browserLang && supportedLangs.includes(browserLang)) {
+    return browserLang;
+  }
+  return defaultLang;
 }
 
 async function getLangDict(lang) {
@@ -71,6 +72,6 @@ async function getLangDict(lang) {
   return await res.json();
 }
 
-function initLang() {
-  setLang(getLang());
+async function initLang() {
+  await setLang(getLang());
 }
