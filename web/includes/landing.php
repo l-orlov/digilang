@@ -1,35 +1,164 @@
-<? include 'includes/header.php'; ?>
+<!-- HEADER -->
+<div class="header">
+  <div class="header_inner">
+    <a href="/" style="color: #fff;">
+      <div class="header_logo">
+        <img src="img/logo.png" alt="Digilang">
+        <span data-i18n="creative_lab"></span>
+      </div>
+    </a>
+    <div class="header_top_right">
+        <div class="header_nav">
+            <nav class="nav_links">
+                <a href="/#about" data-i18n="about"></a>
+                <a href="/#clients" data-i18n="portfolio"></a>
+                <a href="/#styles" data-i18n="styles_menu"></a>
+                <a href="/#contacts" data-i18n="contacts"></a>
+            </nav>
+            <button class="burger_menu" onclick="toggleMenuBurger(event)">
+                <div class="burger_lines">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </button>
+        </div>
+        <div class="header_lang" onclick="toggleLangMenuHeader()">
+            <img src="img/icons/lang_icon.svg">
+            <span id="current-lang-header">EN</span>
+            <ul id="header_lang_menu" class="header_lang_menu hidden">
+                <li onclick="event.stopPropagation(); setLang(currentPage, 'es');">Español</li>
+                <li onclick="event.stopPropagation(); setLang(currentPage, 'en');">English</li>
+                <li onclick="event.stopPropagation(); setLang(currentPage, 'ru');">Русский</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+function toggleLangMenuHeader() {
+  const menu = document.getElementById('header_lang_menu');
+  menu.classList.toggle('hidden');
+}
+
+document.addEventListener('click', function (e) {
+  const langBox = document.querySelector('.header_lang');
+  const menu = document.getElementById('header_lang_menu');
+  if (langBox && !langBox.contains(e.target)) {
+    menu.classList.add('hidden');
+  }
+});
+
+function toggleMenuBurger(event) {
+  event.stopPropagation();
+  const nav = document.querySelector('.nav_links');
+  const burger = document.querySelector('.burger_menu');
+  nav.classList.toggle('show');
+  burger.classList.toggle('open');
+  if (nav.classList.contains('show')) {
+    document.addEventListener('click', closeMenuOutside);
+    document.querySelectorAll('.nav_links a').forEach(link => {
+      link.addEventListener('click', closeMenuByLink);
+    });
+  } else {
+    removeMenuListeners();
+  }
+}
+
+function closeMenuOutside(e) {
+  const nav = document.querySelector('.nav_links');
+  const burger = document.querySelector('.burger_menu');
+  if (!nav.contains(e.target) && !burger.contains(e.target)) {
+    nav.classList.remove('show');
+    burger.classList.remove('open');
+    removeMenuListeners();
+  }
+}
+
+function closeMenuByLink() {
+  const nav = document.querySelector('.nav_links');
+  const burger = document.querySelector('.burger_menu');
+  nav.classList.remove('show');
+  burger.classList.remove('open');
+  removeMenuListeners();
+}
+
+function removeMenuListeners() {
+  document.removeEventListener('click', closeMenuOutside);
+  document.querySelectorAll('.nav_links a').forEach(link => {
+    link.removeEventListener('click', closeMenuByLink);
+  });
+}
+</script>
+<!-- END HEADER -->
+
 
 <!-- LANDING with video background -->
 <div class="landing_video_block">
     <video id="landing_video" autoplay muted loop playsinline class="landing_video_bg"></video>
     <div class="landing_video_overlay">
       <div class="landing_video_text">
-        <h1 data-i18n="hero_title"><?= t('hero_title') ?></h1>
+        <h1 data-i18n="hero_title"></h1>
         <ul class="landing_video_list">
-          <li data-i18n="hero_bullet1"><?= t('hero_bullet1') ?></li>
-          <li data-i18n="hero_bullet2"><?= t('hero_bullet2') ?></li>
-          <li data-i18n="hero_bullet3"><?= t('hero_bullet3') ?></li>
+          <li data-i18n="hero_bullet1"></li>
+          <li data-i18n="hero_bullet2"></li>
+          <li data-i18n="hero_bullet3"></li>
         </ul>
-        <a href="?page=form">
-          <button class="btn button_text" data-i18n="hero_cta" style="cursor: pointer;" ><?= t('hero_cta') ?></button>
+        <a href="#contacts">
+          <button class="btn button_text" data-i18n="hero_cta" style="cursor: pointer;"></button>
         </a>
       </div>
     </div>
 </div>
 <!-- LANDING with video background -->
 
+<!-- LANDING ABOUT -->
+<div id='about' class="landing_about">
+  <div class="landing_about_header">
+    <h2 class="landing_about_title" data-i18n="about_title"></h2>
+    <span class="about__line"></span>
+    <span class="about__dot"></span>
+  </div>
+  <div class="landing_about_grid">
+    <div class="landing_about_text">
+      <p data-i18n="about_p1"></p>
+      <p data-i18n="about_p2"></p>
+    </div>
+    <div class="landing_about_cards">
+      <div class="landing_about_card">
+        <div class="card_bg"><img src="img/potential.svg" alt="Потенциал"></div>
+        <div class="card_content">
+          <h3 class="card_title" data-i18n="about_card1_title"></h3>
+          <p class="card_desc" data-i18n="about_card1_desc"></p>
+        </div>
+      </div>
+      <div class="landing_about_card">
+        <div class="card_bg"><img src="img/style.svg" alt="Стиль"></div>
+        <div class="card_content">
+          <h3 class="card_title" data-i18n="about_card2_title"></h3>
+          <p class="card_desc" data-i18n="about_card2_desc"></p>
+        </div>
+      </div>
+      <div class="landing_about_card">
+        <div class="card_bg"><img src="img/need.svg" alt="Необходимость"></div>
+        <div class="card_content">
+          <h3 class="card_title" data-i18n="about_card3_title"></h3>
+          <p class="card_desc" data-i18n="about_card3_desc"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- LANDING ABOUT -->
+
 <!-- STYLES -->
 <div id='styles' class="landing_styles">
   <div class="landing_styles_header">
-    <span class="landing_styles_line landing_styles_line--left"></span>
-    <h2 class="landing_styles_title" data-i18n="styles_title"><?= t('styles_title') ?></h2>
-    <span class="landing_styles_line landing_styles_line--right"></span>
+    <h2 class="landing_styles_title" data-i18n="styles_title"></h2>
+    <span class="landing_styles_line"></span>
     <span class="landing_styles_dot"></span>
   </div>
-  <p class="landing_styles_tagline" data-i18n="styles_tagline">
-    <?= t('styles_tagline') ?>
-  </p>
+  <p class="landing_styles_tagline" data-i18n-html="styles_tagline"></p>
 
   <div class="styles_carousel">
     <button class="styles_carousel_btn prev" aria-label="Previous">&#9664;</button>
@@ -111,143 +240,68 @@
     </div>
     <button class="styles_carousel_btn next" aria-label="Next">&#9654;</button>
   </div>
-
-  <p class="landing_styles_note" data-i18n="styles_note">
-    <?= t('styles_note') ?>
-  </p>
 </div>
 <!-- STYLES -->
-
-<!-- LANDING ABOUT -->
-<div id='about' class="landing_about">
-  <div class="landing_about_header">
-    <span class="about__line about__line--left"></span>
-    <h2 class="landing_about_title" data-i18n="about_title"><?= t('about_title') ?></h2>
-    <span class="about__line about__line--right"></span>
-    <span class="about__dot"></span>
-  </div>
-  <div class="landing_about_grid">
-    <div class="landing_about_text">
-      <p data-i18n="about_p1">
-        <?= t('about_p1') ?>
-      </p>
-      <p data-i18n="about_p2">
-        <?= t('about_p2') ?>
-      </p>
-    </div>
-    <div class="landing_about_cards">
-      <div class="landing_about_card" data-card="1">
-        <div class="card_face">
-          <div class="landing_about_card_icon">
-            <img src="img/potential.png" alt="Potential">
-          </div>
-          <h3 class="landing_about_card_title" id="about_card1_title" data-i18n="about_card1_title"><?= t('about_card1_title') ?></h3>
-          <button class="landing_about_card_chev" type="button" aria-expanded="false" aria-controls="about_card1_panel">
-            <img src="img/chev_down.png" alt="Expand">
-          </button>
-        </div>
-        <div class="landing_about_card_panel" id="about_card1_panel" role="region" aria-labelledby="about_card1_title">
-          <div class="landing_about_card_panel_chev">
-            <img src="img/chev_down_black.png" alt="">
-          </div>
-          <h3 class="landing_about_card_panel_title" data-i18n="about_card1_title"><?= t('about_card1_title') ?></h3>
-          <p data-i18n="about_card1_desc">
-            <?= t('about_card1_desc') ?>
-          </p>
-        </div>
-      </div>
-      <div class="landing_about_card" data-card="2">
-        <div class="card_face">
-          <div class="landing_about_card_icon">
-            <img src="img/style.png" alt="Style">
-          </div>
-          <h3 class="landing_about_card_title" id="about_card2_title" data-i18n="about_card2_title"><?= t('about_card2_title') ?></h3>
-          <button class="landing_about_card_chev" type="button" aria-expanded="false" aria-controls="about_card2_panel">
-            <img src="img/chev_down.png" alt="Expand">
-          </button>
-        </div>
-        <div class="landing_about_card_panel" id="about_card2_panel" role="region" aria-labelledby="about_card2_title">
-          <div class="landing_about_card_panel_chev">
-            <img src="img/chev_down_black.png" alt="">
-          </div>
-          <h3 class="landing_about_card_panel_title" data-i18n="about_card2_title"><?= t('about_card2_title') ?></h3>
-          <p data-i18n="about_card2_desc">
-            <?= t('about_card2_desc') ?>
-          </p>
-        </div>
-      </div>
-      <div class="landing_about_card" data-card="3">
-        <div class="card_face">
-          <div class="landing_about_card_icon">
-            <img src="img/need.png" alt="Necessity">
-          </div>
-          <h3 class="landing_about_card_title" id="about_card3_title" data-i18n="about_card3_title"><?= t('about_card3_title') ?></h3>
-          <button class="landing_about_card_chev" type="button" aria-expanded="false" aria-controls="about_card3_panel">
-            <img src="img/chev_down.png" alt="Expand">
-          </button>
-        </div>
-        <div class="landing_about_card_panel" id="about_card3_panel" role="region" aria-labelledby="about_card3_title">
-          <div class="landing_about_card_panel_chev">
-            <img src="img/chev_down_black.png" alt="">
-          </div>
-          <h3 class="landing_about_card_panel_title" data-i18n="about_card3_title"><?= t('about_card3_title') ?></h3>
-          <p data-i18n="about_card3_desc">
-            <?= t('about_card3_desc') ?>
-          </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-<!-- LANDING ABOUT -->
 
 <!-- CLIENTS -->
 <div id='clients' class="landing_clients">
   <div class="landing_clients_header">
-    <span class="clients_line clients_line--left"></span>
-    <h2 class="clients_title" data-i18n="clients_title"><?= t('clients_title') ?></h2>
-    <span class="clients_line clients_line--right"></span>
+    <h2 class="clients_title" data-i18n="clients_title"></h2>
+    <span class="clients_line"></span>
+    <span class="clients_dot"></span>
   </div>
-  <p class="clients_sub" data-i18n="clients_sub">
-    <?= t('clients_sub') ?>
-  </p>
+  <div class="clients_intro">
+    <p class="clients_sub" data-i18n="clients_sub"></p>
+    <a href="#contacts">
+      <button class="btn button_text clients_cta_btn" data-i18n="clients_cta"></button>
+    </a>
+  </div>
   <div class="carousel">
     <button class="carousel_btn prev" aria-label="Previous">&#9664;</button>
     <div class="carousel_viewport">
       <ul class="carousel_track">
         <li class="card">
-          <img src="img/cesar.png" alt="Cesar Vidal Scasso">
+          <img src="img/clients/cadipel.png" alt="CADIPEL">
           <div class="card_overlay" aria-hidden="true">
             <div class="card_overlay_content">
-              <h4>Cesar Vidal Scasso</h4>
-              <a href="https://cesarvidalscasso.com/" target="_blank" rel="noopener" class="card_overlay_btn" data-i18n="clients_card_btn"><?= t('clients_card_btn') ?></a>
+              <h4>CADIPEL</h4>
+              <a href="https://www.cadipel.com.ar/" target="_blank" rel="noopener" class="card_overlay_btn" data-i18n="clients_card_btn"></a>
             </div>
           </div>
         </li>
         <li class="card">
-          <img src="img/cuttica.png" alt="Eugenio Cuttica Foundation">
+          <img src="img/clients/fenimprese.png" alt="Eugenio Cuttica Foundation">
           <div class="card_overlay" aria-hidden="true">
             <div class="card_overlay_content">
-              <h4>Eugenio Cuttica Foundation</h4>
-              <a href="https://cutticafoundation.org/" target="_blank" rel="noopener" class="card_overlay_btn" data-i18n="clients_card_btn"><?= t('clients_card_btn') ?></a>
+              <h4>FENIMPRESE</h4>
+              <a href="https://digilang.pro/fenimprese/" target="_blank" rel="noopener" class="card_overlay_btn" data-i18n="clients_card_btn"></a>
             </div>
           </div>
         </li>
         <li class="card">
-          <img src="img/ecopolys.png" alt="ECOPOLYS">
+          <img src="img/clients/ecopolys.png" alt="ECOPOLYS">
           <div class="card_overlay" aria-hidden="true">
             <div class="card_overlay_content">
               <h4>ECOPOLYS</h4>
-              <a href="https://ecopolys.eu/" target="_blank" rel="noopener" class="card_overlay_btn" data-i18n="clients_card_btn"><?= t('clients_card_btn') ?></a>
+              <a href="https://ecopolys.eu/" target="_blank" rel="noopener" class="card_overlay_btn" data-i18n="clients_card_btn"></a>
             </div>
           </div>
         </li>
         <li class="card">
-          <img src="img/krona.png" alt="KRONA">
+          <img src="img/clients/krona.png" alt="KRONA">
           <div class="card_overlay" aria-hidden="true">
             <div class="card_overlay_content">
               <h4>KRONA</h4>
-              <a href="https://krona.life/" target="_blank" rel="noopener" class="card_overlay_btn" data-i18n="clients_card_btn"><?= t('clients_card_btn') ?></a>
+              <a href="https://krona.life/" target="_blank" rel="noopener" class="card_overlay_btn" data-i18n="clients_card_btn"></a>
+            </div>
+          </div>
+        </li>
+        <li class="card">
+          <img src="img/clients/racing.png" alt="KRONA">
+          <div class="card_overlay" aria-hidden="true">
+            <div class="card_overlay_content">
+              <h4>RACING CLUB</h4>
+              <a href="https://store.racinggaming.com.ar/" target="_blank" rel="noopener" class="card_overlay_btn" data-i18n="clients_card_btn"></a>
             </div>
           </div>
         </li>
@@ -255,38 +309,76 @@
     </div>
     <button class="carousel_btn next" aria-label="Next">&#9654;</button>
   </div>
-  <div class="clients_cta">
-    <a href="?page=form">
-      <button class="clients_cta_btn" data-i18n="clients_cta"><?= t('clients_cta') ?></button>
-    </a>
-  </div>
 </div>
 <!-- CLIENTS -->
 
 <!-- SERVICES TIMELINE -->
 <div class="services_timeline">
-  <div class="timeline">
+  <div class="timeline_body">
+    <img src="img/logo.png" alt="Digilang" class="timeline_logo">
     <ul class="timeline_list">
-      <li data-i18n="tl_item1"><?= t('tl_item1') ?></li>
-      <li data-i18n="tl_item2"><?= t('tl_item2') ?></li>
-      <li data-i18n="tl_item3"><?= t('tl_item3') ?></li>
-      <li data-i18n="tl_item4"><?= t('tl_item4') ?></li>
-      <li data-i18n="tl_item5"><?= t('tl_item5') ?></li>
-      <li data-i18n="tl_item6"><?= t('tl_item6') ?></li>
+      <li data-i18n="tl_item1"></li>
+      <li data-i18n="tl_item2"></li>
+      <li data-i18n="tl_item3"></li>
+      <li data-i18n="tl_item4"></li>
+      <li data-i18n="tl_item5"></li>
+      <li data-i18n="tl_item6"></li>
     </ul>
-  </div>
-  <div class="timeline_cta">
-    <h3 class="timeline_cta_title" data-i18n="tl_cta_title">
-      <?= t('tl_cta_title') ?>
-    </h3>
-    <a href="?page=form">
-      <button class="timeline_cta_btn" data-i18n="tl_cta_btn"><?= t('tl_cta_btn') ?></button>
+    <a href="#contacts">
+      <button class="btn button_text" data-i18n="hero_cta"></button>
     </a>
   </div>
 </div>
 <!-- SERVICES TIMELINE -->
 
-<? include 'includes/footer.php'; ?>
+<!-- FOOTER -->
+<div id="contacts" class="footer">
+  <div class="footer_inner">
 
-<script src="js/landing.js"></script>
-<script src="js/i18n.js?v=1.0.3"></script>
+    <!-- Left: feedback form card -->
+    <div class="footer_card">
+      <span class="footer_card_label" data-i18n="footer_feedback"></span>
+      <h2 class="footer_card_title" data-i18n-html="footer_card_title"></h2>
+      <form class="footer_form" id="footer_form">
+        <input type="text"  id="footer_name"  data-i18n-placeholder="footer_name_plh"  placeholder="">
+        <input type="tel"   id="footer_phone" data-i18n-placeholder="footer_phone_plh" placeholder="">
+        <textarea id="footer_msg" data-i18n-placeholder="footer_msg_plh" placeholder="" rows="4"></textarea>
+        <button type="button" class="footer_form_btn" onclick="footerSend(event)" data-i18n="footer_send"></button>
+      </form>
+    </div>
+
+    <!-- Right: nav + contacts + logo + socials -->
+    <div class="footer_right">
+      <nav class="footer_nav">
+        <a href="/#about"   data-i18n="about"></a>
+        <a href="/#styles"  data-i18n="styles_menu"></a>
+        <a href="/#clients" data-i18n="portfolio"></a>
+      </nav>
+
+      <div class="footer_contacts_block">
+        <span class="footer_contacts_label" data-i18n="contacts"></span>
+        <a href="https://wa.me/541144724911" class="footer_contact_link">+54 (11) 4472-4911</a>
+        <a href="https://t.me/digilang_pro"  class="footer_contact_link">t.me/digilang_pro</a>
+        <span class="footer_contact_link">Buenos Aires</span>
+      </div>
+
+      <div class="footer_logo">
+        <img src="img/logo.png" alt="Digilang">
+        <span data-i18n="creative_lab"></span>
+      </div>
+
+      <div class="footer_bottom">
+        <div class="footer_socials">
+          <a href="https://t.me/digilang_pro"   target="_blank" rel="noopener" class="footer_social_btn" aria-label="Telegram">
+            <img src="img/icons/tg_icon.svg" alt="Telegram">
+          </a>
+          <a href="https://wa.me/541144724911" target="_blank" rel="noopener" class="footer_social_btn" aria-label="WhatsApp">
+            <img src="img/icons/whts_icon.svg" alt="WhatsApp">
+          </a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+<!-- END FOOTER -->
