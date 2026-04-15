@@ -231,6 +231,18 @@ document.addEventListener("DOMContentLoaded", function () {
     const center       = centerIndex();
     const visibleRange = w >= 720 ? 1 : 0;
 
+    /* Только на больших экранах показываем всю ленту (половинки по краям) */
+    if (w >= 1024) {
+      Array.from(track.children).forEach((card) => {
+        card.style.opacity       = '1';
+        card.style.visibility    = 'visible';
+        card.style.pointerEvents = 'auto';
+        card.style.transform     = 'none';
+        card.style.zIndex        = '1';
+      });
+      return;
+    }
+
     Array.from(track.children).forEach((card, i) => {
       const offset = i - center;
       const abs    = Math.abs(offset);

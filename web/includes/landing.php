@@ -128,22 +128,28 @@ function removeMenuListeners() {
       <div class="landing_about_card">
         <div class="card_bg"><img src="img/potential.svg" alt="Потенциал"></div>
         <div class="card_content">
-          <h3 class="card_title" data-i18n="about_card1_title"></h3>
-          <p class="card_desc" data-i18n="about_card1_desc"></p>
+          <div class="card_body">
+            <h3 class="card_title" data-i18n="about_card1_title"></h3>
+            <p class="card_desc" data-i18n="about_card1_desc"></p>
+          </div>
         </div>
       </div>
       <div class="landing_about_card">
         <div class="card_bg"><img src="img/style.svg" alt="Стиль"></div>
         <div class="card_content">
-          <h3 class="card_title" data-i18n="about_card2_title"></h3>
-          <p class="card_desc" data-i18n="about_card2_desc"></p>
+          <div class="card_body">
+            <h3 class="card_title" data-i18n="about_card2_title"></h3>
+            <p class="card_desc" data-i18n="about_card2_desc"></p>
+          </div>
         </div>
       </div>
       <div class="landing_about_card">
         <div class="card_bg"><img src="img/need.svg" alt="Необходимость"></div>
         <div class="card_content">
-          <h3 class="card_title" data-i18n="about_card3_title"></h3>
-          <p class="card_desc" data-i18n="about_card3_desc"></p>
+          <div class="card_body">
+            <h3 class="card_title" data-i18n="about_card3_title"></h3>
+            <p class="card_desc" data-i18n="about_card3_desc"></p>
+          </div>
         </div>
       </div>
     </div>
@@ -347,36 +353,42 @@ function removeMenuListeners() {
       </form>
     </div>
 
-    <!-- Right: nav + contacts + logo + socials -->
-    <div class="footer_right">
+    <!-- Center: nav + contacts -->
+    <div class="footer_center">
       <nav class="footer_nav">
         <a href="/#about"   data-i18n="about"></a>
         <a href="/#styles"  data-i18n="styles_menu"></a>
         <a href="/#clients" data-i18n="portfolio"></a>
+        <div class="footer_nav_contacts">
+          <a href="/#contacts" data-i18n="contacts"></a>
+          <div class="footer_contacts_list">
+            <a href="https://wa.me/541144724911" class="footer_contact_link">+54 (11) 4472-4911</a>
+            <a href="https://t.me/digilang_pro"  class="footer_contact_link">t.me/digilang_pro</a>
+            <a class="footer_contact_link">Buenos Aires, Argentina</a>
+          </div>
+        </div>
       </nav>
+    </div>
 
-      <div class="footer_contacts_block">
-        <span class="footer_contacts_label" data-i18n="contacts"></span>
-        <a href="https://wa.me/541144724911" class="footer_contact_link">+54 (11) 4472-4911</a>
-        <a href="https://t.me/digilang_pro"  class="footer_contact_link">t.me/digilang_pro</a>
-        <span class="footer_contact_link">Buenos Aires</span>
-      </div>
-
+    <!-- Right: logo -->
+    <div class="footer_brand">
       <div class="footer_logo">
         <img src="img/logo.png" alt="Digilang">
         <span data-i18n="creative_lab"></span>
       </div>
+    </div>
 
-      <div class="footer_bottom">
-        <div class="footer_socials">
-          <a href="https://t.me/digilang_pro"   target="_blank" rel="noopener" class="footer_social_btn" aria-label="Telegram">
-            <img src="img/icons/tg_icon.svg" alt="Telegram">
-          </a>
-          <a href="https://wa.me/541144724911" target="_blank" rel="noopener" class="footer_social_btn" aria-label="WhatsApp">
-            <img src="img/icons/whts_icon.svg" alt="WhatsApp">
-          </a>
-        </div>
+    <!-- Bottom row: socials center + copyright right -->
+    <div class="footer_bottom">
+      <div class="footer_socials">
+        <a href="https://t.me/digilang_pro"   target="_blank" rel="noopener" class="footer_social_btn" aria-label="Telegram">
+          <img src="img/icons/tg_icon.svg" alt="Telegram">
+        </a>
+        <a href="https://wa.me/541144724911" target="_blank" rel="noopener" class="footer_social_btn" aria-label="WhatsApp">
+          <img src="img/icons/whts_icon.svg" alt="WhatsApp">
+        </a>
       </div>
+      <div class="footer_copy">© 2026 — Copyright</div>
     </div>
 
   </div>
