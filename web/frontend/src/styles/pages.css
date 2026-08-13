@@ -1,0 +1,514 @@
+/* ==========================================================================
+   DigiLang — HomePage: composición específica de cada sección.
+   (components.css tiene las piezas reutilizables; acá solo layout/posición.)
+   ========================================================================== */
+
+/* ---- Core journey (hero reimaginado: scroll que entra al cristal) -------- */
+.dl-journey {
+  position: relative;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--dl-black);
+}
+
+.dl-journey__canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+}
+
+.dl-journey__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background: radial-gradient(circle at center, transparent 35%, rgba(0, 0, 0, 0.55) 100%);
+}
+
+.dl-journey__hint {
+  position: absolute;
+  left: var(--dl-space-5);
+  bottom: var(--dl-space-5);
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--dl-space-2);
+  color: var(--dl-text-muted);
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  pointer-events: none;
+}
+
+.dl-journey__hint-arrow {
+  width: 1px;
+  height: 28px;
+  background: linear-gradient(180deg, var(--dl-orange), transparent);
+  animation: dl-hint-bounce 1.8s ease-in-out infinite;
+}
+
+@keyframes dl-hint-bounce {
+  0%,
+  100% {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  50% {
+    transform: translateY(8px);
+    opacity: 0.4;
+  }
+}
+
+.dl-journey__panels {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+
+.dl-journey__panel {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--dl-space-4);
+  text-align: center;
+  padding: 0 var(--dl-space-5);
+  opacity: 0;
+  will-change: opacity, transform;
+  /* El outro sigue animándose por scroll (JS toca su style cada frame), pero
+     los paneles por disciplina ahora cambian por click, de golpe — sin esta
+     transición el salto de opacity/transform sería instantáneo y brusco. */
+  transition: opacity 0.5s var(--dl-ease), transform 0.5s var(--dl-ease);
+}
+
+.dl-journey__panel-line {
+  font-family: var(--dl-font-display);
+  font-size: clamp(1.8rem, 4.4vw, 3.4rem);
+  max-width: 20ch;
+  color: var(--dl-white);
+}
+
+.dl-journey__outro {
+  gap: var(--dl-space-5);
+}
+
+/* ---- Core journey — nav de disciplinas (reemplaza el giro por scroll) --- */
+.dl-journey__nav {
+  position: absolute;
+  left: 50%;
+  bottom: var(--dl-space-6);
+  z-index: 3;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: var(--dl-space-3);
+  opacity: 0;
+  pointer-events: auto;
+}
+
+.dl-journey__nav-items {
+  display: flex;
+  align-items: center;
+  gap: var(--dl-space-2);
+  padding: var(--dl-space-2) var(--dl-space-3);
+  border-radius: var(--dl-radius-pill);
+  background: rgba(0, 0, 0, 0.5);
+  border: 1px solid var(--dl-line-soft);
+  backdrop-filter: blur(8px);
+}
+
+.dl-journey__nav-item {
+  padding: var(--dl-space-2) var(--dl-space-3);
+  border-radius: var(--dl-radius-pill);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--dl-text-muted);
+  transition: color var(--dl-t-fast) var(--dl-ease), background var(--dl-t-fast) var(--dl-ease);
+}
+
+.dl-journey__nav-item:hover {
+  color: var(--dl-white);
+}
+
+.dl-journey__nav-item--active {
+  color: var(--dl-text-on-orange);
+  background: var(--dl-orange);
+}
+
+/* ---- Core journey — fallback estático (touch/mobile/reduced-motion) ------ */
+.dl-journey__fallback {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--dl-space-5);
+}
+
+.dl-journey__fallback-mark {
+  width: 96px;
+  height: 96px;
+  object-fit: contain;
+}
+
+.dl-journey__fallback-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--dl-space-4);
+  width: 100%;
+  max-width: 640px;
+  margin-top: var(--dl-space-6);
+  text-align: left;
+}
+
+.dl-journey__fallback-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--dl-space-2);
+}
+
+/* ---- Styles showcase -------------------------------------------------------- */
+.dl-styles__head {
+  margin-bottom: var(--dl-space-7);
+}
+
+.dl-styles__head p {
+  max-width: 70ch;
+}
+
+.dl-styles__viewport {
+  position: relative;
+}
+
+.dl-styles__viewport--pinned {
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+}
+
+.dl-styles__gl {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+}
+
+.dl-styles__track {
+  display: flex;
+  gap: var(--dl-space-5);
+  will-change: transform;
+  padding: 0 clamp(20px, 4vw, 48px);
+}
+
+.dl-styles__track--scroll {
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-bottom: var(--dl-space-4);
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.dl-styles__track--scroll::-webkit-scrollbar {
+  display: none;
+}
+
+.dl-styles__track--scroll .dl-style-card {
+  scroll-snap-align: start;
+}
+
+.dl-style-card {
+  position: relative;
+  flex: 0 0 auto;
+  width: clamp(220px, 22vw, 320px);
+  aspect-ratio: 419 / 577;
+  border-radius: var(--dl-radius-md);
+  overflow: hidden;
+  background: var(--dl-black-card);
+  border: 1px solid var(--dl-line-soft);
+}
+
+.dl-style-card__img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--dl-t-med) var(--dl-ease-out);
+}
+
+.dl-style-card__img--ghost {
+  opacity: 0;
+}
+
+.dl-style-card:hover .dl-style-card__img:not(.dl-style-card__img--ghost) {
+  transform: scale(1.04);
+}
+
+.dl-style-card__badge {
+  position: absolute;
+  left: 12px;
+  bottom: 12px;
+  z-index: 3;
+  padding: 6px 12px;
+  border-radius: var(--dl-radius-pill);
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* ---- Clients ----------------------------------------------------------------- */
+.dl-clients__intro {
+  display: grid;
+  gap: var(--dl-space-4);
+  max-width: 62ch;
+  margin-bottom: var(--dl-space-8);
+  align-items: start;
+}
+
+.dl-clients__marquee {
+  overflow: hidden;
+  width: 100%;
+  -webkit-mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+  mask-image: linear-gradient(90deg, transparent, black 8%, black 92%, transparent);
+}
+
+.dl-clients__track {
+  display: flex;
+  gap: var(--dl-space-6);
+  width: max-content;
+  padding: 0 var(--dl-space-6);
+  animation: dl-marquee 32s linear infinite;
+}
+
+.dl-clients__marquee:hover .dl-clients__track {
+  animation-play-state: paused;
+}
+
+.dl-client-card {
+  position: relative;
+  flex: 0 0 auto;
+  width: clamp(160px, 15vw, 220px);
+  aspect-ratio: 337 / 650;
+  border-radius: var(--dl-radius-md);
+  background: var(--dl-black-card);
+  border: 1px solid var(--dl-line-soft);
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.dl-client-card img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: grayscale(1) brightness(0.85);
+  transition: filter var(--dl-t-med) var(--dl-ease), transform var(--dl-t-med) var(--dl-ease-out);
+}
+
+.dl-client-card:hover img {
+  filter: none;
+  transform: scale(1.04);
+}
+
+.dl-client-card__overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--dl-space-3);
+  background: rgba(0, 0, 0, 0.88);
+  opacity: 0;
+  transform: translateY(8px);
+  pointer-events: none;
+  transition: opacity var(--dl-t-med) var(--dl-ease), transform var(--dl-t-med) var(--dl-ease);
+}
+
+.dl-client-card:hover .dl-client-card__overlay,
+.dl-client-card.is-open .dl-client-card__overlay {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dl-clients__track {
+    animation: none;
+  }
+}
+
+/* ---- Services timeline -------------------------------------------------------- */
+.dl-timeline {
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  background: var(--dl-black-soft);
+}
+
+.dl-timeline__inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--dl-space-8);
+  width: 100%;
+}
+
+.dl-timeline__logo {
+  opacity: 0.85;
+}
+
+.dl-timeline__list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--dl-space-4);
+}
+
+.dl-timeline__item {
+  font-family: var(--dl-font-display);
+  font-size: clamp(1.4rem, 3vw, 2.4rem);
+  color: var(--dl-text-dim);
+  opacity: 0.3;
+}
+
+.dl-timeline__list--static .dl-timeline__item {
+  opacity: 1;
+  color: var(--dl-white);
+}
+
+.dl-timeline__cta {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--dl-space-5);
+  max-width: 60ch;
+  opacity: 0;
+  transform: translateY(24px);
+}
+
+.dl-timeline__cta--static {
+  opacity: 1;
+  transform: none;
+}
+
+/* ---- Footer / Contacto -------------------------------------------------------- */
+.dl-footer {
+  background: var(--dl-black);
+  border-top: 1px solid var(--dl-line-soft);
+  padding: var(--dl-space-9) 0 var(--dl-space-6);
+}
+
+.dl-footer__inner {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr auto;
+  grid-template-areas: 'card center brand' 'bottom bottom bottom';
+  gap: var(--dl-space-8);
+  align-items: start;
+}
+
+.dl-footer__card {
+  grid-area: card;
+  display: flex;
+  flex-direction: column;
+  gap: var(--dl-space-4);
+}
+
+.dl-footer__form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--dl-space-3);
+  margin-top: var(--dl-space-2);
+}
+
+.dl-footer__center {
+  grid-area: center;
+  display: flex;
+  flex-direction: column;
+  gap: var(--dl-space-6);
+}
+
+.dl-footer__nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--dl-space-3);
+  font-family: var(--dl-font-display);
+  font-size: 1.15rem;
+}
+
+.dl-footer__nav a,
+.dl-footer__contacts a {
+  transition: color var(--dl-t-fast) var(--dl-ease);
+}
+
+.dl-footer__nav a:hover,
+.dl-footer__contacts a:hover {
+  color: var(--dl-orange);
+}
+
+.dl-footer__contacts {
+  display: flex;
+  flex-direction: column;
+  gap: var(--dl-space-2);
+  color: var(--dl-text-muted);
+}
+
+.dl-footer__brand {
+  grid-area: brand;
+  justify-self: end;
+}
+
+.dl-footer__bottom {
+  grid-area: bottom;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: var(--dl-space-7);
+  margin-top: var(--dl-space-7);
+  border-top: 1px solid var(--dl-line-soft);
+}
+
+.dl-footer__socials {
+  display: flex;
+  gap: var(--dl-space-3);
+}
+
+.dl-footer__socials a {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--dl-black-card);
+  transition: background var(--dl-t-fast) var(--dl-ease);
+}
+
+.dl-footer__socials a:hover {
+  background: var(--dl-orange);
+}
+
+.dl-footer__socials img {
+  width: 20px;
+  height: 20px;
+}
+
+.dl-footer__copy {
+  color: var(--dl-text-dim);
+  font-size: 0.9rem;
+}
+
+@media (max-width: 860px) {
+  .dl-footer__inner {
+    grid-template-columns: 1fr;
+    grid-template-areas: 'card' 'center' 'brand' 'bottom';
+  }
+
+  .dl-footer__brand {
+    justify-self: start;
+  }
+}

@@ -1,0 +1,62 @@
+/* ==========================================================================
+   DigiLang — Design Tokens
+   Paleta heredada del sitio anterior: negro + blanco + un único acento
+   naranja (#FCA311). Ver web/legacy-php/css/style.css para el origen.
+   ========================================================================== */
+:root {
+  /* Color */
+  --dl-black: #000000;
+  --dl-black-soft: #0c0c0c;
+  --dl-black-card: #111111;
+  --dl-panel: #161616;
+  --dl-white: #ffffff;
+  --dl-bone: #e7eefc;
+  --dl-orange: #fca311;
+  --dl-orange-dim: #e6920a;
+  --dl-danger: #ff5252;
+  --dl-line: rgba(255, 255, 255, 0.14);
+  --dl-line-soft: rgba(255, 255, 255, 0.08);
+
+  --dl-text-on-black: var(--dl-white);
+  --dl-text-muted: rgba(255, 255, 255, 0.62);
+  --dl-text-dim: rgba(255, 255, 255, 0.4);
+  --dl-text-on-orange: #140900;
+
+  /* Tipografía */
+  --dl-font-display: 'Tektur', 'Helvetica Neue', Arial, sans-serif;
+  --dl-font-body: 'Barlow Condensed', 'Helvetica Neue', Arial, sans-serif;
+
+  /* Espaciado (escala 4px) */
+  --dl-space-1: 4px;
+  --dl-space-2: 8px;
+  --dl-space-3: 12px;
+  --dl-space-4: 16px;
+  --dl-space-5: 24px;
+  --dl-space-6: 32px;
+  --dl-space-7: 48px;
+  --dl-space-8: 64px;
+  --dl-space-9: 96px;
+  --dl-space-10: 140px;
+
+  /* Radios */
+  --dl-radius-sm: 8px;
+  --dl-radius-md: 16px;
+  --dl-radius-lg: 28px;
+  --dl-radius-pill: 999px;
+
+  /* Sombras */
+  --dl-shadow-card: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --dl-shadow-pop: 0 16px 40px rgba(0, 0, 0, 0.55);
+  --dl-shadow-orange: 0 8px 28px rgba(252, 163, 17, 0.35);
+
+  /* Transiciones — mismo timing/easing que tenía el sitio anterior */
+  --dl-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --dl-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --dl-t-fast: 160ms;
+  --dl-t-med: 350ms;
+  --dl-t-slow: 600ms;
+
+  /* Layout */
+  --dl-maxw: 1300px;
+  --dl-cursor-size: 14px;
+}

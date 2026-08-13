@@ -1,0 +1,310 @@
+/* ==========================================================================
+   DigiLang — Componentes reutilizables
+   ========================================================================== */
+
+.dl-magnetic {
+  display: inline-flex;
+}
+
+/* ---- Cursor personalizado -------------------------------------------- */
+.dl-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--dl-cursor-size);
+  height: var(--dl-cursor-size);
+  border-radius: 50%;
+  background: var(--dl-orange);
+  pointer-events: none;
+  z-index: 999;
+  will-change: transform;
+  transform: translate(-50%, -50%);
+  transition: width var(--dl-t-fast) var(--dl-ease), height var(--dl-t-fast) var(--dl-ease),
+    background var(--dl-t-fast) var(--dl-ease);
+}
+
+.dl-cursor--hover {
+  width: 48px;
+  height: 48px;
+  background: rgba(252, 163, 17, 0.25);
+  border: 1px solid var(--dl-orange);
+}
+
+/* ---- Logo (marca) ------------------------------------------------------- */
+.dl-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--dl-space-3);
+}
+
+.dl-logo__mark {
+  flex-shrink: 0;
+  display: block;
+  border-radius: var(--dl-radius-sm);
+  object-fit: cover;
+}
+
+.dl-logo__text {
+  font-family: var(--dl-font-display);
+  font-size: 0.95rem;
+  letter-spacing: 0.02em;
+  color: var(--dl-white);
+}
+
+/* ---- Preloader ------------------------------------------------------------ */
+.dl-preloader {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--dl-space-5);
+  background: var(--dl-black);
+  transition: opacity 0.6s var(--dl-ease), visibility 0.6s var(--dl-ease);
+}
+
+.dl-preloader--done {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.dl-preloader .dl-logo__mark {
+  animation: dl-preloader-pulse 1.4s ease-in-out infinite;
+}
+
+@keyframes dl-preloader-pulse {
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.08);
+    opacity: 0.72;
+  }
+}
+
+.dl-preloader__bar {
+  width: 200px;
+  height: 2px;
+  border-radius: var(--dl-radius-pill);
+  background: var(--dl-line);
+  overflow: hidden;
+}
+
+.dl-preloader__bar span {
+  display: block;
+  height: 100%;
+  background: var(--dl-orange);
+  transition: width 0.2s linear;
+}
+
+/* ---- Audio toggle --------------------------------------------------------- */
+.dl-audio-toggle {
+  position: fixed;
+  right: var(--dl-space-5);
+  bottom: var(--dl-space-5);
+  z-index: 500;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--dl-line);
+  color: var(--dl-text-muted);
+  backdrop-filter: blur(8px);
+  transition: background var(--dl-t-fast) var(--dl-ease), color var(--dl-t-fast) var(--dl-ease),
+    border-color var(--dl-t-fast) var(--dl-ease);
+}
+
+.dl-audio-toggle:hover {
+  border-color: var(--dl-orange);
+  color: var(--dl-orange);
+}
+
+.dl-audio-toggle--on {
+  background: var(--dl-orange);
+  border-color: var(--dl-orange);
+  color: var(--dl-text-on-orange);
+}
+
+.dl-audio-toggle--on:hover {
+  color: var(--dl-text-on-orange);
+}
+
+/* ---- Language toggle ------------------------------------------------------- */
+.dl-language-toggle {
+  position: fixed;
+  right: var(--dl-space-5);
+  top: var(--dl-space-5);
+  z-index: 500;
+  min-width: 44px;
+  height: 44px;
+  padding: 0 var(--dl-space-3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--dl-radius-pill);
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid var(--dl-line);
+  color: var(--dl-text-muted);
+  font-family: var(--dl-font-display);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  backdrop-filter: blur(8px);
+  transition: background var(--dl-t-fast) var(--dl-ease), color var(--dl-t-fast) var(--dl-ease),
+    border-color var(--dl-t-fast) var(--dl-ease);
+}
+
+.dl-language-toggle:hover {
+  border-color: var(--dl-orange);
+  color: var(--dl-orange);
+}
+
+/* ---- Botones ------------------------------------------------------------ */
+.dl-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--dl-space-2);
+  font-family: var(--dl-font-body);
+  font-weight: 600;
+  font-size: 0.95rem;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 15px 30px;
+  border-radius: var(--dl-radius-pill);
+  border: 1px solid transparent;
+  white-space: nowrap;
+  transition: transform var(--dl-t-fast) var(--dl-ease), background var(--dl-t-fast) var(--dl-ease),
+    color var(--dl-t-fast) var(--dl-ease), border-color var(--dl-t-fast) var(--dl-ease),
+    box-shadow var(--dl-t-fast) var(--dl-ease);
+}
+
+.dl-btn:active {
+  transform: scale(0.96);
+}
+
+.dl-btn--primary {
+  background: var(--dl-orange);
+  color: var(--dl-text-on-orange);
+  box-shadow: var(--dl-shadow-orange);
+}
+
+.dl-btn--primary:hover {
+  background: var(--dl-orange-dim);
+}
+
+.dl-btn--outline {
+  background: transparent;
+  color: var(--dl-white);
+  border-color: var(--dl-line);
+}
+
+.dl-btn--outline:hover {
+  border-color: var(--dl-orange);
+  color: var(--dl-orange);
+}
+
+.dl-btn--sm {
+  padding: 10px 20px;
+  font-size: 0.8rem;
+}
+
+.dl-btn--block {
+  width: 100%;
+}
+
+/* ---- Cabecera de sección (línea + punto) --------------------------------- */
+.dl-section-head {
+  display: flex;
+  align-items: center;
+  gap: var(--dl-space-4);
+  margin-bottom: var(--dl-space-7);
+}
+
+.dl-section-head__line {
+  flex: 1;
+  height: 1px;
+  background: var(--dl-line);
+}
+
+.dl-section-head__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--dl-orange);
+  flex-shrink: 0;
+}
+
+/* ---- Chips / tags ------------------------------------------------------- */
+.dl-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--dl-space-2);
+  padding: 8px 16px;
+  border-radius: var(--dl-radius-pill);
+  border: 1px solid var(--dl-line);
+  font-size: 0.85rem;
+  color: var(--dl-text-muted);
+}
+
+.dl-chip::before {
+  content: '';
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--dl-orange);
+}
+
+/* ---- Card genérica -------------------------------------------------------- */
+.dl-card {
+  background: var(--dl-black-card);
+  border: 1px solid var(--dl-line-soft);
+  border-radius: var(--dl-radius-md);
+  padding: var(--dl-space-6);
+  transition: transform var(--dl-t-med) var(--dl-ease-out), border-color var(--dl-t-med) var(--dl-ease);
+}
+
+/* ---- Formulario ----------------------------------------------------------- */
+.dl-field {
+  width: 100%;
+  padding: 14px 18px;
+  border-radius: var(--dl-radius-sm);
+  border: 1px solid var(--dl-line);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--dl-white);
+  font-family: var(--dl-font-body);
+  font-size: 1.05rem;
+  transition: border-color var(--dl-t-fast) var(--dl-ease), background var(--dl-t-fast) var(--dl-ease);
+}
+
+.dl-field::placeholder {
+  color: var(--dl-text-dim);
+}
+
+.dl-field:focus {
+  outline: none;
+  border-color: var(--dl-orange);
+  background: rgba(252, 163, 17, 0.06);
+}
+
+textarea.dl-field {
+  resize: vertical;
+  min-height: 96px;
+}
+
+/* ---- Marquee genérico ------------------------------------------------------ */
+@keyframes dl-marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
