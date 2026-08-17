@@ -12,6 +12,6 @@ npm run dev
 ### Build de producción
 ```
 cd web/frontend
-npm run build   # genera web/frontend/dist
+npm run build   # genera web/public
 npm run preview # sirve el build localmente
 ```
