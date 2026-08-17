@@ -26,7 +26,7 @@
 .dl-cursor--hover {
   width: 48px;
   height: 48px;
-  background: rgba(252, 163, 17, 0.25);
+  background: rgba(255, 255, 255, 0.2);
   border: 1px solid var(--dl-orange);
 }
 
@@ -291,7 +291,7 @@
 .dl-field:focus {
   outline: none;
   border-color: var(--dl-orange);
-  background: rgba(252, 163, 17, 0.06);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 textarea.dl-field {

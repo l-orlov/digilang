@@ -1,7 +1,8 @@
 /* ==========================================================================
    DigiLang — Design Tokens
-   Paleta heredada del sitio anterior: negro + blanco + un único acento
-   naranja (#FCA311). Ver web/legacy-php/css/style.css para el origen.
+   Paleta chico-blanca (antes tenía un acento naranja único, #FCA311, ver
+   git history) — el color ahora vive solo en el cristal (facets pastel,
+   ver PALETTE en CoreScene.tsx), no en el UI/entorno.
    ========================================================================== */
 :root {
   /* Color */
@@ -11,8 +12,8 @@
   --dl-panel: #161616;
   --dl-white: #ffffff;
   --dl-bone: #e7eefc;
-  --dl-orange: #fca311;
-  --dl-orange-dim: #e6920a;
+  --dl-orange: #ffffff;
+  --dl-orange-dim: #c9c9c9;
   --dl-danger: #ff5252;
   --dl-line: rgba(255, 255, 255, 0.14);
   --dl-line-soft: rgba(255, 255, 255, 0.08);
@@ -20,7 +21,7 @@
   --dl-text-on-black: var(--dl-white);
   --dl-text-muted: rgba(255, 255, 255, 0.62);
   --dl-text-dim: rgba(255, 255, 255, 0.4);
-  --dl-text-on-orange: #140900;
+  --dl-text-on-orange: #000000;
 
   /* Tipografía */
   --dl-font-display: 'Tektur', 'Helvetica Neue', Arial, sans-serif;
@@ -47,7 +48,7 @@
   /* Sombras */
   --dl-shadow-card: 0 8px 24px rgba(0, 0, 0, 0.45);
   --dl-shadow-pop: 0 16px 40px rgba(0, 0, 0, 0.55);
-  --dl-shadow-orange: 0 8px 28px rgba(252, 163, 17, 0.35);
+  --dl-shadow-orange: 0 8px 28px rgba(255, 255, 255, 0.25);
 
   /* Transiciones — mismo timing/easing que tenía el sitio anterior */
   --dl-ease: cubic-bezier(0.4, 0, 0.2, 1);

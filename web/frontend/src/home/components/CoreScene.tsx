@@ -9,7 +9,10 @@
  *
  * Las caras son prismas triangulares (con espesor real, no planos) con una
  * separación fija chica entre sí (REST_GAP), que deja ver ese espesor como
- * una línea de profundidad aun en reposo. Se puede arrastrar para girarlo
+ * una línea de profundidad aun en reposo — pero solo "afuera": adentro se
+ * cierra rápido (ver el fade de REST_GAP en el useFrame de Crystal), porque
+ * de cerca esa separación deja huecos visibles en los vértices donde
+ * convergen varias caras. Se puede arrastrar para girarlo
  * (con inercia), y además gira solo (lento, autónomo) mientras la cámara
  * está "afuera". En vez de que TODAS las caras se separen igual al pasar el
  * mouse, se raycastea el punto exacto bajo el cursor sobre el cristal y
@@ -26,6 +29,7 @@ import { Sparkles } from '@react-three/drei';
 import {
   BufferAttribute,
   BufferGeometry,
+  Color,
   DoubleSide,
   IcosahedronGeometry,
   MathUtils,
@@ -33,7 +37,7 @@ import {
   Vector3,
   type MeshPhysicalMaterialParameters,
 } from 'three';
-import type { AmbientLight, Group, Mesh, PointLight } from 'three';
+import type { AmbientLight, DirectionalLight, Group, Mesh } from 'three';
 import { CalibrationRig } from '@/home/components/CalibrationRig';
 import { JourneyContent } from '@/home/components/JourneyContent';
 import type { JourneyFacet } from '@/home/content';
@@ -71,6 +75,85 @@ const CAMERA_SETTLE_END = APPROACH_END + 0.06;
  * panel de cada facet queden siempre sincronizados entre sí. */
 export const INSIDE_END = 0.92;
 
+// Solo 3 colores — con 8 (rojo/naranja/amarillo/verde/turquesa/azul/violeta/
+// magenta cíclico por índice) casi cada cara quedaba pegada a una vecina de
+// tono totalmente distinto: con ~80 caras chicas eso se leía como
+// "confetti", no como un objeto diseñado. Menos colores + asignación por
+// COLOREADO DE GRAFO (ver `colorFaces` — nunca dos caras que comparten una
+// arista quedan con el mismo color) da bloques limpios y deliberados, más
+// cerca de una piedra tallada o un patrón gráfico que de ruido aleatorio.
+const PASTEL_PALETTE = [
+  '#C1573D', // terracota
+  '#1F6F6B', // verde azulado profundo
+  '#E8DCC8', // crema cálido
+];
+
+/** Dos caras son vecinas si comparten una arista (2 vértices), no solo un
+ * vértice — compartir un solo vértice (donde convergen 5-6 caras) no basta,
+ * ese punto lo tocan caras que ni se rozan entre sí. Se arma comparando
+ * posiciones (con redondeo, porque la geometría no está indexada) en vez de
+ * índices de vértice, así funciona directo sobre `basePos`. */
+function buildFaceAdjacency(basePos: BufferGeometry['attributes']['position'], faceCount: number): number[][] {
+  const v = new Vector3();
+  const keyOf = (i: number) => {
+    v.fromBufferAttribute(basePos, i);
+    return `${v.x.toFixed(4)},${v.y.toFixed(4)},${v.z.toFixed(4)}`;
+  };
+  const edgeFaces = new Map<string, number[]>();
+  for (let f = 0; f < faceCount; f++) {
+    const i0 = f * 3;
+    const keys = [keyOf(i0), keyOf(i0 + 1), keyOf(i0 + 2)];
+    for (let e = 0; e < 3; e++) {
+      const a = keys[e];
+      const b = keys[(e + 1) % 3];
+      const edgeKey = a < b ? `${a}|${b}` : `${b}|${a}`;
+      let faces = edgeFaces.get(edgeKey);
+      if (!faces) {
+        faces = [];
+        edgeFaces.set(edgeKey, faces);
+      }
+      faces.push(f);
+    }
+  }
+  const adjacency: number[][] = Array.from({ length: faceCount }, () => []);
+  for (const faces of edgeFaces.values()) {
+    if (faces.length === 2) {
+      const [a, b] = faces;
+      adjacency[a].push(b);
+      adjacency[b].push(a);
+    }
+  }
+  return adjacency;
+}
+
+/** Colorea cada cara (índice de paleta, no el color en sí) de forma que
+ * ninguna cara comparta color con una vecina — backtracking simple, rápido
+ * de sobra para ~80 caras con solo 3 vecinos cada una. Un icosaedro
+ * subdividido es un grafo cúbico (grado 3) no completo, así que 3 colores
+ * siempre alcanzan (teorema de Brooks) — el fallback cíclico es solo por
+ * las dudas, no debería activarse nunca en la práctica. */
+function colorFaces(adjacency: number[][], paletteSize: number): number[] {
+  const faceCount = adjacency.length;
+  const colorOf = new Array(faceCount).fill(-1);
+
+  function place(idx: number): boolean {
+    if (idx === faceCount) return true;
+    const used = new Set(adjacency[idx].map((n) => colorOf[n]).filter((c) => c !== -1));
+    for (let c = 0; c < paletteSize; c++) {
+      if (used.has(c)) continue;
+      colorOf[idx] = c;
+      if (place(idx + 1)) return true;
+      colorOf[idx] = -1;
+    }
+    return false;
+  }
+
+  if (!place(0)) {
+    for (let f = 0; f < faceCount; f++) colorOf[f] = f % paletteSize;
+  }
+  return colorOf;
+}
+
 /**
  * Cada cara del icosaedro se reemplaza por un prisma triangular: la cara
  * exterior (al radio original) más 3 paredes laterales que bajan hasta una
@@ -78,6 +161,9 @@ export const INSIDE_END = 0.92;
  * triángulos: 1 tapa + 3 paredes x 2) comparten el mismo `aCentroid`, así
  * que el shader los mueve como un único bloque rígido al entreabrirse —
  * revelando las paredes como profundidad real, no un plano sin espesor.
+ * También comparten un color de PASTEL_PALETTE, elegido por `colorFaces`
+ * (nunca igual al de una cara vecina) — igual técnica que aCentroid, un
+ * valor por cara repetido en sus 21 vértices.
  */
 function createFacetedGeometry(radius: number, detail: number, depth: number): BufferGeometry {
   const base = new IcosahedronGeometry(radius, detail).toNonIndexed();
@@ -88,6 +174,7 @@ function createFacetedGeometry(radius: number, detail: number, depth: number): B
 
   const positions = new Float32Array(vertCount * 3);
   const centroids = new Float32Array(vertCount * 3);
+  const colors = new Float32Array(vertCount * 3);
 
   const t0 = new Vector3();
   const t1 = new Vector3();
@@ -97,6 +184,9 @@ function createFacetedGeometry(radius: number, detail: number, depth: number): B
   const b0 = new Vector3();
   const b1 = new Vector3();
   const b2 = new Vector3();
+  const col = new Color();
+  const palette = PASTEL_PALETTE.map((hex) => new Color(hex));
+  const faceColorIndex = colorFaces(buildFaceAdjacency(basePos, faceCount), palette.length);
 
   let vi = 0;
   const pushVert = (v: Vector3) => {
@@ -106,6 +196,9 @@ function createFacetedGeometry(radius: number, detail: number, depth: number): B
     centroids[vi * 3] = c.x;
     centroids[vi * 3 + 1] = c.y;
     centroids[vi * 3 + 2] = c.z;
+    colors[vi * 3] = col.r;
+    colors[vi * 3 + 1] = col.g;
+    colors[vi * 3 + 2] = col.b;
     vi++;
   };
 
@@ -115,10 +208,18 @@ function createFacetedGeometry(radius: number, detail: number, depth: number): B
     t1.fromBufferAttribute(basePos, i0 + 1);
     t2.fromBufferAttribute(basePos, i0 + 2);
     c.copy(t0).add(t1).add(t2).divideScalar(3);
-    dir.copy(c).normalize();
-    b0.copy(t0).addScaledVector(dir, -depth);
-    b1.copy(t1).addScaledVector(dir, -depth);
-    b2.copy(t2).addScaledVector(dir, -depth);
+    col.copy(palette[faceColorIndex[f]]);
+    // Cada vértice de la base de la pared usa SU PROPIA dirección radial
+    // (no la del centroide de la cara) — así el punto quede compartido con
+    // las caras vecinas que tocan ese mismo vértice, sin importar cuál cara
+    // lo esté calculando. Antes usaban `dir` (centroide de la cara), que
+    // difiere entre caras vecinas aunque el vértice de arriba (t0/t1/t2)
+    // sea el mismo punto — eso dejaba las paredes sin cerrar en cada
+    // vértice donde convergen 5-6 caras (hueco en forma de estrella, fijo
+    // en la geometría, independiente de REST_GAP/explode).
+    b0.copy(t0).addScaledVector(dir.copy(t0).normalize(), -depth);
+    b1.copy(t1).addScaledVector(dir.copy(t1).normalize(), -depth);
+    b2.copy(t2).addScaledVector(dir.copy(t2).normalize(), -depth);
 
     // tapa exterior
     pushVert(t0);
@@ -150,6 +251,7 @@ function createFacetedGeometry(radius: number, detail: number, depth: number): B
   const geo = new BufferGeometry();
   geo.setAttribute('position', new BufferAttribute(positions, 3));
   geo.setAttribute('aCentroid', new BufferAttribute(centroids, 3));
+  geo.setAttribute('color', new BufferAttribute(colors, 3));
   geo.computeVertexNormals();
   return geo;
 }
@@ -293,28 +395,44 @@ function CameraRig({
   return null;
 }
 
-/** Atenúa las luces puntuales principales a medida que la cámara se interna
- * — cerca de una cara, la misma intensidad que se ve bien "de afuera" pega
- * un reflejo puntual que tapa la pantalla. El ambient sube un poco para
- * compensar y que no se vaya a negro. */
+/** Key/rim son direccionales (rayos paralelos, sin caída por distancia) a
+ * propósito: con luces puntuales cerca del objeto, cada cara plana recibía
+ * una intensidad distinta según qué tan cerca quedaba cada píxel de la
+ * lámpara — eso pintaba un degradé dentro de CADA cara (más claro al
+ * centro, más oscuro en los bordes) que rompía la lectura de "color sólido
+ * por cara" (estilo cubo Rubik) y la dejaba viéndose sucia/mezclada. Una
+ * direccional ilumina toda la cara por igual (mismo ángulo de luz en todo
+ * punto de un plano), así que dentro de una cara no hay degradé — solo
+ * varía el brillo entre caras según el ángulo de cada una. */
 function Lighting({ progressRef }: { progressRef: React.RefObject<number> }) {
   const ambient = useRef<AmbientLight>(null);
-  const key = useRef<PointLight>(null);
-  const rim = useRef<PointLight>(null);
+  const key = useRef<DirectionalLight>(null);
+  const fill = useRef<DirectionalLight>(null);
+  const rim = useRef<DirectionalLight>(null);
 
   useFrame(() => {
     const p = progressRef.current ?? 0;
     const insideDepth = MathUtils.smoothstep(p, APPROACH_END, 1);
-    if (ambient.current) ambient.current.intensity = MathUtils.lerp(0.32, 0.42, insideDepth);
-    if (key.current) key.current.intensity = MathUtils.lerp(42, 14, insideDepth);
-    if (rim.current) rim.current.intensity = MathUtils.lerp(18, 6, insideDepth);
+    // Un ambient alto (probado en 1.1) resolvía el lado en sombra del
+    // cristal, pero un ambient ilumina PAREJO toda la escena por igual sin
+    // importar orientación — de paso volaba de brillo cualquier superficie
+    // plana del stand que mirase de frente a cámara (la garra se veía
+    // "encendida" en blanco). Con un `fill` direccional dedicado del lado
+    // opuesto al `key`, el lado en sombra del cristal se resuelve sin
+    // pegarle ese extra parejo a todo lo demás — el ambient vuelve a un
+    // nivel moderado, solo para que no se vaya a negro puro.
+    if (ambient.current) ambient.current.intensity = MathUtils.lerp(0.55, 0.5, insideDepth);
+    if (key.current) key.current.intensity = MathUtils.lerp(2, 1.2, insideDepth);
+    if (fill.current) fill.current.intensity = MathUtils.lerp(1, 0.6, insideDepth);
+    if (rim.current) rim.current.intensity = MathUtils.lerp(0.8, 0.4, insideDepth);
   });
 
   return (
     <>
-      <ambientLight ref={ambient} intensity={0.32} />
-      <pointLight ref={key} position={[4, 3, 5]} intensity={52} color="#ffffff" />
-      <pointLight ref={rim} position={[-5, 3, -4]} intensity={18} color="#7fb2ff" />
+      <ambientLight ref={ambient} intensity={0.55} />
+      <directionalLight ref={key} position={[4, 3, 5]} intensity={2} color="#ffffff" />
+      <directionalLight ref={fill} position={[-3, -1, 4]} intensity={1} color="#ffffff" />
+      <directionalLight ref={rim} position={[-5, 3, -4]} intensity={0.8} color="#7fb2ff" />
     </>
   );
 }
@@ -330,7 +448,7 @@ function Crystal({ progressRef }: { progressRef: React.RefObject<number> }) {
   const mesh = useRef<Mesh>(null);
   const group = useRef<Group>(null);
   const material = useRef<ExplodeMaterial>(null);
-  const light = useRef<PointLight>(null);
+  const light = useRef<DirectionalLight>(null);
 
   const dragging = useRef(false);
   const velocity = useRef({ x: 0, y: 0 });
@@ -343,11 +461,24 @@ function Crystal({ progressRef }: { progressRef: React.RefObject<number> }) {
   const dlMaterial = useMemo(
     () =>
       new ExplodeMaterial({
-        color: '#fca311',
-        emissive: '#3a1600',
-        roughness: 0.3,
-        metalness: 0.5,
-        clearcoat: 0.25,
+        // Blanco + vertexColors: true — el color final por píxel es
+        // `color × color-de-vértice` (ver PASTEL_PALETTE en
+        // createFacetedGeometry); con blanco de base, sale el color de la
+        // cara tal cual, sin mezcla.
+        color: '#ffffff',
+        vertexColors: true,
+        // Neutro, no tibio: un emissive con tinte (antes '#3a1600',
+        // marrón cálido) le pondría el mismo tono a todas las caras por
+        // encima y se perdería la diferencia entre pasteles.
+        emissive: '#0a0a0a',
+        // Mate a propósito, casi sin metalness/clearcoat — un brillo
+        // especular amplio (aunque venga de una direccional, no de un
+        // punto cercano) sigue variando algo con el ángulo y podía
+        // "romper" el color plano de una cara. Estilo cubo Rubik: plástico
+        // mate, no gema pulida.
+        roughness: 0.65,
+        metalness: 0,
+        clearcoat: 0,
         clearcoatRoughness: 0.35,
         ior: 1.8,
         side: DoubleSide,
@@ -356,6 +487,11 @@ function Crystal({ progressRef }: { progressRef: React.RefObject<number> }) {
   );
 
   const handlePointerDown = (e: ThreeEvent<PointerEvent>) => {
+    // Una vez adentro (p > APPROACH_END) el cristal deja de responder al
+    // mouse — ni arrastre ni empuje local de caras — porque ahí el punto
+    // de vista ya lo controla la nav (yaw/pitch hacia la facet elegida) y
+    // que el objeto además gire por su cuenta al tocarlo quedaba confuso.
+    if ((progressRef.current ?? 0) > APPROACH_END) return;
     e.stopPropagation();
     dragging.current = true;
     velocity.current = { x: 0, y: 0 };
@@ -413,29 +549,42 @@ function Crystal({ progressRef }: { progressRef: React.RefObject<number> }) {
       }
     }
     hoverPointCurrent.current.lerp(hoverPointTarget.current, 0.15);
-    const hoverStrengthTarget = hovering.current ? 1 : 0;
+    // Mismo criterio que el drag: el empuje local de la cara bajo el
+    // cursor solo tiene sentido "afuera" — adentro no se interactúa con
+    // el cristal en absoluto.
+    const hoverStrengthTarget = hovering.current && inApproach ? 1 : 0;
     hoverStrengthCurrent.current += (hoverStrengthTarget - hoverStrengthCurrent.current) * 0.08;
 
-    // Cuanto más "adentro" del recorrido está la cámara, más chata se pone
-    // la superficie (menos glossy) — a esa distancia tan corta, un material
-    // muy pulido produce reflejos de las luces que tapan toda la pantalla.
-    // Cerca (reposo/acercamiento) se mantiene nítido, tipo gema pulida.
+    // Con vertexColors + paleta por cara, metalness/clearcoat altos hacían
+    // que la luz dominara el color propio de cada cara vía reflejo
+    // especular — leía "piedra oscura/mezclada" en vez de color plano y
+    // sólido. Casi nulos en todo el recorrido, mate (roughness alto), así
+    // el color de vértice se ve tal cual, sin brillo que lo tape — estilo
+    // cubo Rubik, no gema pulida.
     const p = progressRef.current ?? 0;
     const insideDepth = MathUtils.smoothstep(p, APPROACH_END, 1);
     if (material.current) {
-      // metalness también baja con la profundidad: un material metálico da
-      // reflejos especulares mucho más intensos, y a esta distancia alguna
-      // cara termina alineada en ángulo espejo justo con la luz clave en
-      // algún punto del recorrido — sin bajar metalness, ESE frame se ve
-      // sobreexpuesto aunque roughness/clearcoat ya estén al mínimo.
-      // El piso (0.24/0.5/0.3, antes de bajar con insideDepth) se subió un
-      // poco: con eso tan pulido, la pared lateral que se destapa al abrir
-      // una cara con el mouse agarraba un reflejo muy caliente — se lee
-      // como si "brillara" justo donde tocás.
-      material.current.roughness = MathUtils.lerp(0.4, 0.5, insideDepth);
-      material.current.metalness = MathUtils.lerp(0.3, 0.12, insideDepth);
-      material.current.clearcoat = MathUtils.lerp(0.15, 0, insideDepth);
-      material.current.explode = REST_GAP;
+      // Adentro la cámara queda muy cerca de la cara — el vector de vista
+      // barre un ángulo enorme de un extremo al otro de un mismo plano, y
+      // hasta un specular chico (el ~4% de Fresnel que tiene cualquier
+      // dieléctrico, no hace falta metalness) se nota como un degradé
+      // dentro de la cara. Roughness bien alto ahí adentro lo aplana.
+      material.current.roughness = MathUtils.lerp(0.65, 0.9, insideDepth);
+      material.current.metalness = 0;
+      material.current.clearcoat = 0;
+      // REST_GAP separa cada cara de sus vecinas empujándolas por SU PROPIA
+      // dirección — en un vértice donde convergen 5-6 caras, ese punto
+      // compartido se parte en 5-6 posiciones ligeramente distintas y deja
+      // un hueco en forma de estrella sin geometría detrás (se ve negro).
+      // De afuera, a la distancia normal, no se nota — pero de cerca,
+      // adentro del cristal, esos huecos quedan pegados a la cámara y se
+      // ven claramente. En vez de sacar el gap por completo (se pierde el
+      // efecto "caras separadas" que se pidió), se cierra rápido apenas se
+      // cruza adentro — mismo tramo de 0.05 que ya usan CalibrationRig.tsx
+      // y JourneyContent.tsx para sus propios fade — así de afuera se ve
+      // igual que siempre y adentro, donde molesta, directamente no está.
+      const gapFade = 1 - MathUtils.smoothstep(p, APPROACH_END, APPROACH_END + 0.05);
+      material.current.explode = REST_GAP * gapFade;
       material.current.time = state.clock.elapsedTime;
       material.current.hoverPoint = hoverPointCurrent.current;
       material.current.hoverStrength = hoverStrengthCurrent.current;
@@ -470,7 +619,7 @@ function Crystal({ progressRef }: { progressRef: React.RefObject<number> }) {
           <primitive ref={material} object={dlMaterial} attach="material" />
         </mesh>
       </group>
-      <pointLight ref={light} position={[-4, -2, -3]} intensity={22} color="#fca311" />
+      <directionalLight ref={light} position={[-4, -2, -3]} intensity={1.2} color="#ffffff" />
     </>
   );
 }
@@ -499,7 +648,7 @@ export function CoreScene({
       <CalibrationRig progressRef={progressRef} />
       <JourneyContent facets={facets} facetCount={facetCount} progressRef={progressRef} />
       <Crystal progressRef={progressRef} />
-      <Sparkles count={60} scale={6} size={2} speed={0.3} color="#fca311" />
+      <Sparkles count={60} scale={6} size={2} speed={0.3} color="#ffffff" />
     </Canvas>
   );
 }

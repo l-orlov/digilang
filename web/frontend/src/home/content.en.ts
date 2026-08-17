@@ -11,7 +11,7 @@ export const content: Content = {
   ...es,
   journey: {
     approach: {
-      hint: 'Scroll',
+      hint: 'Scroll to discover more',
     },
     intro: {
       title: "DigiLang's digital core",

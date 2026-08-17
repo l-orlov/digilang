@@ -16,7 +16,7 @@
  * queda rodeada de caras) y no debe competir con los paneles de texto del
  * viaje.
  */
-import { useMemo, useRef } from 'react';
+import { useMemo } from 'react';
 import { useFrame } from '@react-three/fiber';
 import {
   AdditiveBlending,
@@ -26,7 +26,6 @@ import {
   MeshStandardMaterial,
   RepeatWrapping,
   SRGBColorSpace,
-  type Mesh,
 } from 'three';
 import { APPROACH_END } from '@/home/components/CoreScene';
 
@@ -61,10 +60,6 @@ const TEXT_BAND_RADIUS = (JAW_RADIUS_NEAR + JAW_RADIUS_FAR) / 2 + 0.006;
 const TEXT_BAND_HEIGHT = JAW_HEIGHT * 0.55;
 
 const FLOOR_Y = -3.3;
-const RAIL_X = 1.85;
-const RAIL_Z = 0.4;
-const RAIL_HEIGHT = 2.6;
-const SCAN_AMPLITUDE = 1.15;
 
 function createGridTexture(): CanvasTexture {
   const size = 256;
@@ -92,7 +87,7 @@ function createGridTexture(): CanvasTexture {
     ctx.stroke();
   }
 
-  ctx.fillStyle = 'rgba(252, 163, 17, 0.35)';
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.35)';
   for (let i = 0; i <= cells; i += 2) {
     for (let j = 0; j <= cells; j += 2) {
       ctx.beginPath();
@@ -130,11 +125,11 @@ function createEngravingTexture(text: string): CanvasTexture {
   ctx.lineWidth = 12;
   ctx.strokeStyle = '#000000';
   ctx.strokeText(text, width / 2, height / 2 + 8);
-  ctx.fillStyle = '#fca311';
+  ctx.fillStyle = '#ffffff';
   ctx.fillText(text, width / 2, height / 2 + 8);
 
-  // Sin esto, el naranja dibujado en el canvas (sRGB) se interpreta como
-  // datos lineales y sale más pálido/amarillento que el mismo hex puesto
+  // Sin esto, el color dibujado en el canvas (sRGB) se interpreta como
+  // datos lineales y sale más pálido/desaturado que el mismo hex puesto
   // directo en `color` de un material — quedaba desparejo con el resto.
   const texture = new CanvasTexture(canvas);
   texture.colorSpace = SRGBColorSpace;
@@ -149,8 +144,8 @@ function createGlowTexture(): CanvasTexture {
   const ctx = canvas.getContext('2d')!;
 
   const gradient = ctx.createRadialGradient(size / 2, size / 2, 0, size / 2, size / 2, size / 2);
-  gradient.addColorStop(0, 'rgba(252, 163, 17, 0.9)');
-  gradient.addColorStop(1, 'rgba(252, 163, 17, 0)');
+  gradient.addColorStop(0, 'rgba(255, 255, 255, 0.9)');
+  gradient.addColorStop(1, 'rgba(255, 255, 255, 0)');
   ctx.fillStyle = gradient;
   ctx.fillRect(0, 0, size, size);
 
@@ -158,18 +153,17 @@ function createGlowTexture(): CanvasTexture {
 }
 
 export function CalibrationRig({ progressRef }: { progressRef: React.RefObject<number> }) {
-  const scanMesh = useRef<Mesh>(null);
-
   const gridTexture = useMemo(() => createGridTexture(), []);
   const glowTexture = useMemo(() => createGlowTexture(), []);
   const engravingTexture = useMemo(() => createEngravingTexture('DigiLang'), []);
 
+  // metalness/roughness bajados (antes 0.85/0.35): con el ambient/direccional
+  // subidos para que el cristal lea bien (ver Lighting en CoreScene.tsx),
+  // ese nivel de pulido reflejaba la luz casi como espejo — se veía como si
+  // la garra "brillara" en blanco. Menos metalness + más roughness = grafito
+  // mate, sin perder que siga leyéndose como metal.
   const metalMaterial = useMemo(
-    () => new MeshStandardMaterial({ color: '#2a2a2e', metalness: 0.85, roughness: 0.35, transparent: true }),
-    []
-  );
-  const accentMaterial = useMemo(
-    () => new MeshBasicMaterial({ color: '#fca311', toneMapped: false, transparent: true }),
+    () => new MeshStandardMaterial({ color: '#2a2a2e', metalness: 0.3, roughness: 0.7, transparent: true }),
     []
   );
   const floorMaterial = useMemo(
@@ -186,39 +180,27 @@ export function CalibrationRig({ progressRef }: { progressRef: React.RefObject<n
       }),
     [glowTexture]
   );
-  const railMaterial = useMemo(
-    () => new MeshStandardMaterial({ color: '#1c1c1f', metalness: 0.7, roughness: 0.5, transparent: true }),
-    []
-  );
-  const scanMaterial = useMemo(
-    () => new MeshBasicMaterial({ color: '#fca311', toneMapped: false, transparent: true }),
-    []
-  );
   const engravingMaterial = useMemo(
     () => new MeshBasicMaterial({ map: engravingTexture, toneMapped: false, transparent: true }),
     [engravingTexture]
   );
 
-  useFrame((state) => {
+  useFrame(() => {
     const p = progressRef.current ?? 0;
     const insideDepth = MathUtils.smoothstep(p, APPROACH_END, 1);
     const fade = MathUtils.lerp(1, 0, insideDepth);
 
     metalMaterial.opacity = fade;
-    accentMaterial.opacity = fade * 0.9;
     floorMaterial.opacity = fade * 0.85;
     glowMaterial.opacity = fade * 0.5;
-    railMaterial.opacity = fade * 0.6;
-    scanMaterial.opacity = fade * 0.5;
     engravingMaterial.opacity = fade;
-
-    if (scanMesh.current) {
-      scanMesh.current.position.y = Math.sin(state.clock.elapsedTime * 1.05) * SCAN_AMPLITUDE;
-    }
   });
 
   return (
     <group>
+      {/* Sin anillo/aro acento en las garras a propósito — se probó (blanco,
+          MeshBasicMaterial sin luz) y se veía como un halo encendido junto
+          a la tapa metálica. No volver a agregarlo. */}
       {/* Garra superior — con el nombre grabado en el frente */}
       <mesh position={[0, ROD_Y, 0]} material={metalMaterial}>
         <cylinderGeometry args={[ROD_RADIUS, ROD_RADIUS, ROD_HEIGHT, 12]} />
@@ -228,9 +210,6 @@ export function CalibrationRig({ progressRef }: { progressRef: React.RefObject<n
       </mesh>
       <mesh position={[0, JAW_Y, 0]} material={metalMaterial}>
         <cylinderGeometry args={[JAW_RADIUS_FAR, JAW_RADIUS_NEAR, JAW_HEIGHT, 32]} />
-      </mesh>
-      <mesh position={[0, JAW_Y - JAW_HEIGHT / 2, 0]} rotation={[Math.PI / 2, 0, 0]} material={accentMaterial}>
-        <torusGeometry args={[JAW_RADIUS_NEAR * 0.85, 0.016, 8, 32]} />
       </mesh>
       <mesh position={[0, JAW_Y, 0]} material={engravingMaterial}>
         <cylinderGeometry
@@ -257,9 +236,6 @@ export function CalibrationRig({ progressRef }: { progressRef: React.RefObject<n
       <mesh position={[0, -JAW_Y, 0]} material={metalMaterial}>
         <cylinderGeometry args={[JAW_RADIUS_NEAR, JAW_RADIUS_FAR, JAW_HEIGHT, 24]} />
       </mesh>
-      <mesh position={[0, -JAW_Y + JAW_HEIGHT / 2, 0]} rotation={[Math.PI / 2, 0, 0]} material={accentMaterial}>
-        <torusGeometry args={[JAW_RADIUS_NEAR * 0.85, 0.016, 8, 32]} />
-      </mesh>
 
       {/* Piso con grilla + charco de luz debajo del cristal */}
       <mesh position={[0, FLOOR_Y, 0]} rotation={[-Math.PI / 2, 0, 0]} material={floorMaterial}>
@@ -267,14 +243,6 @@ export function CalibrationRig({ progressRef }: { progressRef: React.RefObject<n
       </mesh>
       <mesh position={[0, FLOOR_Y + 0.01, 0]} rotation={[-Math.PI / 2, 0, 0]} material={glowMaterial}>
         <planeGeometry args={[2.4, 2.4]} />
-      </mesh>
-
-      {/* Riel lateral con plaqueta de escaneo en movimiento */}
-      <mesh position={[RAIL_X, 0, RAIL_Z]} material={railMaterial}>
-        <cylinderGeometry args={[0.015, 0.015, RAIL_HEIGHT, 8]} />
-      </mesh>
-      <mesh ref={scanMesh} position={[RAIL_X, 0, RAIL_Z]} material={scanMaterial}>
-        <boxGeometry args={[0.12, 0.03, 0.02]} />
       </mesh>
     </group>
   );

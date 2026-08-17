@@ -44,7 +44,7 @@ export function JourneyContent({
   const eyebrowRefs = useRef<FillOpacityRef[]>([]);
   const lineRefs = useRef<FillOpacityRef[]>([]);
   const markerMaterials = useMemo(
-    () => facets.map(() => new MeshBasicMaterial({ color: '#fca311', toneMapped: false, transparent: true })),
+    () => facets.map(() => new MeshBasicMaterial({ color: '#ffffff', toneMapped: false, transparent: true })),
     [facets]
   );
 
@@ -97,7 +97,7 @@ export function JourneyContent({
               font="/fonts/tektur-variable.ttf"
               fontSize={0.026}
               letterSpacing={0.16}
-              color="#fca311"
+              color="#ffffff"
               anchorX="center"
               anchorY="middle"
             >

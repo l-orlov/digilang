@@ -120,8 +120,10 @@ export function CoreJourney() {
       <div className="dl-journey__overlay" />
 
       <div ref={hintRef} className="dl-journey__hint">
+        <span className="dl-journey__hint-mouse">
+          <span className="dl-journey__hint-dot" />
+        </span>
         <span>{content.journey.approach.hint}</span>
-        <span className="dl-journey__hint-arrow" />
       </div>
 
       <div className="dl-journey__panels">

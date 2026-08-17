@@ -15,5 +15,3 @@ cd web/frontend
 npm run build   # genera web/frontend/dist
 npm run preview # sirve el build localmente
 ```
-
-El sitio PHP anterior (vanilla JS, i18n en 3 idiomas) quedó archivado en `web/legacy-php/` como referencia.

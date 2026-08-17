@@ -7,7 +7,7 @@ import type { Content } from '@/home/content';
 export const content: Content = {
   journey: {
     approach: {
-      hint: 'Scroll',
+      hint: 'Scroll para descubrir más',
     },
     intro: {
       title: 'El núcleo digital de DigiLang',
