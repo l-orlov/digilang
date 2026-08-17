@@ -30,7 +30,7 @@ import { APPROACH_END, INSIDE_END, getFacetAngles, shortestAngleDelta } from '@/
 const FACET_TEXT_RADIUS = 1.0;
 const MARKER_RADIUS = 1.4;
 
-type FillOpacityRef = { fillOpacity: number } | null;
+type FillOpacityRef = { fillOpacity: number; maxWidth?: number } | null;
 
 export function JourneyContent({
   facets,
@@ -48,8 +48,17 @@ export function JourneyContent({
     [facets]
   );
 
-  useFrame(({ camera }) => {
+  useFrame(({ camera, viewport }) => {
     const p = progressRef.current ?? 0;
+    // `maxWidth` original (0.85) se pensó para un aspect de escritorio
+    // (~1.6-1.8) — en portrait de celular el ancho visible a esta distancia
+    // es mucho menor (mismo FOV VERTICAL, pero mucho menos horizontal), y
+    // ese ancho fijo en unidades de mundo se salía del encuadre entero. Se
+    // recalcula cada frame contra el ancho real visible en la distancia del
+    // texto (`getCurrentViewport`, tiene en cuenta FOV+aspect+distancia),
+    // así se ajusta solo con cualquier ancho de pantalla.
+    const vp = viewport.getCurrentViewport(camera, [0, 0, -FACET_TEXT_RADIUS]);
+    const lineMaxWidth = Math.min(0.85, vp.width * 0.78);
     // Sin esto, las marcas/texto quedaban visibles (aunque chicos, en el
     // borde de la silueta) incluso "afuera" — antes de que la cámara
     // cruzara adentro del cristal. Aparece recién ahí, igual de rápido que
@@ -75,7 +84,10 @@ export function JourneyContent({
       const eyebrow = eyebrowRefs.current[i];
       const line = lineRefs.current[i];
       if (eyebrow) eyebrow.fillOpacity = aligned;
-      if (line) line.fillOpacity = aligned;
+      if (line) {
+        line.fillOpacity = aligned;
+        line.maxWidth = lineMaxWidth;
+      }
       markerMaterials[i].opacity = MathUtils.lerp(0.35, 1, aligned) * insideFade * outroFade;
     });
   });
@@ -103,11 +115,17 @@ export function JourneyContent({
             >
               {f.eyebrow.toUpperCase()}
             </Text>
+            {/* anchorY="top" (no "middle") a propósito: en portrait angosto
+                el texto envuelve en más líneas (ver `lineMaxWidth` en el
+                useFrame de arriba) — con anchor al medio ese bloque más alto
+                crecía hacia arriba y se comía el eyebrow. Ancladas por
+                arriba, sea cual sea el largo del texto o cuántas líneas
+                use, el bloque crece para abajo, nunca invade el eyebrow. */}
             <Text
               ref={(el) => {
                 lineRefs.current[i] = el;
               }}
-              position={[0, 0.04, -FACET_TEXT_RADIUS]}
+              position={[0, 0.09, -FACET_TEXT_RADIUS]}
               font="/fonts/tektur-variable.ttf"
               fontSize={0.065}
               maxWidth={0.85}
@@ -115,7 +133,7 @@ export function JourneyContent({
               textAlign="center"
               color="#ffffff"
               anchorX="center"
-              anchorY="middle"
+              anchorY="top"
             >
               {f.line}
             </Text>

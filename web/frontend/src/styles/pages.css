@@ -152,7 +152,38 @@
   background: var(--dl-orange);
 }
 
-/* ---- Core journey — fallback estático (touch/mobile/reduced-motion) ------ */
+/* ---- Core journey — mobile: 6 disciplinas no entran en una fila fija a
+   ancho de teléfono, así que la píldora scrollea horizontal en vez de
+   apretarse/cortarse. `--dl-nav-max` cede el ancho disponible en vez de
+   un valor fijo — con teclado/notch varía el viewport real. */
+@media (max-width: 767px) {
+  .dl-journey__nav {
+    max-width: calc(100vw - var(--dl-space-4) * 2);
+  }
+
+  .dl-journey__nav-items {
+    max-width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .dl-journey__nav-items::-webkit-scrollbar {
+    display: none;
+  }
+
+  .dl-journey__nav-item {
+    flex-shrink: 0;
+  }
+
+  .dl-journey__hint {
+    left: var(--dl-space-4);
+    bottom: var(--dl-space-4);
+    max-width: 210px;
+  }
+}
+
+/* ---- Core journey — fallback estático (solo prefers-reduced-motion) ------ */
 .dl-journey__fallback {
   display: flex;
   flex-direction: column;

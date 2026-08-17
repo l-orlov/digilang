@@ -157,13 +157,12 @@ export function CalibrationRig({ progressRef }: { progressRef: React.RefObject<n
   const glowTexture = useMemo(() => createGlowTexture(), []);
   const engravingTexture = useMemo(() => createEngravingTexture('DigiLang'), []);
 
-  // metalness/roughness bajados (antes 0.85/0.35): con el ambient/direccional
-  // subidos para que el cristal lea bien (ver Lighting en CoreScene.tsx),
-  // ese nivel de pulido reflejaba la luz casi como espejo — se veía como si
-  // la garra "brillara" en blanco. Menos metalness + más roughness = grafito
-  // mate, sin perder que siga leyéndose como metal.
   const metalMaterial = useMemo(
-    () => new MeshStandardMaterial({ color: '#2a2a2e', metalness: 0.3, roughness: 0.7, transparent: true }),
+    () => new MeshStandardMaterial({ color: '#2a2a2e', metalness: 0.85, roughness: 0.35, transparent: true }),
+    []
+  );
+  const accentMaterial = useMemo(
+    () => new MeshBasicMaterial({ color: '#ffffff', toneMapped: false, transparent: true }),
     []
   );
   const floorMaterial = useMemo(
@@ -191,6 +190,7 @@ export function CalibrationRig({ progressRef }: { progressRef: React.RefObject<n
     const fade = MathUtils.lerp(1, 0, insideDepth);
 
     metalMaterial.opacity = fade;
+    accentMaterial.opacity = fade * 0.9;
     floorMaterial.opacity = fade * 0.85;
     glowMaterial.opacity = fade * 0.5;
     engravingMaterial.opacity = fade;
@@ -198,9 +198,6 @@ export function CalibrationRig({ progressRef }: { progressRef: React.RefObject<n
 
   return (
     <group>
-      {/* Sin anillo/aro acento en las garras a propósito — se probó (blanco,
-          MeshBasicMaterial sin luz) y se veía como un halo encendido junto
-          a la tapa metálica. No volver a agregarlo. */}
       {/* Garra superior — con el nombre grabado en el frente */}
       <mesh position={[0, ROD_Y, 0]} material={metalMaterial}>
         <cylinderGeometry args={[ROD_RADIUS, ROD_RADIUS, ROD_HEIGHT, 12]} />
@@ -210,6 +207,9 @@ export function CalibrationRig({ progressRef }: { progressRef: React.RefObject<n
       </mesh>
       <mesh position={[0, JAW_Y, 0]} material={metalMaterial}>
         <cylinderGeometry args={[JAW_RADIUS_FAR, JAW_RADIUS_NEAR, JAW_HEIGHT, 32]} />
+      </mesh>
+      <mesh position={[0, JAW_Y - JAW_HEIGHT / 2, 0]} rotation={[Math.PI / 2, 0, 0]} material={accentMaterial}>
+        <torusGeometry args={[JAW_RADIUS_NEAR * 0.85, 0.016, 8, 32]} />
       </mesh>
       <mesh position={[0, JAW_Y, 0]} material={engravingMaterial}>
         <cylinderGeometry
@@ -235,6 +235,9 @@ export function CalibrationRig({ progressRef }: { progressRef: React.RefObject<n
       </mesh>
       <mesh position={[0, -JAW_Y, 0]} material={metalMaterial}>
         <cylinderGeometry args={[JAW_RADIUS_NEAR, JAW_RADIUS_FAR, JAW_HEIGHT, 24]} />
+      </mesh>
+      <mesh position={[0, -JAW_Y + JAW_HEIGHT / 2, 0]} rotation={[Math.PI / 2, 0, 0]} material={accentMaterial}>
+        <torusGeometry args={[JAW_RADIUS_NEAR * 0.85, 0.016, 8, 32]} />
       </mesh>
 
       {/* Piso con grilla + charco de luz debajo del cristal */}

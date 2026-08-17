@@ -16,13 +16,18 @@
  * fade del hint inicial, de la nav y del outro — pero YA NO qué panel se
  * ve: eso ahora es estado de React (`activeFacet`), actualizado por click.
  *
- * En touch/mobile/reduced-motion no hay pin ni cámara viajando (scroll-
- * jacking se siente mal en touch, mismo criterio que StylesShowcase/
- * ServicesTimeline): columna estática normal con el cristal como imagen.
+ * El pin + cámara viajando también corre en touch/mobile (el pin de
+ * ScrollTrigger sigue la posición real de scroll, sea cual sea el input que
+ * la mueva) — solo se cae al fallback estático con `prefers-reduced-motion`.
+ * Lo único que de verdad no traduce a touch es arrastrar el cristal con el
+ * dedo para girarlo a mano: ese gesto es indistinguible de "swipe para
+ * scrollear" sobre el mismo canvas que cubre toda la sección, así que se
+ * desactiva puntualmente ahí (ver `draggable` en CoreScene.tsx) — el resto
+ * (giro automático, journey por scroll, nav por click/tap) es igual.
  */
 import { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { ensureGsapRegistered, ScrollTrigger } from '@/shared/lib/gsap';
-import { useFinePointer, useIsMobile, useReducedMotion } from '@/shared/hooks/useReducedMotion';
+import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
 import { CoreScene, APPROACH_END, INSIDE_END } from '@/home/components/CoreScene';
 import { useLanguage } from '@/shared/lib/language';
 
@@ -31,9 +36,7 @@ const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 
 export function CoreJourney() {
   const reduced = useReducedMotion();
-  const fine = useFinePointer();
-  const mobile = useIsMobile();
-  const enhanced = fine && !mobile && !reduced;
+  const enhanced = !reduced;
   const { content } = useLanguage();
 
   const sectionRef = useRef<HTMLElement>(null);

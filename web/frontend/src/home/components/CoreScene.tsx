@@ -26,6 +26,7 @@
 import { useMemo, useRef } from 'react';
 import { Canvas, useFrame, useThree, type ThreeEvent } from '@react-three/fiber';
 import { Sparkles } from '@react-three/drei';
+import { useFinePointer, useIsMobile } from '@/shared/hooks/useReducedMotion';
 import {
   BufferAttribute,
   BufferGeometry,
@@ -444,7 +445,7 @@ function Lighting({ progressRef }: { progressRef: React.RefObject<number> }) {
  * Las caras mantienen una separación fija chica (REST_GAP) en reposo, sin
  * respirar; el empuje local bajo el cursor se suma aparte, vía raycast.
  */
-function Crystal({ progressRef }: { progressRef: React.RefObject<number> }) {
+function Crystal({ progressRef, draggable }: { progressRef: React.RefObject<number>; draggable: boolean }) {
   const mesh = useRef<Mesh>(null);
   const group = useRef<Group>(null);
   const material = useRef<ExplodeMaterial>(null);
@@ -487,6 +488,14 @@ function Crystal({ progressRef }: { progressRef: React.RefObject<number> }) {
   );
 
   const handlePointerDown = (e: ThreeEvent<PointerEvent>) => {
+    // En touch no hay forma de distinguir "arrastrar para girar" de
+    // "swipe para scrollear la página" — es el mismo gesto de un dedo sobre
+    // el mismo canvas que cubre toda la sección. Bloquear el scroll nativo
+    // ahí para permitir el drag rompería el journey (scroll pineado) en
+    // touch por completo, así que en touch directamente no se engancha
+    // este handler (ver `draggable` más abajo) — el giro automático de
+    // reposo alcanza para que el cristal no se sienta estático.
+    if (!draggable) return;
     // Una vez adentro (p > APPROACH_END) el cristal deja de responder al
     // mouse — ni arrastre ni empuje local de caras — porque ahí el punto
     // de vista ya lo controla la nav (yaw/pitch hacia la facet elegida) y
@@ -635,11 +644,18 @@ export function CoreScene({
   facetCount: number;
   facets: JourneyFacet[];
 }) {
+  const fine = useFinePointer();
+  const mobile = useIsMobile();
+
   return (
     <Canvas
       className="dl-journey__canvas"
       style={{ position: 'absolute', inset: 0 }}
-      dpr={[1, 2]}
+      // Tope de dpr más bajo en mobile: son pantallas de dpr 2-3, y sin este
+      // tope el canvas renderiza a resolución real de pixel (2-3x el ancho
+      // CSS) en una GPU bastante más floja que una de escritorio — mismo
+      // criterio que el conteo de Sparkles más abajo.
+      dpr={mobile ? [1, 1.5] : [1, 2]}
       camera={{ position: [0, 0, CAMERA_START_Z], fov: 40, near: 0.05, far: 60 }}
       gl={{ antialias: true, alpha: true }}
     >
@@ -647,8 +663,8 @@ export function CoreScene({
       <CameraRig progressRef={progressRef} activeFacetRef={activeFacetRef} facetCount={facetCount} />
       <CalibrationRig progressRef={progressRef} />
       <JourneyContent facets={facets} facetCount={facetCount} progressRef={progressRef} />
-      <Crystal progressRef={progressRef} />
-      <Sparkles count={60} scale={6} size={2} speed={0.3} color="#ffffff" />
+      <Crystal progressRef={progressRef} draggable={fine} />
+      <Sparkles count={mobile ? 28 : 60} scale={6} size={2} speed={0.3} color="#ffffff" />
     </Canvas>
   );
 }
