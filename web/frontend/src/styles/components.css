@@ -26,7 +26,7 @@
 .dl-cursor--hover {
   width: 48px;
   height: 48px;
-  background: rgba(255, 255, 255, 0.2);
+  background: rgba(23, 23, 23, 0.08);
   border: 1px solid var(--dl-orange);
 }
 
@@ -103,18 +103,19 @@
 }
 
 /* ---- Audio toggle --------------------------------------------------------- */
+/* Ya no `position: fixed` propio — vive adentro de `.dl-header-menu__panel`
+   (HeaderMenu.tsx), que es la que se posiciona. Antes este botón estaba
+   siempre visible en una esquina fija; ahora tanto este como el de idioma
+   quedan escondidos detrás de un botón "hamburguesa" central, así ninguno
+   de los dos compite por esquinas con la nav/wordmark de CoreJourney. */
 .dl-audio-toggle {
-  position: fixed;
-  right: var(--dl-space-5);
-  bottom: var(--dl-space-5);
-  z-index: 500;
   width: 44px;
   height: 44px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 50%;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(255, 255, 255, 0.7);
   border: 1px solid var(--dl-line);
   color: var(--dl-text-muted);
   backdrop-filter: blur(8px);
@@ -122,9 +123,13 @@
     border-color var(--dl-t-fast) var(--dl-ease);
 }
 
-.dl-audio-toggle:hover {
-  border-color: var(--dl-orange);
-  color: var(--dl-orange);
+/* (hover: hover) — evita que un tap en touch deje el tinte de :hover
+   "pegado" (sin mouse que se vaya del botón para des-activarlo). */
+@media (hover: hover) {
+  .dl-audio-toggle:hover {
+    border-color: var(--dl-orange);
+    color: var(--dl-orange);
+  }
 }
 
 .dl-audio-toggle--on {
@@ -138,11 +143,8 @@
 }
 
 /* ---- Language toggle ------------------------------------------------------- */
+/* Ya no `position: fixed` propio — ver el comentario en .dl-audio-toggle. */
 .dl-language-toggle {
-  position: fixed;
-  right: var(--dl-space-5);
-  top: var(--dl-space-5);
-  z-index: 500;
   min-width: 44px;
   height: 44px;
   padding: 0 var(--dl-space-3);
@@ -150,10 +152,10 @@
   align-items: center;
   justify-content: center;
   border-radius: var(--dl-radius-pill);
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(255, 255, 255, 0.7);
   border: 1px solid var(--dl-line);
   color: var(--dl-text-muted);
-  font-family: var(--dl-font-display);
+  font-family: var(--dl-font-mono);
   font-size: 0.78rem;
   letter-spacing: 0.08em;
   backdrop-filter: blur(8px);
@@ -161,9 +163,72 @@
     border-color var(--dl-t-fast) var(--dl-ease);
 }
 
-.dl-language-toggle:hover {
-  border-color: var(--dl-orange);
-  color: var(--dl-orange);
+@media (hover: hover) {
+  .dl-language-toggle:hover {
+    border-color: var(--dl-orange);
+    color: var(--dl-orange);
+  }
+}
+
+/* ---- Header menu (hamburguesa: agrupa audio + idioma) --------------------- */
+.dl-header-menu {
+  position: fixed;
+  right: var(--dl-space-5);
+  top: var(--dl-space-5);
+  z-index: 500;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: var(--dl-space-3);
+}
+
+.dl-header-menu__button {
+  width: 44px;
+  height: 44px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.7);
+  border: 1px solid var(--dl-line);
+  backdrop-filter: blur(8px);
+  transition: background var(--dl-t-fast) var(--dl-ease), border-color var(--dl-t-fast) var(--dl-ease);
+}
+
+.dl-header-menu__button span {
+  width: 16px;
+  height: 1.5px;
+  border-radius: 1px;
+  background: var(--dl-white);
+  transition: transform var(--dl-t-fast) var(--dl-ease), opacity var(--dl-t-fast) var(--dl-ease);
+}
+
+/* Tres líneas → X al abrir, mismo truco de siempre: la del medio se
+   esconde, las otras dos rotan para cruzarse. */
+.dl-header-menu__button--open span:nth-child(1) {
+  transform: translateY(5.5px) rotate(45deg);
+}
+
+.dl-header-menu__button--open span:nth-child(2) {
+  opacity: 0;
+}
+
+.dl-header-menu__button--open span:nth-child(3) {
+  transform: translateY(-5.5px) rotate(-45deg);
+}
+
+@media (hover: hover) {
+  .dl-header-menu__button:hover {
+    border-color: var(--dl-orange);
+  }
+}
+
+.dl-header-menu__panel {
+  display: flex;
+  align-items: center;
+  gap: var(--dl-space-2);
 }
 
 /* ---- Botones ------------------------------------------------------------ */
@@ -277,7 +342,7 @@
   padding: 14px 18px;
   border-radius: var(--dl-radius-sm);
   border: 1px solid var(--dl-line);
-  background: rgba(255, 255, 255, 0.04);
+  background: rgba(22, 27, 36, 0.03);
   color: var(--dl-white);
   font-family: var(--dl-font-body);
   font-size: 1.05rem;
@@ -291,7 +356,7 @@
 .dl-field:focus {
   outline: none;
   border-color: var(--dl-orange);
-  background: rgba(255, 255, 255, 0.06);
+  background: rgba(22, 27, 36, 0.05);
 }
 
 textarea.dl-field {

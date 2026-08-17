@@ -122,6 +122,11 @@ export function CoreJourney() {
       />
       <div className="dl-journey__overlay" />
 
+      <div className="dl-journey__brand">
+        <span>DigiLang</span>
+        <span className="dl-journey__brand-dim">.pro</span>
+      </div>
+
       <div ref={hintRef} className="dl-journey__hint">
         <span className="dl-journey__hint-mouse">
           <span className="dl-journey__hint-dot" />

@@ -2,40 +2,21 @@
    DigiLang — Fuentes (self-hosted, sin CDN)
    ========================================================================== */
 
-/* Tektur — fuente variable (400–900), usada solo en titulares/display. */
+/* Geist — variable (100–900), texto/titulares. Incluye cirílico en el mismo
+   archivo (no hace falta subsetear por unicode-range como con Tektur). */
 @font-face {
-  font-family: 'Tektur';
+  font-family: 'Geist';
   font-style: normal;
-  font-weight: 400 900;
+  font-weight: 100 900;
   font-display: swap;
-  src: url('/fonts/tektur-variable.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122;
+  src: url('/fonts/geist-variable.woff2') format('woff2');
 }
 
-/* Barlow Condensed — texto/cuerpo, tres pesos estáticos. */
+/* Geist Mono — variable (100–900), eyebrows/nav (mayúsculas, tracking). */
 @font-face {
-  font-family: 'Barlow Condensed';
+  font-family: 'Geist Mono';
   font-style: normal;
-  font-weight: 400;
+  font-weight: 100 900;
   font-display: swap;
-  src: url('/fonts/barlow-condensed-400.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122;
-}
-
-@font-face {
-  font-family: 'Barlow Condensed';
-  font-style: normal;
-  font-weight: 500;
-  font-display: swap;
-  src: url('/fonts/barlow-condensed-500.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122;
-}
-
-@font-face {
-  font-family: 'Barlow Condensed';
-  font-style: normal;
-  font-weight: 600;
-  font-display: swap;
-  src: url('/fonts/barlow-condensed-600.woff2') format('woff2');
-  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+2000-206F, U+20AC, U+2122;
+  src: url('/fonts/geist-mono-variable.woff2') format('woff2');
 }

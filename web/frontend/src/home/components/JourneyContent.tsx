@@ -13,12 +13,13 @@
  * `z = -radio` (no en coordenadas de mundo a mano) — así el giro del group
  * ya los deja en el ángulo correcto Y mirando hacia la cámara (Text de
  * drei mira por defecto a +Z; girado con el group, ese +Z local termina
- * apuntando de vuelta hacia el origen). Mismo tipo de truco de texto ya
- * probado en CalibrationRig.tsx (grabado "DigiLang"), acá sin curvatura.
+ * apuntando de vuelta hacia el origen).
  *
- * La fuente es la misma .ttf ya usada en CalibrationRig.tsx — troika-three-
- * text (lo que usa el <Text> de drei por debajo) no lee .woff2, por eso ya
- * existe esa conversión; no hace falta repetirla.
+ * Dos fuentes, igual que en la referencia (digilang.vercel.app): Geist Mono
+ * para el eyebrow (chico, uppercase) y Geist SemiBold para la línea grande —
+ * troika-three-text (lo que usa el <Text> de drei por debajo) no lee
+ * variable fonts bien / .woff2, por eso son archivos .ttf estáticos aparte
+ * (ver public/fonts/), no los mismos que carga fonts.css para el HTML.
  */
 import { Suspense, useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
@@ -30,7 +31,7 @@ import { APPROACH_END, INSIDE_END, getFacetAngles, shortestAngleDelta } from '@/
 const FACET_TEXT_RADIUS = 1.0;
 const MARKER_RADIUS = 1.4;
 
-type FillOpacityRef = { fillOpacity: number; maxWidth?: number } | null;
+type FillOpacityRef = { fillOpacity: number; maxWidth?: number; fontSize?: number } | null;
 
 export function JourneyContent({
   facets,
@@ -44,21 +45,37 @@ export function JourneyContent({
   const eyebrowRefs = useRef<FillOpacityRef[]>([]);
   const lineRefs = useRef<FillOpacityRef[]>([]);
   const markerMaterials = useMemo(
-    () => facets.map(() => new MeshBasicMaterial({ color: '#ffffff', toneMapped: false, transparent: true })),
+    () => facets.map(() => new MeshBasicMaterial({ color: '#161b24', toneMapped: false, transparent: true })),
     [facets]
   );
 
   useFrame(({ camera, viewport }) => {
     const p = progressRef.current ?? 0;
-    // `maxWidth` original (0.85) se pensó para un aspect de escritorio
-    // (~1.6-1.8) — en portrait de celular el ancho visible a esta distancia
-    // es mucho menor (mismo FOV VERTICAL, pero mucho menos horizontal), y
-    // ese ancho fijo en unidades de mundo se salía del encuadre entero. Se
-    // recalcula cada frame contra el ancho real visible en la distancia del
-    // texto (`getCurrentViewport`, tiene en cuenta FOV+aspect+distancia),
-    // así se ajusta solo con cualquier ancho de pantalla.
+    // fontSize/maxWidth originales (0.065/0.85, 0.026 el eyebrow) se
+    // pensaron para un aspect de escritorio (~1.6) — en portrait de celular
+    // el ancho visible a esta distancia es mucho menor (mismo FOV VERTICAL,
+    // pero bastante menos horizontal). `getCurrentViewport` da el ancho/alto
+    // real visibles en la distancia del texto (FOV+aspect+distancia).
     const vp = viewport.getCurrentViewport(camera, [0, 0, -FACET_TEXT_RADIUS]);
-    const lineMaxWidth = Math.min(0.85, vp.width * 0.78);
+    const REFERENCE_ASPECT = 1.6;
+    const referenceWidth = vp.height * REFERENCE_ASPECT;
+    // `fontSize` escala con un piso (0.45) para que siga siendo legible en
+    // pantallas muy angostas — pero `maxWidth` NO puede heredar ese mismo
+    // piso: en un iPhone angosto (~0.46 de aspect) la escala "cruda" cae a
+    // ~0.29, muy por debajo del piso de fuente. Si maxWidth usara el mismo
+    // piso (0.45), terminaba siendo MÁS ANCHO que el espacio real visible
+    // (vp.width) — exactamente lo que pasaba: texto pegado a los bordes,
+    // sin margen, en vez de quedar más chico y wrappear en más líneas. Por
+    // eso maxWidth se ata siempre y directo al ancho real (con margen del
+    // 8% de cada lado), nunca a la escala de fuente.
+    // Geist es más ancha que Tektur (la fuente con la que se calibraron
+    // estos números antes) al mismo tamaño — piso más bajo (0.4, antes
+    // 0.45) y menos ancho relativo (0.78, antes 0.84) para que en mobile
+    // angosto siga entrando con margen en vez de tocar los bordes.
+    const fontScale = MathUtils.clamp(vp.width / referenceWidth, 0.4, 1);
+    const lineFontSize = 0.065 * fontScale;
+    const lineMaxWidth = vp.width * 0.66;
+    const eyebrowFontSize = 0.026 * fontScale;
     // Sin esto, las marcas/texto quedaban visibles (aunque chicos, en el
     // borde de la silueta) incluso "afuera" — antes de que la cámara
     // cruzara adentro del cristal. Aparece recién ahí, igual de rápido que
@@ -83,10 +100,14 @@ export function JourneyContent({
 
       const eyebrow = eyebrowRefs.current[i];
       const line = lineRefs.current[i];
-      if (eyebrow) eyebrow.fillOpacity = aligned;
+      if (eyebrow) {
+        eyebrow.fillOpacity = aligned;
+        eyebrow.fontSize = eyebrowFontSize;
+      }
       if (line) {
         line.fillOpacity = aligned;
         line.maxWidth = lineMaxWidth;
+        line.fontSize = lineFontSize;
       }
       markerMaterials[i].opacity = MathUtils.lerp(0.35, 1, aligned) * insideFade * outroFade;
     });
@@ -106,10 +127,10 @@ export function JourneyContent({
                 eyebrowRefs.current[i] = el;
               }}
               position={[0, 0.17, -FACET_TEXT_RADIUS]}
-              font="/fonts/tektur-variable.ttf"
+              font="/fonts/geist-mono-medium.ttf"
               fontSize={0.026}
-              letterSpacing={0.16}
-              color="#ffffff"
+              letterSpacing={0.28}
+              color="#6b7280"
               anchorX="center"
               anchorY="middle"
             >
@@ -126,12 +147,13 @@ export function JourneyContent({
                 lineRefs.current[i] = el;
               }}
               position={[0, 0.09, -FACET_TEXT_RADIUS]}
-              font="/fonts/tektur-variable.ttf"
+              font="/fonts/geist-semibold.ttf"
               fontSize={0.065}
               maxWidth={0.85}
-              lineHeight={1.25}
+              lineHeight={1.15}
+              letterSpacing={-0.01}
               textAlign="center"
-              color="#ffffff"
+              color="#161b24"
               anchorX="center"
               anchorY="top"
             >

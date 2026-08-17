@@ -1,31 +1,33 @@
 /* ==========================================================================
    DigiLang — Design Tokens
-   Paleta chico-blanca (antes tenía un acento naranja único, #FCA311, ver
-   git history) — el color ahora vive solo en el cristal (facets pastel,
-   ver PALETTE en CoreScene.tsx), no en el UI/entorno.
+   Paleta clara (antes era oscura, ver git history) — portada del diseño de
+   referencia (digilang.vercel.app, generado con v0.app: shadcn/ui "neutral"
+   sobre fondo gris-azulado claro). Los NOMBRES de los tokens quedan igual
+   que en la paleta oscura (--dl-black = fondo de página, --dl-white = texto,
+   --dl-orange = acento/primary) — solo cambian los valores, así todo el CSS
+   que ya usa var(--dl-*) se actualiza solo, sin tocar cada regla.
    ========================================================================== */
 :root {
   /* Color */
-  --dl-black: #000000;
-  --dl-black-soft: #0c0c0c;
-  --dl-black-card: #111111;
-  --dl-panel: #161616;
-  --dl-white: #ffffff;
-  --dl-bone: #e7eefc;
-  --dl-orange: #ffffff;
-  --dl-orange-dim: #c9c9c9;
-  --dl-danger: #ff5252;
-  --dl-line: rgba(255, 255, 255, 0.14);
-  --dl-line-soft: rgba(255, 255, 255, 0.08);
+  --dl-black: #eef0f4;
+  --dl-black-soft: #f2f3f6;
+  --dl-black-card: #ffffff;
+  --dl-white: #161b24;
+  --dl-orange: #171717;
+  --dl-orange-dim: #333333;
+  --dl-danger: #e5484d;
+  --dl-line: rgba(22, 27, 36, 0.12);
+  --dl-line-soft: rgba(22, 27, 36, 0.06);
 
   --dl-text-on-black: var(--dl-white);
-  --dl-text-muted: rgba(255, 255, 255, 0.62);
-  --dl-text-dim: rgba(255, 255, 255, 0.4);
-  --dl-text-on-orange: #000000;
+  --dl-text-muted: rgba(22, 27, 36, 0.62);
+  --dl-text-dim: rgba(22, 27, 36, 0.4);
+  --dl-text-on-orange: #fafafa;
 
   /* Tipografía */
-  --dl-font-display: 'Tektur', 'Helvetica Neue', Arial, sans-serif;
-  --dl-font-body: 'Barlow Condensed', 'Helvetica Neue', Arial, sans-serif;
+  --dl-font-display: 'Geist', 'Helvetica Neue', Arial, sans-serif;
+  --dl-font-body: 'Geist', 'Helvetica Neue', Arial, sans-serif;
+  --dl-font-mono: 'Geist Mono', 'SFMono-Regular', Consolas, monospace;
 
   /* Espaciado (escala 4px) */
   --dl-space-1: 4px;
@@ -48,7 +50,7 @@
   /* Sombras */
   --dl-shadow-card: 0 8px 24px rgba(0, 0, 0, 0.45);
   --dl-shadow-pop: 0 16px 40px rgba(0, 0, 0, 0.55);
-  --dl-shadow-orange: 0 8px 28px rgba(255, 255, 255, 0.25);
+  --dl-shadow-orange: 0 8px 28px rgba(23, 23, 23, 0.18);
 
   /* Transiciones — mismo timing/easing que tenía el sitio anterior */
   --dl-ease: cubic-bezier(0.4, 0, 0.2, 1);

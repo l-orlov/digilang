@@ -22,7 +22,37 @@
   inset: 0;
   z-index: 1;
   pointer-events: none;
-  background: radial-gradient(circle at center, transparent 35%, rgba(0, 0, 0, 0.55) 100%);
+  /* Antes un viñeteado negro fuerte (0.55) — pensado para un fondo oscuro,
+     sobre el fondo claro actual se veía como una mancha sucia en los bordes.
+     El de referencia no tiene viñeteado visible; se deja uno muy sutil
+     (mismo tono que el texto, casi imperceptible) solo para dar algo de
+     foco al centro sin ensuciar el gris-azulado del fondo. */
+  background: radial-gradient(circle at center, transparent 45%, rgba(22, 27, 36, 0.05) 100%);
+}
+
+/* Wordmark "DigiLang.pro" — de referencia (digilang.vercel.app), no existía
+   antes en este proyecto (el logo con ícono vive en el preloader, no acá).
+   Junto en vez de repartido en las dos esquinas como en la referencia,
+   porque la esquina derecha ya la ocupa el selector de idioma. */
+.dl-journey__brand {
+  position: absolute;
+  left: var(--dl-space-5);
+  top: 38px;
+  z-index: 2;
+  display: flex;
+  align-items: baseline;
+  gap: 2px;
+  font-family: var(--dl-font-mono);
+  font-size: 0.95rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--dl-white);
+  pointer-events: none;
+}
+
+.dl-journey__brand-dim {
+  font-weight: 400;
+  color: var(--dl-text-muted);
 }
 
 .dl-journey__hint {
@@ -128,7 +158,7 @@
   gap: var(--dl-space-2);
   padding: var(--dl-space-2) var(--dl-space-3);
   border-radius: var(--dl-radius-pill);
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(255, 255, 255, 0.7);
   border: 1px solid var(--dl-line-soft);
   backdrop-filter: blur(8px);
 }
@@ -136,6 +166,7 @@
 .dl-journey__nav-item {
   padding: var(--dl-space-2) var(--dl-space-3);
   border-radius: var(--dl-radius-pill);
+  font-family: var(--dl-font-mono);
   font-size: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 0.14em;
@@ -143,8 +174,15 @@
   transition: color var(--dl-t-fast) var(--dl-ease), background var(--dl-t-fast) var(--dl-ease);
 }
 
-.dl-journey__nav-item:hover {
-  color: var(--dl-white);
+/* (hover: hover) — sin esto, en touch un tap deja el :hover "pegado" (no
+   hay mouse que se vaya del elemento para des-activarlo) y como
+   `:hover` (0-2-0) pesa más que `--active` (0-1-0), el texto de la
+   disciplina activa quedaba blanco sobre el fondo blanco de esa misma
+   píldora — invisible. Con este guard, en touch directamente no aplica. */
+@media (hover: hover) {
+  .dl-journey__nav-item:hover {
+    color: var(--dl-white);
+  }
 }
 
 .dl-journey__nav-item--active {
@@ -153,27 +191,34 @@
 }
 
 /* ---- Core journey — mobile: 6 disciplinas no entran en una fila fija a
-   ancho de teléfono, así que la píldora scrollea horizontal en vez de
-   apretarse/cortarse. `--dl-nav-max` cede el ancho disponible en vez de
-   un valor fijo — con teclado/notch varía el viewport real. */
+   ancho de teléfono. Achicar tanto la tipografía como para que entraran
+   las 6 en una fila (probado) las dejaba ilegibles/difíciles de tocar — se
+   prioriza que se lean y se toquen bien: envuelve a 2 filas (normalmente
+   5+1 o 3+3 según el idioma), con el mismo tamaño que en desktop, en vez
+   de una fila apretada. El audio toggle se movió a arriba-izquierda
+   (components.css), así que la nav ya no compite por esa esquina. */
 @media (max-width: 767px) {
   .dl-journey__nav {
-    max-width: calc(100vw - var(--dl-space-4) * 2);
+    left: var(--dl-space-4);
+    right: var(--dl-space-4);
+    transform: none;
+    max-width: none;
   }
 
   .dl-journey__nav-items {
     max-width: 100%;
-    overflow-x: auto;
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: var(--dl-space-2);
   }
 
-  .dl-journey__nav-items::-webkit-scrollbar {
-    display: none;
-  }
-
+  /* Geist Mono es más ancha que Tektur (la fuente que se usaba acá antes) al
+     mismo tamaño — con el tamaño de escritorio sin tocar, el wrap pasaba de
+     2 filas (5+1/3+3) a 3, mucho más alto. Achicado apenas para volver a 2. */
   .dl-journey__nav-item {
-    flex-shrink: 0;
+    padding: var(--dl-space-1) var(--dl-space-2);
+    font-size: 0.62rem;
+    letter-spacing: 0.1em;
   }
 
   .dl-journey__hint {
