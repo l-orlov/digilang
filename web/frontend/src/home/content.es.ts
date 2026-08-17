@@ -17,7 +17,6 @@ export const content: Content = {
       { eyebrow: 'Diseño', line: 'Interfaces que se sienten inevitables.' },
       { eyebrow: 'Desarrollo', line: 'Código que sostiene lo que imaginás.' },
       { eyebrow: 'Automatización', line: 'Bots que trabajan mientras vos no.' },
-      { eyebrow: 'SEO', line: 'Visibilidad que se gana, no se compra.' },
       { eyebrow: 'DevOps', line: 'Infraestructura que no se cae a las 3am.' },
       { eyebrow: 'Estrategia', line: 'De la idea al negocio, sin fricción.' },
     ],

@@ -21,7 +21,6 @@ export const content: Content = {
       { eyebrow: 'Design', line: 'Interfaces that feel inevitable.' },
       { eyebrow: 'Development', line: 'Code that holds up what you imagine.' },
       { eyebrow: 'Automation', line: "Bots that work while you don't." },
-      { eyebrow: 'SEO', line: "Visibility that's earned, not bought." },
       { eyebrow: 'DevOps', line: "Infrastructure that doesn't go down at 3am." },
       { eyebrow: 'Strategy', line: 'From idea to business, without friction.' },
     ],

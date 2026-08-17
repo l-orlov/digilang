@@ -129,6 +129,7 @@
   .dl-audio-toggle:hover {
     border-color: var(--dl-orange);
     color: var(--dl-orange);
+    background: #fff;
   }
 }
 
@@ -138,20 +139,25 @@
   color: var(--dl-text-on-orange);
 }
 
-.dl-audio-toggle--on:hover {
-  color: var(--dl-text-on-orange);
+@media (hover: hover) {
+  .dl-audio-toggle--on:hover {
+    color: var(--dl-text-on-orange);
+    background: var(--dl-orange-dim);
+    border-color: var(--dl-orange-dim);
+  }
 }
 
 /* ---- Language toggle ------------------------------------------------------- */
 /* Ya no `position: fixed` propio — ver el comentario en .dl-audio-toggle. */
 .dl-language-toggle {
+  width: 44px;
   min-width: 44px;
   height: 44px;
-  padding: 0 var(--dl-space-3);
+  padding: 0;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: var(--dl-radius-pill);
+  border-radius: 50%;
   background: rgba(255, 255, 255, 0.7);
   border: 1px solid var(--dl-line);
   color: var(--dl-text-muted);
@@ -167,6 +173,7 @@
   .dl-language-toggle:hover {
     border-color: var(--dl-orange);
     color: var(--dl-orange);
+    background: #fff;
   }
 }
 
@@ -180,6 +187,13 @@
   flex-direction: column;
   align-items: flex-end;
   gap: var(--dl-space-3);
+}
+
+@media (max-width: 767px) {
+  .dl-header-menu {
+    right: var(--dl-space-4);
+    top: var(--dl-space-4);
+  }
 }
 
 .dl-header-menu__button {
@@ -202,7 +216,8 @@
   height: 1.5px;
   border-radius: 1px;
   background: var(--dl-white);
-  transition: transform var(--dl-t-fast) var(--dl-ease), opacity var(--dl-t-fast) var(--dl-ease);
+  transition: transform var(--dl-t-fast) var(--dl-ease), opacity var(--dl-t-fast) var(--dl-ease),
+    background var(--dl-t-fast) var(--dl-ease);
 }
 
 /* Tres líneas → X al abrir, mismo truco de siempre: la del medio se
@@ -222,13 +237,31 @@
 @media (hover: hover) {
   .dl-header-menu__button:hover {
     border-color: var(--dl-orange);
+    background: #fff;
+  }
+
+  .dl-header-menu__button:hover span {
+    background: var(--dl-orange);
   }
 }
 
 .dl-header-menu__panel {
   display: flex;
-  align-items: center;
+  flex-direction: column;
+  align-items: flex-end;
   gap: var(--dl-space-2);
+  animation: dl-header-menu-down 0.22s var(--dl-ease);
+}
+
+@keyframes dl-header-menu-down {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 /* ---- Botones ------------------------------------------------------------ */

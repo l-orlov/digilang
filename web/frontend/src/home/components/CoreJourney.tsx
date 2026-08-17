@@ -1,37 +1,21 @@
 /**
- * Sección de apertura del sitio: en vez de un hero con texto, un "viaje" de
- * scroll — la cámara se acerca al cristal facetado, se asienta en su centro
- * y ahí se queda (nunca vuelve a salir). Adentro, a qué cara/disciplina
- * mira la cámara ya NO lo decide el scroll (girar en cada pixel de scroll
- * mareaba) sino una nav de botones: clickear una disciplina hace que la
- * cámara gire suavemente hacia ella (`activeFacetRef`, leído por
- * `CameraRig` en CoreScene.tsx). El scroll sigue sirviendo para acercarse,
- * mantener la sección pineada, y — al final del recorrido — liberar el pin
- * hacia el resto de la página.
+ * Sección de apertura del sitio: un "viaje" de scroll — la cámara se acerca
+ * al cristal y se asienta en su centro. Adentro, la disciplina la elige la
+ * nav (click), no el scroll. Ya no hay fase de "outro" / seguir scrolleando
+ * para salir: el recorrido termina al entrar.
  *
- * El progreso (0..1) de un único ScrollTrigger pineado se escribe en un ref
- * (`progressRef`) que `CoreScene` lee cada frame para mover la cámara — así
- * evitamos pelear entre el loop de r3f y los callbacks de GSAP. Ese mismo
- * progreso, acá, controla de forma imperativa (sin re-render por frame) el
- * fade del hint inicial, de la nav y del outro — pero YA NO qué panel se
- * ve: eso ahora es estado de React (`activeFacet`), actualizado por click.
- *
- * El pin + cámara viajando también corre en touch/mobile (el pin de
- * ScrollTrigger sigue la posición real de scroll, sea cual sea el input que
- * la mueva) — solo se cae al fallback estático con `prefers-reduced-motion`.
- * Lo único que de verdad no traduce a touch es arrastrar el cristal con el
- * dedo para girarlo a mano: ese gesto es indistinguible de "swipe para
- * scrollear" sobre el mismo canvas que cubre toda la sección, así que se
- * desactiva puntualmente ahí (ver `draggable` en CoreScene.tsx) — el resto
- * (giro automático, journey por scroll, nav por click/tap) es igual.
+ * Los títulos de cada disciplina son HTML (como en digilang.vercel.app).
  */
 import { useLayoutEffect, useMemo, useRef, useState } from 'react';
 import { ensureGsapRegistered, ScrollTrigger } from '@/shared/lib/gsap';
 import { useReducedMotion } from '@/shared/hooks/useReducedMotion';
-import { CoreScene, APPROACH_END, INSIDE_END } from '@/home/components/CoreScene';
+import { CoreScene, APPROACH_END } from '@/home/components/CoreScene';
 import { useLanguage } from '@/shared/lib/language';
 
 const INSIDE_START = APPROACH_END;
+/** Todo el scrub mapea 0→1 a 0→SETTLED: alcanza a terminar el scale-up del
+ * Crystal (~CROSSFADE_END+0.06) para que el low-poly llene el FOV. */
+const SETTLED = APPROACH_END + 0.14;
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 
 export function CoreJourney() {
@@ -41,13 +25,14 @@ export function CoreJourney() {
 
   const sectionRef = useRef<HTMLElement>(null);
   const hintRef = useRef<HTMLDivElement>(null);
+  const facetRef = useRef<HTMLDivElement>(null);
   const navRef = useRef<HTMLDivElement>(null);
-  const outroRef = useRef<HTMLDivElement>(null);
   const progressRef = useRef(0);
   const activeFacetRef = useRef(0);
   const [activeFacet, setActiveFacetState] = useState(0);
 
   const facets = content.journey.facets;
+  const active = facets[activeFacet] ?? facets[0];
 
   const goToFacet = (i: number) => {
     const wrapped = (i + facets.length) % facets.length;
@@ -62,32 +47,31 @@ export function CoreJourney() {
     const trigger = ScrollTrigger.create({
       trigger: sectionRef.current,
       start: 'top top',
-      end: `+=${(facets.length + 1) * 900}`,
+      end: '+=1100',
       pin: true,
       scrub: 0.6,
       onUpdate: (self) => {
-        const p = self.progress;
+        const p = self.progress * SETTLED;
         progressRef.current = p;
 
         if (hintRef.current) {
           hintRef.current.style.opacity = p < 0.04 ? String(1 - p / 0.04) : '0';
         }
 
-        const outroT = clamp01((p - INSIDE_END) / (1 - INSIDE_END));
-        if (outroRef.current) {
-          outroRef.current.style.opacity = String(outroT);
-          outroRef.current.style.transform = `translateY(${(1 - outroT) * 16}px)`;
+        const insideT = clamp01((p - INSIDE_START) / 0.05);
+        if (facetRef.current) {
+          facetRef.current.style.opacity = String(insideT);
+          facetRef.current.style.transform = `translateY(${(1 - insideT) * 12}px)`;
         }
 
         if (navRef.current) {
-          const navIn = clamp01((p - INSIDE_START) / 0.05);
-          navRef.current.style.opacity = String(navIn * (1 - outroT));
+          navRef.current.style.opacity = String(insideT);
         }
       },
     });
 
     return () => trigger.kill();
-  }, [enhanced, facets.length]);
+  }, [enhanced]);
 
   const fallbackFacets = useMemo(() => facets, [facets]);
 
@@ -114,12 +98,7 @@ export function CoreJourney() {
 
   return (
     <section id="journey" ref={sectionRef} className="dl-journey" data-cursor-hover>
-      <CoreScene
-        progressRef={progressRef}
-        activeFacetRef={activeFacetRef}
-        facetCount={facets.length}
-        facets={facets}
-      />
+      <CoreScene progressRef={progressRef} activeFacetRef={activeFacetRef} facetCount={facets.length} />
       <div className="dl-journey__overlay" />
 
       <div className="dl-journey__brand">
@@ -135,9 +114,11 @@ export function CoreJourney() {
       </div>
 
       <div className="dl-journey__panels">
-        <div ref={outroRef} className="dl-journey__panel dl-journey__outro">
-          <p className="dl-h1">{content.journey.outro.title}</p>
-          <p className="dl-body-lg dl-muted">{content.journey.outro.sub}</p>
+        <div ref={facetRef} className="dl-journey__panel dl-journey__facet" aria-live="polite">
+          <p className="dl-journey__facet-eyebrow">{active.eyebrow}</p>
+          <h2 key={active.eyebrow} className="dl-journey__facet-line">
+            {active.line}
+          </h2>
         </div>
       </div>
 
